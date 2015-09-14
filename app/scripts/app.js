@@ -22,54 +22,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   // Listen for template bound event to know when bindings
   // have resolved and content has been stamped to the page
   app.addEventListener('dom-change', function() {
-    console.log('Our app is ready to rock!');
-
-    app.categories = [{
-      name: 'Category 1',
-      id: 'category1',
-      assesment: [{
-        name: 'Test 1',
-        id: 'test1'
-      }, {
-        name: 'Test 2',
-        id: 'test2'
-      }, {
-        name: 'Test 3',
-        id: 'test3'
-      }]
-    }, {
-      name: 'Category 2',
-      id: 'category2',
-      assesment: [{
-        name: 'Test 1',
-        id: 'test1'
-      }, {
-        name: 'Test 2',
-        id: 'test2'
-      }, {
-        name: 'Test 3',
-        id: 'test3'
-      }]
-    }, {
-      name: 'Category 3',
-      id: 'category3',
-      assesment: [{
-        name: 'Test 1',
-        id: 'test1'
-      }, {
-        name: 'Test 2',
-        id: 'test2'
-      }, {
-        name: 'Test 3',
-        id: 'test3'
-      }]
-    }];
-    app.categoryRoute = app.categories[0].id;
+    app.section = 'categories';
+    app.isCategoriesSelected = false;
+    app.title = 'Polymer Quiz App';
   });
 
   // See https://github.com/Polymer/polymer/issues/1381
   window.addEventListener('WebComponentsReady', function() {
-    // imports are loaded and elements have been registered
+    // document.querySelector('category-list').show();
   });
 
   // Main area's paper-scroll-header-panel custom condensing transformation of
@@ -105,13 +65,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   };
 
-  app.buildPath = function(path, id) {
-    return path + '/' + id;
+  app.handleResponse = function(event) {
+    app.categories = event.detail.response;
   };
 
-  app.handleResponse = function(request) {
-    console.log(request);
-    app.categories = data;
+  app.categorySelected = function(e) {
+    app.section = 'category';
+    app.category = e.detail;
+    app.isCategoriesSelected = true;
+    app.title = this.getCategory(app.category).name;
+  };
+
+  app.getCategory = function(id) {
+    for (var i = 0; i < app.categories.length; i++) {
+      if (app.categories[i].activityId === id) return app.categories[i];
+    }
+  };
+
+  app.back = function() {
+    app.section = 'categories';
+    app.category = undefined;
+    app.isCategoriesSelected = false;
+    app.title = 'Polymer Quiz App';
   };
 
 })(document);

@@ -1,9 +1,5 @@
-<dom-module id="category-element">
+<dom-module id="category-list">
   <style>
-  :host {
-    display: block;
-  }
-
   .tile {
     min-width: 250px;
     max-width: 350px;
@@ -28,22 +24,23 @@
 
   <template>
     <div class="container layout horizontal wrap">
-      <template is="dom-repeat" items="[[category.tests]]">
 
-        <paper-material elevation="1" class="tile flex layout vertical" id="[[item.activityId]]">
+      <template is="dom-repeat" items="[[items]]">
 
+        <paper-material elevation="1" class="tile flex layout vertical">
+          <div on-click="categorySelected" id="[[item.activityId]]" class="layout fit" style="z-index: 2"> </div>
           <div class="icon layout horizontal center-justified  center flex">
             <iron-icon icon="home"></iron-icon>
           </div>
-
           <div class="tile-footer layout horizontal center">
             <div class="paper-font-body1 layout flex center center-justified">{{item.name}}</div>
             <iron-icon icon="av:play-arrow"></iron-icon>
           </div>
-
         </paper-material elevation>
 
       </template>
+
+
     </div>
   </template>
 
@@ -51,7 +48,7 @@
   (function() {
     Polymer({
 
-      is: 'category-element',
+      is: 'category-list',
 
       behaviors: [
         Polymer.NeonSharedElementAnimatableBehavior,
@@ -59,10 +56,15 @@
       ],
 
       properties: {
-        category: {
-          type: Object,
+        items: {
+          type: Array,
           notify: true,
           observer: '_itemsChanged'
+        },
+
+        category: {
+          type: String,
+          observer: '_categoryChanged'
         },
 
         animationConfig: {
@@ -70,12 +72,13 @@
           value: function() {
             return {
               'entry': {
-                // name: 'cascaded-animation',
-                // animation: 'transform-animation',
-                // transformFrom: 'translateY(100%)',
-                // transformTo: 'none',
-                name: 'fade-out-animation',
-                node: this
+                name: 'cascaded-animation',
+                animation: 'transform-animation',
+                transformFrom: 'translateY(100%)',
+                transformTo: 'none',
+                timing: {
+                  delay: 50
+                }
               },
               'exit': {
                 name: 'scale-down-animation',
@@ -94,11 +97,31 @@
         });
       },
 
-      _itemsChanged: function() {
+      show: function() {
+        this.style.opacity = 1;
+        if (this.animationConfig['entry'].nodes) this.playAnimation('entry');
+      },
+
+      _itemsChanged: function(e) {
         this.async(function() {
           var nodeList = Polymer.dom(this.root).querySelectorAll('.tile');
-          this.animationConfig['entry'].nodes = Array.prototype.slice.call(nodeList);
+          if (nodeList) this.animationConfig['entry'].nodes = Array.prototype.slice.call(nodeList);
         });
+
+        var _this = this;
+
+        setTimeout(function() {
+          _this.show();
+
+        }, 100);
+      },
+
+      _categoryChanged: function() {
+        console.log(this.category);
+      },
+
+      categorySelected: function(e) {
+        this.fire('category-selected', e.target.id);
       }
 
     });
