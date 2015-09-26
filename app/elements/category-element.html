@@ -1,8 +1,5 @@
 <dom-module id="category-element">
   <style>
-  :host {
-    display: block;
-  }
 
   .tile {
     min-width: 250px;
@@ -24,27 +21,92 @@
     --iron-icon-height: 62px;
     --iron-icon-width: 62px;
   }
+
+  paper-scroll-header-panel {
+    height: 100%;
+    background: white;
+    --paper-scroll-header-panel-full-header: {
+      background-color: #F44336;
+    }
+    ;
+    --paper-scroll-header-panel-condensed-header: {
+      background-color: #F44336;
+    }
+    ;
+  }
+
+  paper-toolbar.tall {
+    background-color: transparent;
+  }
+
+  paper-toolbar.tall .app-name {
+    font-size: 40px;
+    font-weight: 300;
+    /* Required for main area's paper-scroll-header-panel custom condensing transformation */
+    -webkit-transform-origin: left center;
+    transform-origin: left center;
+  }
+
+  #mainToolbar .middle-container {
+    height: 100%;
+    margin-left: 48px;
+  }
+
+  #mainToolbar:not(.tall) .middle {
+    font-size: 18px;
+    padding-bottom: 0;
+  }
+
+  #mainToolbar .bottom {
+    margin-left: 48px;
+    /* Required for main area's paper-scroll-header-panel custom condensing transformation */
+    -webkit-transform-origin: left center;
+    transform-origin: left center;
+  }
   </style>
 
   <template>
-    <div class="container layout horizontal wrap">
-      <template is="dom-repeat" items="[[category.tests]]">
+    <paper-scroll-header-panel id="scrollHeader" condenses keep-condensed-header mode="waterfall-tall" on-paper-header-transform="animateTitle">
 
-        <paper-material elevation="1" class="tile flex layout vertical" id="[[item.activityId]]">
+      <!-- Main Toolbar -->
+      <paper-toolbar id="mainToolbar" class="tall">
 
-          <div class="icon layout horizontal center-justified  center flex">
-            <iron-icon icon="home"></iron-icon>
-          </div>
+        <paper-icon-button on-click="close" icon="arrow-back"></paper-icon-button>
 
-          <div class="tile-footer layout horizontal center">
-            <div class="paper-font-body1 layout flex center center-justified">{{item.name}}</div>
-            <iron-icon icon="av:play-arrow"></iron-icon>
-          </div>
+        <span class="flex"></span>
 
-        </paper-material elevation>
+        <!-- Application name -->
+        <div class="middle middle-container center horizontal layout">
+          <div class="app-name">[[category.name]]</div>
+        </div>
 
-      </template>
-    </div>
+        <!-- Application sub title -->
+        <div class="bottom bottom-container center horizontal layout">
+          <div class="bottom-title paper-font-subhead"></div>
+        </div>
+
+      </paper-toolbar>
+
+      <div class="layout horizontal wrap">
+        <template is="dom-repeat" items="[[category.tests]]">
+
+          <paper-material elevation="1" class="tile flex layout vertical" id="[[item.activityId]]">
+
+            <div class="icon layout horizontal center-justified  center flex">
+              <iron-icon icon="home"></iron-icon>
+            </div>
+
+            <div class="tile-footer layout horizontal center">
+              <div class="paper-font-body1 layout flex center center-justified">{{item.name}}</div>
+              <iron-icon icon="av:play-arrow"></iron-icon>
+            </div>
+
+          </paper-material elevation>
+
+        </template>
+      </div>
+
+    </paper-scroll-header-panel>
   </template>
 
   <script>
@@ -69,36 +131,63 @@
           type: Object,
           value: function() {
             return {
-              'entry': {
-                // name: 'cascaded-animation',
-                // animation: 'transform-animation',
-                // transformFrom: 'translateY(100%)',
-                // transformTo: 'none',
-                name: 'fade-out-animation',
-                node: this
-              },
+              'entry': [{
+                name: 'hero-animation',
+                id: 'hero',
+                toPage: this
+              }, {
+                name: 'fade-in-animation'
+              }],
               'exit': {
                 name: 'scale-down-animation',
                 node: this
               }
             }
           }
+        },
+
+        sharedElements: {
+          value: function() {
+            return {
+              'hero': this.$.mainToolbar
+            }
+          }
         }
 
       },
 
-      attached: function() {
-        this.async(function() {
-          var nodeList = Polymer.dom(this.root).querySelectorAll('.tile');
-          this.animationConfig['entry'].nodes = Array.prototype.slice.call(nodeList);
-        });
+      animateTitle: function(e) {
+        var appName = this.querySelector('.app-name');
+        var middleContainer = this.querySelector('.middle-container');
+        var bottomContainer = this.querySelector('.bottom-container');
+        var detail = e.detail;
+        var heightDiff = detail.height - detail.condensedHeight;
+        console.log(detail.height);
+        var yRatio = Math.min(1, detail.y / heightDiff);
+        var maxMiddleScale = 0.50; // appName max size when condensed. The smaller the number the smaller the condensed size.
+        var scaleMiddle = Math.max(maxMiddleScale, (heightDiff - detail.y) / (heightDiff / (1 - maxMiddleScale)) + maxMiddleScale);
+        var scaleBottom = 1 - yRatio;
+
+        // Move/translate middleContainer
+        Polymer.Base.transform('translate3d(0,' + yRatio * 100 + '%,0)', middleContainer);
+
+        // Scale bottomContainer and bottom sub title to nothing and back
+        Polymer.Base.transform('scale(' + scaleBottom + ') translateZ(0)', bottomContainer);
+
+        // Scale middleContainer appName
+        Polymer.Base.transform('scale(' + scaleMiddle + ') translateZ(0)', appName);
       },
 
       _itemsChanged: function() {
         this.async(function() {
           var nodeList = Polymer.dom(this.root).querySelectorAll('.tile');
-          this.animationConfig['entry'].nodes = Array.prototype.slice.call(nodeList);
+          this.animationConfig['entry'][1].nodes = Array.prototype.slice.call(nodeList);
         });
+        this.$.scrollHeader.measureHeaderHeight();
+      },
+
+      close: function() {
+        this.fire('close');
       }
 
     });

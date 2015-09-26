@@ -82,11 +82,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   };
 
-  app.back = function() {
+  app.showCategoryList = function() {
     app.section = 'categories';
     app.category = undefined;
-    app.isCategoriesSelected = false;
     app.title = 'Polymer Quiz App';
+    console.log('sasdf');
   };
 
 })(document);

@@ -20,28 +20,75 @@
     --iron-icon-height: 62px;
     --iron-icon-width: 62px;
   }
+
+  paper-scroll-header-panel {
+    height: 100%;
+  }
+
+  paper-toolbar.tall .app-name {
+    font-size: 40px;
+    font-weight: 300;
+    /* Required for main area's paper-scroll-header-panel custom condensing transformation */
+    -webkit-transform-origin: left center;
+    transform-origin: left center;
+  }
+
+  #mainToolbar .middle-container {
+    height: 100%;
+    margin-left: 48px;
+  }
+
+  #mainToolbar:not(.tall) .middle {
+    font-size: 18px;
+    padding-bottom: 0;
+  }
+
+  #mainToolbar .bottom {
+    margin-left: 48px;
+    /* Required for main area's paper-scroll-header-panel custom condensing transformation */
+    -webkit-transform-origin: left center;
+    transform-origin: left center;
+  }
   </style>
 
   <template>
-    <div class="container layout horizontal wrap">
+    <paper-scroll-header-panel condenses keep-condensed-header mode="waterfall-tall" on-paper-header-transform="animateTitle">
 
-      <template is="dom-repeat" items="[[items]]">
+      <!-- Main Toolbar -->
+      <paper-toolbar id="mainToolbar" class="tall">
+        <span class="flex"></span>
 
-        <paper-material elevation="1" class="tile flex layout vertical">
-          <div on-click="categorySelected" id="[[item.activityId]]" class="layout fit" style="z-index: 2"> </div>
-          <div class="icon layout horizontal center-justified  center flex">
-            <iron-icon icon="home"></iron-icon>
-          </div>
-          <div class="tile-footer layout horizontal center">
-            <div class="paper-font-body1 layout flex center center-justified">{{item.name}}</div>
-            <iron-icon icon="av:play-arrow"></iron-icon>
-          </div>
-        </paper-material elevation>
+        <!-- Application name -->
+        <div class="middle middle-container center horizontal layout">
+          <div class="app-name">Quiz App</div>
+        </div>
 
-      </template>
+        <!-- Application sub title -->
+        <div class="bottom bottom-container center horizontal layout">
+          <div class="bottom-title paper-font-subhead">Question/Answer Application built with Polymer!</div>
+        </div>
 
+      </paper-toolbar>
 
-    </div>
+      <div class="layout horizontal wrap">
+
+        <template id="content" is="dom-repeat" items="[[items]]">
+
+          <paper-material elevation="1" class="tile flex layout vertical">
+            <div on-click="categorySelected" id="[[item.activityId]]" class="layout fit" style="z-index: 2"> </div>
+            <div class="icon layout horizontal center-justified  center flex">
+              <iron-icon icon="home"></iron-icon>
+            </div>
+            <div class="tile-footer layout horizontal center">
+              <div class="paper-font-body1 layout flex center center-justified">{{item.name}}</div>
+              <iron-icon icon="av:play-arrow"></iron-icon>
+            </div>
+          </paper-material elevation>
+        </template>
+
+      </div>
+
+    </paper-scroll-header-panel>
   </template>
 
   <script>
@@ -63,8 +110,7 @@
         },
 
         category: {
-          type: String,
-          observer: '_categoryChanged'
+          type: String
         },
 
         animationConfig: {
@@ -75,26 +121,44 @@
                 name: 'cascaded-animation',
                 animation: 'transform-animation',
                 transformFrom: 'translateY(100%)',
-                transformTo: 'none',
-                timing: {
-                  delay: 50
-                }
+                transformTo: 'none'
               },
-              'exit': {
-                name: 'scale-down-animation',
-                node: this
-              }
+              'exit': [{
+                name: 'fade-in-animation',
+              }, {
+                name: 'hero-animation',
+                id: 'hero',
+                fromPage: this
+              }]
             }
           }
-        }
+        },
 
+        sharedElements: {
+          value: function() {}
+        }
       },
 
-      attached: function() {
-        this.async(function() {
-          var nodeList = Polymer.dom(this.root).querySelectorAll('.tile');
-          this.animationConfig['entry'].nodes = Array.prototype.slice.call(nodeList);
-        });
+      animateTitle: function(e) {
+        var appName = this.querySelector('.app-name');
+        var middleContainer = this.querySelector('.middle-container');
+        var bottomContainer = this.querySelector('.bottom-container');
+        var detail = e.detail;
+        var heightDiff = detail.height - detail.condensedHeight;
+        console.log(detail.height);
+        var yRatio = Math.min(1, detail.y / heightDiff);
+        var maxMiddleScale = 0.50; // appName max size when condensed. The smaller the number the smaller the condensed size.
+        var scaleMiddle = Math.max(maxMiddleScale, (heightDiff - detail.y) / (heightDiff / (1 - maxMiddleScale)) + maxMiddleScale);
+        var scaleBottom = 1 - yRatio;
+
+        // Move/translate middleContainer
+        Polymer.Base.transform('translate3d(0,' + yRatio * 100 + '%,0)', middleContainer);
+
+        // Scale bottomContainer and bottom sub title to nothing and back
+        Polymer.Base.transform('scale(' + scaleBottom + ') translateZ(0)', bottomContainer);
+
+        // Scale middleContainer appName
+        Polymer.Base.transform('scale(' + scaleMiddle + ') translateZ(0)', appName);
       },
 
       show: function() {
@@ -106,6 +170,7 @@
         this.async(function() {
           var nodeList = Polymer.dom(this.root).querySelectorAll('.tile');
           if (nodeList) this.animationConfig['entry'].nodes = Array.prototype.slice.call(nodeList);
+          if (nodeList) this.animationConfig['exit'][0].nodes = Array.prototype.slice.call(nodeList);
         });
 
         var _this = this;
@@ -116,11 +181,11 @@
         }, 100);
       },
 
-      _categoryChanged: function() {
-        console.log(this.category);
-      },
-
       categorySelected: function(e) {
+        this.sharedElements = {
+          hero: e.target
+        };
+
         this.fire('category-selected', e.target.id);
       }
 
