@@ -1,57 +1,7 @@
 <dom-module id="category-list">
-  <style>
-  .tile {
-    min-width: 250px;
-    max-width: 350px;
-    height: 300px;
-    margin: 15px;
-    cursor: pointer;
-    color: white;
-    background-color: #F44336;
-  }
-
-  .tile .tile-footer {
-    height: 30px;
-    border-top: 1px solid #ccc;
-    padding: 10px;
-  }
-
-  .tile .icon iron-icon {
-    --iron-icon-height: 62px;
-    --iron-icon-width: 62px;
-  }
-
-  paper-scroll-header-panel {
-    height: 100%;
-  }
-
-  paper-toolbar.tall .app-name {
-    font-size: 40px;
-    font-weight: 300;
-    /* Required for main area's paper-scroll-header-panel custom condensing transformation */
-    -webkit-transform-origin: left center;
-    transform-origin: left center;
-  }
-
-  #mainToolbar .middle-container {
-    height: 100%;
-    margin-left: 48px;
-  }
-
-  #mainToolbar:not(.tall) .middle {
-    font-size: 18px;
-    padding-bottom: 0;
-  }
-
-  #mainToolbar .bottom {
-    margin-left: 48px;
-    /* Required for main area's paper-scroll-header-panel custom condensing transformation */
-    -webkit-transform-origin: left center;
-    transform-origin: left center;
-  }
-  </style>
-
   <template>
+    <style is="custom-style" include="app-themes"></style>
+
     <paper-scroll-header-panel condenses keep-condensed-header mode="waterfall-tall" on-paper-header-transform="animateTitle">
 
       <!-- Main Toolbar -->
@@ -74,16 +24,16 @@
 
         <template id="content" is="dom-repeat" items="[[items]]">
 
-          <paper-material elevation="1" class="tile flex layout vertical">
-            <div on-click="categorySelected" id="[[item.activityId]]" class="layout fit" style="z-index: 2"> </div>
+          <paper-card elevation="1" on-click="_onClick" class$="{{_concatClass('tile flex layout vertical', item.theme)}}" activityId$="[[item.activityId]]">
+            <div class="tileContainer layout fit" id="[[item.activityId]]" style="z-index: 1"> </div>
             <div class="icon layout horizontal center-justified  center flex">
-              <iron-icon icon="home"></iron-icon>
+              <iron-icon icon="{{_getCategoryIcon(item.icon)}}"></iron-icon>
             </div>
             <div class="tile-footer layout horizontal center">
               <div class="paper-font-body1 layout flex center center-justified">{{item.name}}</div>
               <iron-icon icon="av:play-arrow"></iron-icon>
             </div>
-          </paper-material elevation>
+          </paper-card>
         </template>
 
       </div>
@@ -117,20 +67,24 @@
           type: Object,
           value: function() {
             return {
-              'entry': {
+              'entry': [{
                 name: 'cascaded-animation',
                 animation: 'transform-animation',
-                transformFrom: 'translateY(100%)',
+                transformFrom: 'translateY(150%)',
                 transformTo: 'none'
-              },
+              }, {
+                name: 'slide-down-animation',
+                node: this.$.mainToolbar,
+              }],
               'exit': [{
-                name: 'fade-in-animation',
+                name: 'cascaded-animation',
+                animation: 'scale-down-animation'
               }, {
                 name: 'hero-animation',
                 id: 'hero',
                 fromPage: this
               }]
-            }
+            };
           }
         },
 
@@ -145,7 +99,6 @@
         var bottomContainer = this.querySelector('.bottom-container');
         var detail = e.detail;
         var heightDiff = detail.height - detail.condensedHeight;
-        console.log(detail.height);
         var yRatio = Math.min(1, detail.y / heightDiff);
         var maxMiddleScale = 0.50; // appName max size when condensed. The smaller the number the smaller the condensed size.
         var scaleMiddle = Math.max(maxMiddleScale, (heightDiff - detail.y) / (heightDiff / (1 - maxMiddleScale)) + maxMiddleScale);
@@ -163,14 +116,15 @@
 
       show: function() {
         this.style.opacity = 1;
-        if (this.animationConfig['entry'].nodes) this.playAnimation('entry');
+        if (this.animationConfig.entry[0].nodes) {
+          this.playAnimation('entry');
+        }
       },
 
-      _itemsChanged: function(e) {
+      _itemsChanged: function() {
         this.async(function() {
           var nodeList = Polymer.dom(this.root).querySelectorAll('.tile');
-          if (nodeList) this.animationConfig['entry'].nodes = Array.prototype.slice.call(nodeList);
-          if (nodeList) this.animationConfig['exit'][0].nodes = Array.prototype.slice.call(nodeList);
+          if (nodeList) this.animationConfig.entry[0].nodes = Array.prototype.slice.call(nodeList);
         });
 
         var _this = this;
@@ -181,12 +135,33 @@
         }, 100);
       },
 
-      categorySelected: function(e) {
+      _onClick: function(event) {
+        var target = event.target;
+
         this.sharedElements = {
-          hero: e.target
+          'hero': target.parentElement
         };
 
-        this.fire('category-selected', e.target.id);
+        var nodesToScale = [];
+        var tiles = Polymer.dom(this.root).querySelectorAll('.tile');
+
+        for (var node, index = 0; node = tiles[index]; index++) {
+          if (node.getAttribute('activityId') !== target.getAttribute('activityId')) {
+            nodesToScale.push(node);
+          }
+        }
+
+        this.animationConfig.exit[0].nodes = nodesToScale;
+        this.fire('category-selected', target.id);
+
+      },
+
+      _getCategoryIcon: function(name) {
+        return 'category-icons:' + name;
+      },
+
+      _concatClass: function(classess, newClass) {
+        return classess + ' ' + newClass;
       }
 
     });

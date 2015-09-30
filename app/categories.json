@@ -1,14 +1,14 @@
 [{
   "sectionId": "GRADIANT_092015",
   "uuid": "32d8e1dc-fe8f-fb90-ceb9-1d915d352bbb",
-  "name": "CIENCIA Y TECNOLOGÍA",
+  "name": "Ciencia y Tecnología",
   "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/CIENCIA_Y_TECNOLOGÍA",
-  "tests": [{
+  "quizes": [{
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/CIENCIA_Y_TECNOLOGÍA",
-    "name": "CIENCIA Y TECNOLOGÍA - Mix 1",
+    "name": "Ciencia y Tecnología - Mix 1",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/CIENCIA_Y_TECNOLOGÍA/CIENCIA_Y_TECNOLOGÍA_-_Mix_1",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Qué tipo de mamífero es un conejo?",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/CIENCIA_Y_TECNOLOGÍA/CIENCIA_Y_TECNOLOGÍA_-_Mix_1/question0",
@@ -82,16 +82,16 @@
       "answer": [0]
     }],
     "theme": "purple",
-    "icon": "science-1",
+    "icon": "science",
     "maxAttempts": 4,
     "attempts": 0,
     "lastScore": 0
   }, {
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/CIENCIA_Y_TECNOLOGÍA",
-    "name": "CIENCIA Y TECNOLOGÍA - Mix 2",
+    "name": "Ciencia y Tecnología - Mix 2",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/CIENCIA_Y_TECNOLOGÍA/CIENCIA_Y_TECNOLOGÍA_-_Mix_2",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Cómo se mide la fuerza del viento en el mar?",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/CIENCIA_Y_TECNOLOGÍA/CIENCIA_Y_TECNOLOGÍA_-_Mix_2/question4",
@@ -165,16 +165,16 @@
       "answer": [2]
     }],
     "theme": "purple",
-    "icon": "science-2",
+    "icon": "science",
     "maxAttempts": 4,
     "attempts": 0,
     "lastScore": 0
   }, {
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/CIENCIA_Y_TECNOLOGÍA",
-    "name": "CIENCIA Y TECNOLOGÍA - Mix 3",
+    "name": "Ciencia y Tecnología - Mix 3",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/CIENCIA_Y_TECNOLOGÍA/CIENCIA_Y_TECNOLOGÍA_-_Mix_3",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Qué es el gavial (Gavialis gangeticus)?",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/CIENCIA_Y_TECNOLOGÍA/CIENCIA_Y_TECNOLOGÍA_-_Mix_3/question8",
@@ -248,16 +248,16 @@
       "answer": [1]
     }],
     "theme": "purple",
-    "icon": "science-3",
+    "icon": "science",
     "maxAttempts": 4,
     "attempts": 0,
     "lastScore": 0
   }, {
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/CIENCIA_Y_TECNOLOGÍA",
-    "name": "CIENCIA Y TECNOLOGÍA - Mix 4",
+    "name": "Ciencia y Tecnología - Mix 4",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/CIENCIA_Y_TECNOLOGÍA/CIENCIA_Y_TECNOLOGÍA_-_Mix_4",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Cuál es el mineral más duro del planeta?",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/CIENCIA_Y_TECNOLOGÍA/CIENCIA_Y_TECNOLOGÍA_-_Mix_4/question12",
@@ -331,7 +331,7 @@
       "answer": [2]
     }],
     "theme": "purple",
-    "icon": "science-4",
+    "icon": "science",
     "maxAttempts": 4,
     "attempts": 0,
     "lastScore": 0
@@ -341,14 +341,14 @@
 }, {
   "sectionId": "GRADIANT_092015",
   "uuid": "32d8e1dc-fe8f-fb90-ceb9-1d915d352bbb",
-  "name": "ARTE Y LITERATURA",
+  "name": "Arte y Literatura",
   "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ARTE_Y_LITERATURA",
-  "tests": [{
+  "quizes": [{
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ARTE_Y_LITERATURA",
-    "name": "ARTE Y LITERATURA - Mix 1",
+    "name": "Arte y Literatura - Mix 1",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ARTE_Y_LITERATURA/ARTE_Y_LITERATURA_-_Mix_1",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Cuál era la nacionalidad de Heri Cartier",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ARTE_Y_LITERATURA/ARTE_Y_LITERATURA_-_Mix_1/question0",
@@ -398,16 +398,16 @@
       "answer": [3]
     }],
     "theme": "orange",
-    "icon": "music-1",
+    "icon": "music",
     "maxAttempts": 4,
     "attempts": 0,
     "lastScore": 0
   }, {
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ARTE_Y_LITERATURA",
-    "name": "ARTE Y LITERATURA - Mix 2",
+    "name": "Arte y Literatura - Mix 2",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ARTE_Y_LITERATURA/ARTE_Y_LITERATURA_-_Mix_2",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Cuál de los siguientes artistas es una figura clave del dadaísmo y el surrealismo?",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ARTE_Y_LITERATURA/ARTE_Y_LITERATURA_-_Mix_2/question6",
@@ -457,16 +457,16 @@
       "answer": [1]
     }],
     "theme": "orange",
-    "icon": "music-2",
+    "icon": "music",
     "maxAttempts": 3,
     "attempts": 0,
     "lastScore": 0
   }, {
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ARTE_Y_LITERATURA",
-    "name": "ARTE Y LITERATURA - Mix 3",
+    "name": "Arte y Literatura - Mix 3",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ARTE_Y_LITERATURA/ARTE_Y_LITERATURA_-_Mix_3",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Quién escribió “El túnel”?",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ARTE_Y_LITERATURA/ARTE_Y_LITERATURA_-_Mix_3/question12",
@@ -516,16 +516,16 @@
       "answer": [1]
     }],
     "theme": "orange",
-    "icon": "music-3",
+    "icon": "music",
     "maxAttempts": 3,
     "attempts": 0,
     "lastScore": 0
   }, {
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ARTE_Y_LITERATURA",
-    "name": "ARTE Y LITERATURA - Mix 4",
+    "name": "Arte y Literatura - Mix 4",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ARTE_Y_LITERATURA/ARTE_Y_LITERATURA_-_Mix_4",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Qué describe una prosopografía?",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ARTE_Y_LITERATURA/ARTE_Y_LITERATURA_-_Mix_4/question18",
@@ -575,16 +575,16 @@
       "answer": [0]
     }],
     "theme": "orange",
-    "icon": "music-4",
+    "icon": "music",
     "maxAttempts": 2,
     "attempts": 0,
     "lastScore": 0
   }, {
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ARTE_Y_LITERATURA",
-    "name": "ARTE Y LITERATURA - Mix 5",
+    "name": "Arte y Literatura - Mix 5",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ARTE_Y_LITERATURA/ARTE_Y_LITERATURA_-_Mix_5",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿En qué está esculpida la Venus de MIlo?",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ARTE_Y_LITERATURA/ARTE_Y_LITERATURA_-_Mix_5/question24",
@@ -634,16 +634,16 @@
       "answer": [2]
     }],
     "theme": "orange",
-    "icon": "music-5",
+    "icon": "music",
     "maxAttempts": 2,
     "attempts": 0,
     "lastScore": 0
   }, {
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ARTE_Y_LITERATURA",
-    "name": "ARTE Y LITERATURA - Mix 6",
+    "name": "Arte y Literatura - Mix 6",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ARTE_Y_LITERATURA/ARTE_Y_LITERATURA_-_Mix_6",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Cómo despertó el principe a la Bella Durmiente?",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ARTE_Y_LITERATURA/ARTE_Y_LITERATURA_-_Mix_6/question30",
@@ -693,7 +693,7 @@
       "answer": [1]
     }],
     "theme": "orange",
-    "icon": "music-6",
+    "icon": "music",
     "maxAttempts": 2,
     "attempts": 0,
     "lastScore": 0
@@ -703,14 +703,14 @@
 }, {
   "sectionId": "GRADIANT_092015",
   "uuid": "32d8e1dc-fe8f-fb90-ceb9-1d915d352bbb",
-  "name": "DEPORTES",
+  "name": "Deportes",
   "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/DEPORTES",
-  "tests": [{
+  "quizes": [{
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/DEPORTES",
-    "name": "DEPORTES - Mix 1",
+    "name": "Deportes - Mix 1",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/DEPORTES/DEPORTES_-_Mix_1",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿De que deporte es el kemari uno de los principales antecesores? .",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/DEPORTES/DEPORTES_-_Mix_1/question0",
@@ -768,16 +768,16 @@
       "answer": [2]
     }],
     "theme": "red",
-    "icon": "sports-1",
+    "icon": "sports",
     "maxAttempts": 2,
     "attempts": 0,
     "lastScore": 0
   }, {
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/DEPORTES",
-    "name": "DEPORTES - Mix 2",
+    "name": "Deportes - Mix 2",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/DEPORTES/DEPORTES_-_Mix_2",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Cuál es el estilo de natación más rápido?.",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/DEPORTES/DEPORTES_-_Mix_2/question5",
@@ -835,16 +835,16 @@
       "answer": [0]
     }],
     "theme": "red",
-    "icon": "sports-2",
+    "icon": "sports",
     "maxAttempts": 3,
     "attempts": 0,
     "lastScore": 0
   }, {
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/DEPORTES",
-    "name": "DEPORTES - Mix 3",
+    "name": "Deportes - Mix 3",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/DEPORTES/DEPORTES_-_Mix_3",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Qué tienen en común Ty Cobb, Cy Young y Roberto Clemente?.",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/DEPORTES/DEPORTES_-_Mix_3/question10",
@@ -902,16 +902,16 @@
       "answer": [0]
     }],
     "theme": "red",
-    "icon": "sports-3",
+    "icon": "sports",
     "maxAttempts": 3,
     "attempts": 0,
     "lastScore": 0
   }, {
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/DEPORTES",
-    "name": "DEPORTES - Mix 4",
+    "name": "Deportes - Mix 4",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/DEPORTES/DEPORTES_-_Mix_4",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Cuánto pesa aproximadamente una bola de bolera?.",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/DEPORTES/DEPORTES_-_Mix_4/question15",
@@ -969,16 +969,16 @@
       "answer": [0]
     }],
     "theme": "red",
-    "icon": "sports-4",
+    "icon": "sports",
     "maxAttempts": 3,
     "attempts": 0,
     "lastScore": 0
   }, {
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/DEPORTES",
-    "name": "DEPORTES - Mix 5",
+    "name": "Deportes - Mix 5",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/DEPORTES/DEPORTES_-_Mix_5",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Cuál de estas frases NO fue dicha por Diego Armando Maradona?.",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/DEPORTES/DEPORTES_-_Mix_5/question20",
@@ -1036,7 +1036,7 @@
       "answer": [3]
     }],
     "theme": "red",
-    "icon": "sports-5",
+    "icon": "sports",
     "maxAttempts": 3,
     "attempts": 0,
     "lastScore": 0
@@ -1046,14 +1046,14 @@
 }, {
   "sectionId": "GRADIANT_092015",
   "uuid": "32d8e1dc-fe8f-fb90-ceb9-1d915d352bbb",
-  "name": "ENTRETENIMIENTO",
+  "name": "Entretenimiento",
   "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ENTRETENIMIENTO",
-  "tests": [{
+  "quizes": [{
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ENTRETENIMIENTO",
-    "name": "ENTRETENIMIENTO - Mix 1",
+    "name": "Entretenimiento - Mix 1",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ENTRETENIMIENTO/ENTRETENIMIENTO_-_Mix_1",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Qué banda de Heavy Metal lanzó un disco de colaboración con el recientemente fallecido Lou Reed?",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/ENTRETENIMIENTO/ENTRETENIMIENTO_-_Mix_1/question0",
@@ -1103,7 +1103,7 @@
       "answer": [0]
     }],
     "theme": "blue",
-    "icon": "entertainment-1",
+    "icon": "entertainment",
     "maxAttempts": 3,
     "attempts": 0,
     "lastScore": 0
@@ -1113,14 +1113,14 @@
 }, {
   "sectionId": "GRADIANT_092015",
   "uuid": "32d8e1dc-fe8f-fb90-ceb9-1d915d352bbb",
-  "name": "GEOGRAFIA",
+  "name": "Geografía",
   "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/GEOGRAFIA",
-  "tests": [{
+  "quizes": [{
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/GEOGRAFIA",
-    "name": "GEOGRAFIA - Mix 1",
+    "name": "Geografía - Mix 1",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/GEOGRAFIA/GEOGRAFIA_-_Mix_1",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Cuál es el país menos turístico de Europa?.",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/GEOGRAFIA/GEOGRAFIA_-_Mix_1/question0",
@@ -1170,16 +1170,16 @@
       "answer": [3]
     }],
     "theme": "yellow",
-    "icon": "geography-1",
+    "icon": "geography",
     "maxAttempts": 4,
     "attempts": 0,
     "lastScore": 0
   }, {
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/GEOGRAFIA",
-    "name": "GEOGRAFIA - Mix 2",
+    "name": "Geografía - Mix 2",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/GEOGRAFIA/GEOGRAFIA_-_Mix_2",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Cuál es principal celebración holandesa?.",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/GEOGRAFIA/GEOGRAFIA_-_Mix_2/question4",
@@ -1229,16 +1229,16 @@
       "answer": [2]
     }],
     "theme": "yellow",
-    "icon": "geography-2",
+    "icon": "geography",
     "maxAttempts": 4,
     "attempts": 0,
     "lastScore": 0
   }, {
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/GEOGRAFIA",
-    "name": "GEOGRAFIA - Mix 3",
+    "name": "Geografía - Mix 3",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/GEOGRAFIA/GEOGRAFIA_-_Mix_3",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Qué separa las franjas de Gaza y Cisjordania?.",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/GEOGRAFIA/GEOGRAFIA_-_Mix_3/question8",
@@ -1288,16 +1288,16 @@
       "answer": [3]
     }],
     "theme": "yellow",
-    "icon": "geography-3",
+    "icon": "geography",
     "maxAttempts": 3,
     "attempts": 0,
     "lastScore": 0
   }, {
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/GEOGRAFIA",
-    "name": "GEOGRAFIA - Mix 4",
+    "name": "Geografía - Mix 4",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/GEOGRAFIA/GEOGRAFIA_-_Mix_4",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Cuál de las siguientes islas está más al sur?.",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/GEOGRAFIA/GEOGRAFIA_-_Mix_4/question12",
@@ -1347,7 +1347,7 @@
       "answer": [2]
     }],
     "theme": "yellow",
-    "icon": "geography-4",
+    "icon": "geography",
     "maxAttempts": 3,
     "attempts": 0,
     "lastScore": 0
@@ -1357,14 +1357,14 @@
 }, {
   "sectionId": "GRADIANT_092015",
   "uuid": "32d8e1dc-fe8f-fb90-ceb9-1d915d352bbb",
-  "name": "HISTORIA",
+  "name": "Historia",
   "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/HISTORIA",
-  "tests": [{
+  "quizes": [{
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/HISTORIA",
-    "name": "HISTORIA - Mix 1",
+    "name": "Historia - Mix 1",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/HISTORIA/HISTORIA_-_Mix_1",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Cuál es la rama mayoritaria del Islam?",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/HISTORIA/HISTORIA_-_Mix_1/question0",
@@ -1454,16 +1454,16 @@
       "answer": [0]
     }],
     "theme": "green",
-    "icon": "history-1",
+    "icon": "history",
     "maxAttempts": 3,
     "attempts": 0,
     "lastScore": 0
   }, {
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/HISTORIA",
-    "name": "HISTORIA - Mix 2",
+    "name": "Historia - Mix 2",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/HISTORIA/HISTORIA_-_Mix_2",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "A qué dirigente latinoamericano mandó callar Juan Carlos de Borbón?",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/HISTORIA/HISTORIA_-_Mix_2/question5",
@@ -1553,16 +1553,16 @@
       "answer": [2]
     }],
     "theme": "green",
-    "icon": "history-2",
+    "icon": "history",
     "maxAttempts": 3,
     "attempts": 0,
     "lastScore": 0
   }, {
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/HISTORIA",
-    "name": "HISTORIA - Mix 3",
+    "name": "Historia - Mix 3",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/HISTORIA/HISTORIA_-_Mix_3",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Cuál es la ciudad más antigua de América Latina?",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/HISTORIA/HISTORIA_-_Mix_3/question10",
@@ -1652,16 +1652,16 @@
       "answer": [2]
     }],
     "theme": "green",
-    "icon": "history-3",
+    "icon": "history",
     "maxAttempts": 3,
     "attempts": 0,
     "lastScore": 0
   }, {
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/HISTORIA",
-    "name": "HISTORIA - Mix 4",
+    "name": "Historia - Mix 4",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/HISTORIA/HISTORIA_-_Mix_4",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Cuál de los siguientes políticos no ha estado implicado en la trama Gürtel?",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/HISTORIA/HISTORIA_-_Mix_4/question15",
@@ -1751,16 +1751,16 @@
       "answer": [2]
     }],
     "theme": "green",
-    "icon": "history-4",
+    "icon": "history",
     "maxAttempts": 3,
     "attempts": 0,
     "lastScore": 0
   }, {
     "sectionId": "GRADIANT_092015",
     "parent": "http://gradiant.org/elearning/experiments/GRADIANT_092015/HISTORIA",
-    "name": "HISTORIA - Mix 5",
+    "name": "Historia - Mix 5",
     "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/HISTORIA/HISTORIA_-_Mix_5",
-    "quizes": [{
+    "questions": [{
       "sectionId": "GRADIANT_092015",
       "question": "¿Para qué fue creado el plan Marshall en 1947?",
       "activityId": "http://gradiant.org/elearning/experiments/GRADIANT_092015/HISTORIA/HISTORIA_-_Mix_5/question20",
@@ -1850,7 +1850,7 @@
       "answer": [1]
     }],
     "theme": "green",
-    "icon": "history-5",
+    "icon": "history",
     "maxAttempts": 2,
     "attempts": 0,
     "lastScore": 0

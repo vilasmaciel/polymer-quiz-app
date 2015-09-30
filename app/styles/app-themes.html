@@ -1,0 +1,155 @@
+<!-- shared styles for all elements and index.html -->
+<dom-module id="app-themes">
+  <template>
+    <style>
+    paper-scroll-header-panel {
+      height: 100%;
+      /*background-color: #424242;*/
+    }
+
+    #mainToolbar {
+      background: var(--paper-cyan-700);
+    }
+
+    #mainToolbar.tall .app-name {
+      font-size: 40px;
+      font-weight: 300;
+      /* Required for main area's paper-scroll-header-panel custom condensing transformation */
+      -webkit-transform-origin: left center;
+      transform-origin: left center;
+    }
+
+    #mainToolbar .middle-container {
+      height: 100%;
+      margin-left: 48px;
+    }
+
+    #mainToolbar:not(.tall) .middle {
+      font-size: 18px;
+      padding-bottom: 0;
+    }
+
+    #mainToolbar .bottom {
+      margin-left: 48px;
+      /* Required for main area's paper-scroll-header-panel custom condensing transformation */
+      -webkit-transform-origin: left center;
+      transform-origin: left center;
+    }
+
+    .tile {
+      min-width: 380px;
+      max-width: 50%;
+      height: 300px;
+      margin: 3px;
+      cursor: pointer;
+    }
+
+    .tile .tile-footer {
+      height: 30px;
+      padding: 10px;
+    }
+
+    .tile .icon iron-icon {
+      --iron-icon-height: 256px;
+      --iron-icon-width: 256px;
+    }
+
+    @media (max-width: 860px) {
+      .tile {
+        min-width: 250px;
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 600px) {
+      #mainToolbar.tall .app-name {
+        font-size: 24px;
+        font-weight: 400;
+      }
+    }
+    /* PURPLE */
+
+    #mainToolbar.purple,
+    .tile.purple .tile-footer,
+    #quizContainer.purple .card-header {
+      background-color: var(--paper-purple-500);
+      color: white;
+    }
+
+    .tile.purple,
+    #placeholder.purple {
+      background-color: var(--paper-purple-300);
+      color: white;
+    }
+    /* GREEN */
+
+    #mainToolbar.green,
+    .tile.green .tile-footer,
+    #quizContainer.green .card-header {
+      background-color: var(--paper-green-500);
+    }
+
+    .tile.green,
+    #placeholder.green {
+      background-color: var(--paper-green-300);
+      color: white;
+    }
+    /* ORANGE */
+
+    #mainToolbar.orange,
+    .tile.orange .tile-footer,
+    #quizContainer.orange .card-header {
+      color: white;
+      background-color: var(--paper-orange-500);
+    }
+
+    .tile.orange,
+    #placeholder.orange {
+      background-color: var(--paper-orange-300);
+      color: white;
+    }
+    /* RED */
+
+    #mainToolbar.red,
+    .tile.red .tile-footer,
+    #quizContainer.red .card-header {
+      background-color: var(--paper-red-500);
+      color: white;
+    }
+
+    .tile.red,
+    #placeholder.red {
+      background-color: var(--paper-red-300);
+      color: white;
+    }
+    /* BLUE */
+
+    #mainToolbar.blue,
+    .tile.blue .tile-footer,
+    #quizContainer.blue .card-header {
+      background-color: var(--paper-blue-500);
+      color: white;
+    }
+
+    .tile.blue,
+    #placeholder.blue {
+      background-color: var(--paper-blue-300);
+      color: white;
+    }
+    /* YELLOW */
+
+    #mainToolbar.yellow,
+    .tile.yellow .tile-footer,
+    #quizContainer.yellow .card-header {
+      background-color: var(--paper-yellow-900);
+      color: white;
+    }
+
+    .tile.yellow,
+    #placeholder.yellow {
+      background-color: var(--paper-yellow-800);
+      color: white;
+    }
+    </style>
+  </template>
+</dom-module>

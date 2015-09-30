@@ -1,107 +1,36 @@
 <dom-module id="category-element">
-  <style>
-
-  .tile {
-    min-width: 250px;
-    max-width: 350px;
-    height: 300px;
-    margin: 15px;
-    cursor: pointer;
-    color: white;
-    background-color: #F44336;
-  }
-
-  .tile .tile-footer {
-    height: 30px;
-    border-top: 1px solid #ccc;
-    padding: 10px;
-  }
-
-  .tile .icon iron-icon {
-    --iron-icon-height: 62px;
-    --iron-icon-width: 62px;
-  }
-
-  paper-scroll-header-panel {
-    height: 100%;
-    background: white;
-    --paper-scroll-header-panel-full-header: {
-      background-color: #F44336;
-    }
-    ;
-    --paper-scroll-header-panel-condensed-header: {
-      background-color: #F44336;
-    }
-    ;
-  }
-
-  paper-toolbar.tall {
-    background-color: transparent;
-  }
-
-  paper-toolbar.tall .app-name {
-    font-size: 40px;
-    font-weight: 300;
-    /* Required for main area's paper-scroll-header-panel custom condensing transformation */
-    -webkit-transform-origin: left center;
-    transform-origin: left center;
-  }
-
-  #mainToolbar .middle-container {
-    height: 100%;
-    margin-left: 48px;
-  }
-
-  #mainToolbar:not(.tall) .middle {
-    font-size: 18px;
-    padding-bottom: 0;
-  }
-
-  #mainToolbar .bottom {
-    margin-left: 48px;
-    /* Required for main area's paper-scroll-header-panel custom condensing transformation */
-    -webkit-transform-origin: left center;
-    transform-origin: left center;
-  }
-  </style>
-
   <template>
+    <style is="custom-style" include="app-themes"></style>
+
     <paper-scroll-header-panel id="scrollHeader" condenses keep-condensed-header mode="waterfall-tall" on-paper-header-transform="animateTitle">
 
-      <!-- Main Toolbar -->
-      <paper-toolbar id="mainToolbar" class="tall">
-
-        <paper-icon-button on-click="close" icon="arrow-back"></paper-icon-button>
+      <paper-toolbar id="mainToolbar" class$="{{_concatClass('tall', category.theme)}}">
+        <paper-icon-button on-click="_close" icon="arrow-back"></paper-icon-button>
 
         <span class="flex"></span>
 
-        <!-- Application name -->
         <div class="middle middle-container center horizontal layout">
           <div class="app-name">[[category.name]]</div>
         </div>
 
-        <!-- Application sub title -->
-        <div class="bottom bottom-container center horizontal layout">
-          <div class="bottom-title paper-font-subhead"></div>
-        </div>
-
       </paper-toolbar>
 
-      <div class="layout horizontal wrap">
-        <template is="dom-repeat" items="[[category.tests]]">
 
-          <paper-material elevation="1" class="tile flex layout vertical" id="[[item.activityId]]">
+      <div class="layout horizontal wrap" id="container">
+        <template is="dom-repeat" items="[[category.quizes]]">
+
+          <paper-card elevation="1" on-tap="_itemSelected" class$="{{_concatClass('tile flex layout vertical', item.theme)}}" id="[[item.activityId]]">
 
             <div class="icon layout horizontal center-justified  center flex">
-              <iron-icon icon="home"></iron-icon>
+              <iron-icon icon="{{_getCategoryIcon(item.icon)}}"></iron-icon>
             </div>
 
             <div class="tile-footer layout horizontal center">
               <div class="paper-font-body1 layout flex center center-justified">{{item.name}}</div>
-              <iron-icon icon="av:play-arrow"></iron-icon>
+              <iron-icon icon="category-icons:play-arrow"></iron-icon>
             </div>
 
-          </paper-material elevation>
+          </paper-card>
 
         </template>
       </div>
@@ -131,38 +60,22 @@
           type: Object,
           value: function() {
             return {
-              'entry': [{
-                name: 'hero-animation',
-                id: 'hero',
-                toPage: this
-              }, {
-                name: 'fade-in-animation'
-              }],
-              'exit': {
-                name: 'scale-down-animation',
-                node: this
-              }
-            }
-          }
-        },
-
-        sharedElements: {
-          value: function() {
-            return {
-              'hero': this.$.mainToolbar
+              'entry': [],
+              'exit': []
             }
           }
         }
+      },
 
+      attached: function() {
+        this._setAnimationFromCategoryList();
       },
 
       animateTitle: function(e) {
         var appName = this.querySelector('.app-name');
         var middleContainer = this.querySelector('.middle-container');
-        var bottomContainer = this.querySelector('.bottom-container');
         var detail = e.detail;
         var heightDiff = detail.height - detail.condensedHeight;
-        console.log(detail.height);
         var yRatio = Math.min(1, detail.y / heightDiff);
         var maxMiddleScale = 0.50; // appName max size when condensed. The smaller the number the smaller the condensed size.
         var scaleMiddle = Math.max(maxMiddleScale, (heightDiff - detail.y) / (heightDiff / (1 - maxMiddleScale)) + maxMiddleScale);
@@ -171,23 +84,94 @@
         // Move/translate middleContainer
         Polymer.Base.transform('translate3d(0,' + yRatio * 100 + '%,0)', middleContainer);
 
-        // Scale bottomContainer and bottom sub title to nothing and back
-        Polymer.Base.transform('scale(' + scaleBottom + ') translateZ(0)', bottomContainer);
-
         // Scale middleContainer appName
         Polymer.Base.transform('scale(' + scaleMiddle + ') translateZ(0)', appName);
       },
 
       _itemsChanged: function() {
-        this.async(function() {
-          var nodeList = Polymer.dom(this.root).querySelectorAll('.tile');
-          this.animationConfig['entry'][1].nodes = Array.prototype.slice.call(nodeList);
-        });
         this.$.scrollHeader.measureHeaderHeight();
       },
 
-      close: function() {
+      _close: function() {
+        this._setAnimationFromCategoryList();
         this.fire('close');
+      },
+
+      _itemSelected: function(e) {
+        this._setAnimationFromQuizItem(e.target);
+        var quiz = e.model.__data__.item;
+        this.fire('quiz-selected', quiz);
+      },
+
+      _getCategoryIcon: function(name) {
+        return 'category-icons:' + name;
+      },
+
+      _concatClass: function(classess, newClass) {
+        return classess + ' ' + newClass;
+      },
+
+      _setAnimationFromCategoryList: function() {
+        this.animationConfig.entry = [{
+          name: 'hero-animation',
+          id: 'hero',
+          toPage: this
+        }, {
+          name: 'fade-in-animation',
+          timing: {
+            delay: 300
+          },
+          node: this.$$('.app-name')
+        }, {
+          name: 'fade-in-animation',
+          timing: {
+            delay: 300
+          },
+          node: this.$$('#mainToolbar paper-icon-button')
+        }, {
+          name: 'fade-in-animation',
+          timing: {
+            delay: 300
+          },
+          node: this.$.container
+        }];
+
+        this.animationConfig.exit = [{
+          name: 'fade-out-animation',
+          node: this.$.mainToolbar,
+        }, {
+          name: 'fade-out-animation',
+          node: this.$.container
+        }];
+
+        this.sharedElements = {
+          'hero': this.$.mainToolbar
+        };
+
+      },
+
+      _setAnimationFromQuizItem: function(target) {
+        this.animationConfig.exit = [{
+          name: 'ripple-animation',
+          id: 'ripple',
+          fromPage: this,
+        }];
+
+        this.animationConfig.entry = [{
+          name: 'slide-down-animation',
+          node: this.$.mainToolbar,
+        }, {
+          name: 'fade-in-animation',
+          node: this.$.container,
+          timing: {
+            delay: 200
+          }
+        }];
+
+        this.sharedElements = {
+          'hero': target,
+          'ripple': target
+        };
       }
 
     });

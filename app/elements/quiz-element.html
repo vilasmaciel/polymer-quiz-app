@@ -1,0 +1,131 @@
+<dom-module id="quiz-element">
+  <template>
+    <style is="custom-style" include="app-themes"></style>
+    <style>
+    #quizContainer {
+      width: 400px;
+    }
+
+    #placeholder {
+      height: 100%;
+      width: 100%;
+      background-color: var(--paper-grey-300);
+    }
+
+    .card-header {
+      background-color: var(--paper-grey-400);
+      padding: 16px;
+    }
+
+    .card-header iron-icon {
+      height: 256px;
+      width: 256px;
+    }
+
+    paper-toolbar {
+      background-color: transparent;
+    }
+    #quizSelector {
+      height: calc(100vh - 64px);
+    }
+    </style>
+
+    <div id="placeholder" class$="[[_concatClass('layout horizontal fit', quiz.theme)]]"></div>
+
+    <paper-toolbar>
+      <paper-icon-button on-click="_close" icon="arrow-back"></paper-icon-button>
+    </paper-toolbar>
+
+    <neon-animated-pages id="quizSelector" selected="0">
+      <quiz-front-page id="frontPage" quiz="{{quiz}}" on-start="_start"></quiz-front-page>
+      <template is="dom-repeat" items="[[quiz.questions]]">
+        <question-element class="fit" question="[[item]]" on-next="_next"></question-element>
+      </template>
+    </neon-animated-pages>
+  </template>
+
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'quiz-element',
+
+      behaviors: [
+        Polymer.NeonSharedElementAnimatableBehavior,
+        Polymer.NeonAnimationRunnerBehavior
+      ],
+
+      properties: {
+        quiz: {
+          type: Object,
+          notify: true,
+          observer: 'quizChanged'
+        },
+
+        animationConfig: {
+          type: Object,
+          value: function() {
+            return {
+              'entry': [{
+                name: 'ripple-animation',
+                id: 'ripple',
+                toPage: this
+              }],
+              'exit': [{
+                name: 'fade-out-animation',
+                node: this.$.placeholder
+              }, {
+                name: 'transform-animation',
+                transformFrom: 'none',
+                transformTo: 'translate(0px,-200vh) scale(0.9,1)',
+                node: this.$$('paper-toolbar')
+              }]
+            }
+          }
+        },
+
+        sharedElements: {
+          type: Object,
+          value: function() {
+            return {
+              'ripple': this.$.placeholder
+            }
+          }
+        },
+      },
+
+      quizChanged: function() {
+        this.$.quizSelector.selected = 0;
+        this.$.frontPage.show();
+      },
+
+      _close: function() {
+        this.$.quizSelector.selectedItem.exit();
+        this.fire('close');
+        var _this = this;
+        setTimeout(function() {
+          _this.quiz = undefined;
+        }, 200);
+      },
+
+      _start: function() {
+        this.$.quizSelector.selectNext();
+      },
+
+      _next: function() {
+        this.$.quizSelector.selectNext();
+      },
+
+      _getCategoryIcon: function(name) {
+        return 'category-icons:' + name;
+      },
+
+      _concatClass: function(classess, newClass) {
+        return classess + ' ' + newClass;
+      },
+
+    });
+  })();
+  </script>
+</dom-module>
