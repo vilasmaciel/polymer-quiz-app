@@ -4,38 +4,55 @@
     <style>
     :host {
       height: 100%;
+      overflow: none;
     }
 
-    #quizContainer {
-      width: 400px;
-    }
-
-    .card-header {
-      background-color: var(--paper-grey-400);
-      padding: 16px;
-    }
-
-    .card-header iron-icon {
-      height: 256px;
-      width: 256px;
+    .title {
+      font-size: 18px;
     }
     </style>
 
-    <div class="layout center center-justified horizontal">
-      <paper-card elevation="2" id="quizContainer" class$="[[question.theme]]">
+    <div class="layout  vertical fit center" style="overflow: auto">
+      <paper-card elevation="2" id="paperCardContainer" class$="[[_concatClass('layout vertical flex', quiz.theme)]]">
 
-        <div class="card-header layout vertical">
-          <div class="layout vertical center center-justified">
-            <iron-icon icon="[[_getCategoryIcon(question.icon)]]"></iron-icon>
-          </div>
-          <div class="title">{{question.name}}</div>
+        <paper-toolbar class="card-toolbar">
+          <paper-icon-button on-tap="_close" icon="arrow-back"></paper-icon-button>
+        </paper-toolbar>
+
+        <div class="card-header layout vertical center-justified">
+          <div class="title">{{question.question}}</div>
+        </div>
+
+        <div class="card-content layout vertical flex">
+
+          <template is="dom-if" if="{{_isSingle(question.type)}}">
+            <paper-radio-group class="layout vertical flex">
+              <template is="dom-repeat" items="{{question.options}}">
+                <paper-radio-button name="{{item}}">{{item}}</paper-radio-button>
+              </template>
+            </paper-radio-group>
+          </template>
+
         </div>
 
         <div class="card-actions">
-          <paper-button>Start</paper-button>
+
+          <paper-button on-tap="_prev" hidden$="[[_isFirst(index, quiz)]]">
+            <iron-icon icon="icons:chevron-left"></iron-icon> Prev
+          </paper-button>
+
+          <paper-button on-tap="_next" hidden$="[[_notLast(index, quiz)]]">
+            Next
+            <iron-icon icon="icons:chevron-right"></iron-icon>
+          </paper-button>
+
+          <paper-button on-tap="_finish" hidden$="{{_isLast(index, quiz)}}">
+            Finish
+          </paper-button>
         </div>
 
       </paper-card>
+
     </div>
   </template>
 
@@ -56,26 +73,22 @@
           type: Object,
           notify: true
         },
+        quiz: {
+          type: Object,
+          notify: true
+        },
+        index: {
+          type: Number
+        },
 
-        animationConfig: {
+        sharedElements: {
           type: Object,
           value: function() {
             return {
-              'entry': {
-                name: 'transform-animation',
-                transformFrom: 'translate(0px,-200vh) scale(0.9,1)',
-                transformTo: 'none',
-                node: this.$.quizContainer,
-              },
-              'exit': [{
-                name: 'transform-animation',
-                transformFrom: 'none',
-                transformTo: 'translate(0px,-200vh) scale(0.9,1)',
-                node: this.$.quizContainer
-              }]
-            }
+              'hero': this.$.bottomBar
+            };
           }
-        }
+        },
       },
 
       show: function() {
@@ -85,13 +98,8 @@
         }
       },
 
-      exit: function() {
-        if (this.quiz) this.playAnimation('exit');
-        var _this = this;
-        setTimeout(function() {
-          _this.style.visibility = 'hidden';
-        }, 100);
-
+      _close: function() {
+        this.fire('close-quiz');
       },
 
       _getCategoryIcon: function(name) {
@@ -101,6 +109,34 @@
       _concatClass: function(classess, newClass) {
         return classess + ' ' + newClass;
       },
+
+      _isSingle: function(type) {
+        return (type === 'single-select-item');
+      },
+
+      _next: function() {
+        this.fire('next');
+      },
+
+      _prev: function() {
+        this.fire('prev');
+      },
+
+      _finish: function() {
+        this.fire('quiz-finish');
+      },
+
+      _isFirst: function(index, quiz) {
+        return (index === 0) || (index === (quiz.questions.length - 1));
+      },
+
+      _notLast: function(index, quiz) {
+        return !(index !== (quiz.questions.length - 1));
+      },
+
+      _isLast: function(index, quiz) {
+        return !(index === (quiz.questions.length - 1));
+      }
 
     });
   })();

@@ -1,0 +1,163 @@
+<dom-module id="question-list">
+  <template>
+    <style>
+    :host {
+      height: 100%;
+    }
+
+    #bottomBar {
+      max-width: 500px;
+      width: 100%;
+      background-color: white;
+    }
+
+    #bottomBar .content {
+      padding: 16px;
+    }
+
+    @media (max-width: 600px) {
+      #bottomBar {
+        max-width: 100%;
+      }
+    }
+    </style>
+
+    <div class="layout vertical fit" style="overflow: hidden">
+
+      <neon-animated-pages id="questionSelector" class="flex" selected="{{questionIndex}}" entry-animation="[[customEntryAnimation]]" exit-animation="[[customExitAnimation]]">
+        <template is="dom-repeat" items="[[quiz.questions]]">
+          <question-element question="[[item]]" quiz="[[quiz]]" index="[[index]]" on-next="_next" on-prev="_prev" on-quiz-finish="_finish"></question-element>
+        </template>
+      </neon-animated-pages>
+
+      <div class="layout vertical end-justified center">
+
+        <paper-material id="bottomBar" class="fixed" elevation="2">
+          <div class="content layout horizontal center">
+            <div class="flex">{{quiz.name}}</div>
+            <span>{{questionIndex}}</span> / <span>{{length}}</span>
+          </div>
+        </paper-material>
+
+      </div>
+    </div>
+  </template>
+
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'question-list',
+
+      behaviors: [
+        Polymer.NeonSharedElementAnimatableBehavior,
+        Polymer.NeonAnimationRunnerBehavior
+      ],
+
+      properties: {
+        quiz: {
+          type: Object,
+          notify: true,
+          observer: 'quizChanged'
+        },
+        questionIndex: {
+          type: Number,
+          default: 0,
+          notify: true
+        },
+        length: {
+          type: Number
+        },
+
+        animationConfig: {
+          type: Object,
+          value: function() {
+            return {
+              'entry': [{
+                name: 'transform-animation',
+                transformFrom: 'translate(0px,-200vh) scale(0.9,1)',
+                transformTo: 'none',
+                node: this.$.questionSelector,
+              }, {
+                name: 'hero-animation',
+                id: 'hero',
+                toPage: this
+              }, {
+                name: 'fade-in-animation',
+                node: this.$$('#bottomBar .content'),
+                timing: {
+                  delay: 200
+                }
+              }],
+              'exit': [{
+                name: 'transform-animation',
+                transformFrom: 'none',
+                transformTo: 'translate(0px,-200vh) scale(0.9,1)',
+                node: this.$.questionSelector
+              }]
+            };
+          }
+        },
+
+        sharedElements: {
+          type: Object,
+          value: function() {
+            return {
+              'hero': this.$.bottomBar
+            };
+          }
+        }
+      },
+
+      quizChanged: function() {
+        if (this.quiz) {
+          this.length = this.quiz.questions.length - 1;
+          this.$.questionSelector.selected = 0;
+          this.style.visibility = 'visible';
+        }
+      },
+
+      exit: function() {
+        this.playAnimation('exit');
+        var _this = this;
+        setTimeout(function() {
+          _this.style.visibility = 'hidden';
+          _this.$.questionSelector.selected = 0;
+        }, 100);
+        return true;
+      },
+
+      _next: function() {
+        this.customEntryAnimation = 'slide-from-left-animation';
+        this.customExitAnimation = 'slide-right-animation';
+        this.$.questionSelector.selectNext();
+      },
+
+      _prev: function() {
+        this.customEntryAnimation = 'slide-from-right-animation';
+        this.customExitAnimation = 'slide-left-animation';
+        this.$.questionSelector.selectPrevious();
+      },
+
+      _finish: function() {
+        this.animationConfig.exit.push({
+          name: 'hero-animation',
+          id: 'hero',
+          fromPage: this
+        });
+        this.fire('finish');
+      },
+
+      _getCategoryIcon: function(name) {
+        return 'category-icons:' + name;
+      },
+
+      _concatClass: function(classess, newClass) {
+        return classess + ' ' + newClass;
+      }
+
+    });
+  })();
+  </script>
+</dom-module>

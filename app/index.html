@@ -61,7 +61,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template is="dom-bind" id="app">
 
     <iron-ajax auto url="categories.json" params='{"sectionId":"GRADIANT_092015", "userId": "fvilas@gradiant.org"}' handle-as="json" on-response="handleResponse"></iron-ajax>
-
+    <iron-meta key="info" value="foo/bar"></iron-meta>
 
     <div class="content">
       <neon-animated-pages attr-for-selected="data-name" selected="{{section}}" class="fit">

@@ -1,0 +1,118 @@
+<dom-module id="quiz-results-page">
+  <template>
+    <style is="custom-style" include="app-themes"></style>
+    <style>
+    .card-header iron-icon {
+      height: 95px;
+      width: 95px;
+    }
+
+    .title {
+      font-size: 20px;
+    }
+
+    h2 {
+      font-weight: 300;
+    }
+    </style>
+
+    <div class="layout vertical fit center start">
+      <paper-card elevation="2" id="paperCardContainer" class$="[[_concatClass('layout vertical flex', quiz.theme)]]">
+
+        <div class="card-header layout vertical flex">
+          <div class="layout vertical center center-justified flex">
+            <iron-icon icon="[[_getCategoryIcon(quiz.icon)]]"></iron-icon>
+          </div>
+          <div class="title">{{quiz.name}}</div>
+        </div>
+
+        <div class="card-content">
+          <h2>Results</h2>
+        </div>
+        <div class="card-actions">
+          <paper-button on-tap="_close">Close</paper-button>
+        </div>
+
+      </paper-card>
+    </div>
+  </template>
+
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'quiz-results-page',
+
+      behaviors: [
+        Polymer.NeonSharedElementAnimatableBehavior,
+        Polymer.NeonAnimationRunnerBehavior
+      ],
+
+      properties: {
+        quiz: {
+          type: Object,
+          notify: true,
+          observer: 'quizChanged'
+        },
+
+        animationConfig: {
+          type: Object,
+          value: function() {
+            return {
+              'entry': {
+                name: 'hero-animation',
+                id: 'hero',
+                toPage: this
+              },
+              'exit': {
+                name: 'transform-animation',
+                transformFrom: 'none',
+                transformTo: 'translate(0px,-200vh) scale(0.9,1)',
+                node: this.$.paperCardContainer
+              }
+            };
+          }
+        },
+
+        sharedElements: {
+          type: Object,
+          value: function() {
+            return {
+              'hero': this.$.paperCardContainer
+            };
+          }
+        }
+      },
+
+      exit: function() {
+        this.playAnimation('exit');
+        var _this = this;
+        setTimeout(function() {
+          _this.style.visibility = 'hidden';
+        }, 100);
+        return true;
+      },
+
+      quizChanged: function() {
+        if (this.quiz) {
+          this.style.visibility = 'visible';
+        }
+      },
+
+      _getCategoryIcon: function(name) {
+        return 'category-icons:' + name;
+      },
+
+      _concatClass: function(classess, newClass) {
+        return classess + ' ' + newClass;
+      },
+
+      _close: function() {
+        this.fire('close-quiz');
+      },
+
+    });
+  })();
+  </script>
+</dom-module>

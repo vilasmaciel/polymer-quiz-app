@@ -2,8 +2,8 @@
   <template>
     <style is="custom-style" include="app-themes"></style>
     <style>
-    #quizContainer {
-      width: 400px;
+    :host {
+      overflow-x: hidden;
     }
 
     #placeholder {
@@ -12,36 +12,34 @@
       background-color: var(--paper-grey-300);
     }
 
-    .card-header {
-      background-color: var(--paper-grey-400);
-      padding: 16px;
-    }
-
-    .card-header iron-icon {
-      height: 256px;
-      width: 256px;
-    }
-
     paper-toolbar {
       background-color: transparent;
     }
-    #quizSelector {
-      height: calc(100vh - 64px);
+
+    #quizPageSelector {
+      /*height: calc(100vh - 64px);*/
+    }
+
+    @media (max-width: 600px) {
+      paper-toolbar {
+        display: none;
+      }
     }
     </style>
+    <iron-media-query query="(max-width: 600px)" query-matches="{{wide}}"></iron-media-query>
 
     <div id="placeholder" class$="[[_concatClass('layout horizontal fit', quiz.theme)]]"></div>
+    <div class="layout vertical fit">
+      <paper-toolbar>
+        <paper-icon-button on-tap="_close" icon="arrow-back"></paper-icon-button>
+      </paper-toolbar>
 
-    <paper-toolbar>
-      <paper-icon-button on-click="_close" icon="arrow-back"></paper-icon-button>
-    </paper-toolbar>
-
-    <neon-animated-pages id="quizSelector" selected="0">
-      <quiz-front-page id="frontPage" quiz="{{quiz}}" on-start="_start"></quiz-front-page>
-      <template is="dom-repeat" items="[[quiz.questions]]">
-        <question-element class="fit" question="[[item]]" on-next="_next"></question-element>
-      </template>
-    </neon-animated-pages>
+      <neon-animated-pages id="quizPageSelector" selected="{{selected}}" class="flex">
+        <quiz-front-page id="frontPage" quiz="{{quiz}}" wide="[[wide]]" on-start="_next" on-close-quiz="_close"></quiz-front-page>
+        <question-list quiz="{{quiz}}" on-end="_next" wide="[[wide]]" on-finish="_next" on-close-quiz="_close"></question-list>
+        <quiz-results-page quiz="{{quiz}}" wide="[[wide]]" on-close-quiz="_close"></quiz-results-page>
+      </neon-animated-pages>
+    </div>
   </template>
 
   <script>
@@ -81,7 +79,7 @@
                 transformTo: 'translate(0px,-200vh) scale(0.9,1)',
                 node: this.$$('paper-toolbar')
               }]
-            }
+            };
           }
         },
 
@@ -90,31 +88,33 @@
           value: function() {
             return {
               'ripple': this.$.placeholder
-            }
+            };
           }
-        },
+        }
       },
 
       quizChanged: function() {
-        this.$.quizSelector.selected = 0;
-        this.$.frontPage.show();
+        if (this.quiz) {
+          this.$.quizPageSelector.selected = 0;
+          this.$.frontPage.show();
+        }
       },
 
       _close: function() {
-        this.$.quizSelector.selectedItem.exit();
-        this.fire('close');
-        var _this = this;
-        setTimeout(function() {
-          _this.quiz = undefined;
-        }, 200);
-      },
+        if (this.$.quizPageSelector.selectedItem.exit()) {
+          this.fire('close');
 
-      _start: function() {
-        this.$.quizSelector.selectNext();
+          var _this = this;
+          setTimeout(function() {
+            _this.$.quizPageSelector.selected = 0;
+            _this.quiz = undefined;
+          }, 200);
+        }
       },
 
       _next: function() {
-        this.$.quizSelector.selectNext();
+        this.$.quizPageSelector.selectNext();
+        console.log(this.$.quizPageSelector.selectedItem);
       },
 
       _getCategoryIcon: function(name) {
@@ -123,7 +123,7 @@
 
       _concatClass: function(classess, newClass) {
         return classess + ' ' + newClass;
-      },
+      }
 
     });
   })();

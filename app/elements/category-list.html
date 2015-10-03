@@ -24,7 +24,7 @@
 
         <template id="content" is="dom-repeat" items="[[items]]">
 
-          <paper-card elevation="1" on-click="_onClick" class$="{{_concatClass('tile flex layout vertical', item.theme)}}" activityId$="[[item.activityId]]">
+          <paper-card elevation="1" on-tap="_onTap" class$="{{_concatClass('tile flex layout vertical', item.theme)}}" activityId$="[[item.activityId]]">
             <div class="tileContainer layout fit" id="[[item.activityId]]" style="z-index: 1"> </div>
             <div class="icon layout horizontal center-justified  center flex">
               <iron-icon icon="{{_getCategoryIcon(item.icon)}}"></iron-icon>
@@ -108,6 +108,9 @@
         Polymer.Base.transform('translate3d(0,' + yRatio * 100 + '%,0)', middleContainer);
 
         // Scale bottomContainer and bottom sub title to nothing and back
+        if (scaleBottom < 0.5) {
+          scaleBottom = 0;
+        }
         Polymer.Base.transform('scale(' + scaleBottom + ') translateZ(0)', bottomContainer);
 
         // Scale middleContainer appName
@@ -124,7 +127,9 @@
       _itemsChanged: function() {
         this.async(function() {
           var nodeList = Polymer.dom(this.root).querySelectorAll('.tile');
-          if (nodeList) this.animationConfig.entry[0].nodes = Array.prototype.slice.call(nodeList);
+          if (nodeList) {
+            this.animationConfig.entry[0].nodes = Array.prototype.slice.call(nodeList);
+          }
         });
 
         var _this = this;
@@ -135,7 +140,7 @@
         }, 100);
       },
 
-      _onClick: function(event) {
+      _onTap: function(event) {
         var target = event.target;
 
         this.sharedElements = {
@@ -145,7 +150,8 @@
         var nodesToScale = [];
         var tiles = Polymer.dom(this.root).querySelectorAll('.tile');
 
-        for (var node, index = 0; node = tiles[index]; index++) {
+        for (var i = 0; i < tiles.length; i++) {
+          var node = tiles[i];
           if (node.getAttribute('activityId') !== target.getAttribute('activityId')) {
             nodesToScale.push(node);
           }
