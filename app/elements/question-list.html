@@ -132,16 +132,28 @@
         return true;
       },
 
+      show: function() {
+        this.$.questionSelector.selectedItem.initialize();
+      },
+
+      pause: function() {
+        this.$.questionSelector.selectedItem.pause();
+      },
+
       _next: function() {
         this.customEntryAnimation = 'slide-from-left-animation';
         this.customExitAnimation = 'slide-right-animation';
+        this.$.questionSelector.selectedItem.terminate();
         this.$.questionSelector.selectNext();
+        this.$.questionSelector.selectedItem.initialize();
       },
 
       _prev: function() {
         this.customEntryAnimation = 'slide-from-right-animation';
         this.customExitAnimation = 'slide-left-animation';
+        this.$.questionSelector.selectedItem.terminate();
         this.$.questionSelector.selectPrevious();
+        this.$.questionSelector.selectedItem.initialize();
       },
 
       _finish: function() {

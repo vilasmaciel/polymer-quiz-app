@@ -86,6 +86,12 @@
       _start: function() {
         this._setAnimationToQuestionList();
         var _this = this;
+
+        console.log('Initialized -> ' + this.quiz.activityId);
+        this.fire('initialized', {
+          activityId: this.quiz.activityId
+        });
+
         this.fire('start');
         setTimeout(function() {
           _this.style.visibility = 'hidden';

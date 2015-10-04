@@ -16,10 +16,6 @@
       background-color: transparent;
     }
 
-    #quizPageSelector {
-      /*height: calc(100vh - 64px);*/
-    }
-
     @media (max-width: 600px) {
       paper-toolbar {
         display: none;
@@ -31,7 +27,7 @@
     <div id="placeholder" class$="[[_concatClass('layout horizontal fit', quiz.theme)]]"></div>
     <div class="layout vertical fit">
       <paper-toolbar>
-        <paper-icon-button on-tap="_close" icon="arrow-back"></paper-icon-button>
+        <paper-icon-button on-tap="_close" icon="arrow-back" hidden$="[[inResultsView]]"></paper-icon-button>
       </paper-toolbar>
 
       <neon-animated-pages id="quizPageSelector" selected="{{selected}}" class="flex">
@@ -58,7 +54,16 @@
         quiz: {
           type: Object,
           notify: true,
-          observer: 'quizChanged'
+          observer: '_quizChanged'
+        },
+        inResultsView: {
+          type: Boolean,
+          default: false
+        },
+        selected: {
+          type: Number,
+          notify: true,
+          observer: 'selectedChanged'
         },
 
         animationConfig: {
@@ -93,20 +98,35 @@
         }
       },
 
-      quizChanged: function() {
+      _quizChanged: function() {
         if (this.quiz) {
-          this.$.quizPageSelector.selected = 0;
+          this.selected = 0;
           this.$.frontPage.show();
         }
       },
 
       _close: function() {
-        if (this.$.quizPageSelector.selectedItem.exit()) {
-          this.fire('close');
+        if (this.selected === 1) {
+          this.$.quizPageSelector.selectedItem.pause();
+          console.log('Paused -> ' + this.quiz.activityId);
+          this.fire('pause', {
+            activityId: this.quiz.activityId
+          });
+        }
+        if (this.selected === 2) {
+          this.$.quizPageSelector.selectedItem.pause();
+          console.log('Terminated -> ' + this.quiz.activityId);
+          this.fire('terminated', {
+            activityId: this.quiz.activityId
+          });
+        }
 
+        if (this.$.quizPageSelector.selectedItem.exit()) {
+
+          this.fire('close');
           var _this = this;
           setTimeout(function() {
-            _this.$.quizPageSelector.selected = 0;
+            _this.selected = 0;
             _this.quiz = undefined;
           }, 200);
         }
@@ -114,7 +134,9 @@
 
       _next: function() {
         this.$.quizPageSelector.selectNext();
-        console.log(this.$.quizPageSelector.selectedItem);
+        if (this.selected === 1) {
+          this.$.quizPageSelector.selectedItem.show();
+        }
       },
 
       _getCategoryIcon: function(name) {
@@ -123,6 +145,10 @@
 
       _concatClass: function(classess, newClass) {
         return classess + ' ' + newClass;
+      },
+
+      selectedChanged: function() {
+        this.inResultsView = (this.selected === 2);
       }
 
     });

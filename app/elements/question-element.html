@@ -100,11 +100,32 @@
         this.wideChanged();
       },
 
-      show: function() {
-        if (this.quiz) {
-          this.style.visibility = 'visible';
-          this.playAnimation('entry');
-        }
+      initialize: function() {
+        console.log('Initialized -> ' + this.question.activityId);
+        this.fire('initialized', {
+          activityId: this.question.activityId
+        });
+      },
+
+      terminate: function() {
+        console.log('Terminated -> ' + this.question.activityId);
+        this.fire('terminated', {
+          activityId: this.question.activityId
+        });
+      },
+
+      pause: function() {
+        console.log('Paused -> ' + this.question.activityId);
+        this.fire('Paused', {
+          activityId: this.question.activityId
+        });
+      },
+
+      resume: function() {
+        console.log('Resumed -> ' + this.question.activityId);
+        this.fire('Resumed', {
+          activityId: this.question.activityId
+        });
       },
 
       _close: function() {
