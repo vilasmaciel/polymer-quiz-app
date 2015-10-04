@@ -13,7 +13,7 @@
     </style>
 
     <div class="layout  vertical fit center" style="overflow: auto">
-      <paper-card elevation="2" id="paperCardContainer" class$="[[_concatClass('layout vertical flex', quiz.theme)]]">
+      <paper-card elevation="2" id="paperCardContainer" class$="[[_concatClass('layout vertical', quiz.theme)]]">
 
         <paper-toolbar class="card-toolbar">
           <paper-icon-button on-tap="_close" icon="arrow-back"></paper-icon-button>
@@ -80,6 +80,11 @@
         index: {
           type: Number
         },
+        wide: {
+          type: Object,
+          notify: true,
+          observer: 'wideChanged'
+        },
 
         sharedElements: {
           type: Object,
@@ -89,6 +94,10 @@
             };
           }
         },
+      },
+
+      attached: function() {
+        this.wideChanged()
       },
 
       show: function() {
@@ -136,6 +145,10 @@
 
       _isLast: function(index, quiz) {
         return !(index === (quiz.questions.length - 1));
+      },
+
+      wideChanged: function() {
+        this.toggleClass('flex', this.wide, this.$.paperCardContainer);
       }
 
     });

@@ -55,6 +55,11 @@
           notify: true,
           observer: 'quizChanged'
         },
+        wide: {
+          type: Object,
+          notify: true,
+          observer: 'wideChanged'
+        },
 
         animationConfig: {
           type: Object,
@@ -85,6 +90,10 @@
         }
       },
 
+      attached: function() {
+        this.wideChanged();
+      },
+
       exit: function() {
         this.playAnimation('exit');
         var _this = this;
@@ -97,6 +106,7 @@
       quizChanged: function() {
         if (this.quiz) {
           this.style.visibility = 'visible';
+          this.wideChanged();
         }
       },
 
@@ -111,6 +121,10 @@
       _close: function() {
         this.fire('close-quiz');
       },
+
+      wideChanged: function() {
+        this.toggleClass('flex', this.wide, this.$.paperCardContainer);
+      }
 
     });
   })();
