@@ -1,0 +1,66 @@
+<dom-module id="data-provider">
+  <template>
+
+    <!-- <iron-ajax auto url="/categories.json" params='' handle-as="json" on-response="handleResponse"></iron-ajax> -->
+
+    <firebase-collection location="https://polymer-quiz-app.firebaseio.com/categories" data="{{categories}}"></firebase-collection>
+    <firebase-collection location="https://polymer-quiz-app.firebaseio.com/users" query="username:vilasmaciel@gmail.com" data="{{user}}"></firebase-collection>
+
+    <iron-signals on-iron-signal-initialized="initialized"></iron-signals>
+    <iron-signals on-iron-signal-terminated="terminated"></iron-signals>
+    <iron-signals on-iron-signal-paused="paused"></iron-signals>
+    <iron-signals on-iron-signal-resumed="resumed"></iron-signals>
+    <iron-signals on-iron-signal-responded="responded"></iron-signals>
+    <iron-signals on-iron-signal-passed="passed"></iron-signals>
+    <iron-signals on-iron-signal-failed="failed"></iron-signals>
+
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'data-provider',
+
+      properties: {
+        categories: {
+          notify: true
+        }
+      },
+
+      handleResponse: function(event) {
+        this.categories = event.detail.response;
+      },
+
+      initialized: function(data) {
+        console.log('initialized');
+      },
+
+      terminated: function(data) {
+        console.log('terminated');
+      },
+
+      paused: function(data) {
+        console.log('paused');
+      },
+
+      resumed: function(data) {
+        console.log('resumed');
+      },
+
+      responded: function(data) {
+        console.log('responded');
+      },
+
+      passed: function(data) {
+        console.log('passed');
+      },
+
+      failed: function(data) {
+        console.log('failed');
+      },
+
+    });
+  })();
+  </script>
+</dom-module>

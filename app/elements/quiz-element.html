@@ -27,13 +27,13 @@
     <div id="placeholder" class$="[[_concatClass('layout horizontal fit', quiz.theme)]]"></div>
     <div class="layout vertical fit">
       <paper-toolbar>
-        <paper-icon-button on-tap="_close" icon="arrow-back" hidden$="[[inResultsView]]"></paper-icon-button>
+        <paper-icon-button on-tap="_pause" icon="arrow-back" hidden$="[[inResultsView]]"></paper-icon-button>
       </paper-toolbar>
 
       <neon-animated-pages id="quizPageSelector" selected="{{selected}}" class="flex">
-        <quiz-front-page id="frontPage" quiz="{{quiz}}" wide="[[wide]]" on-start="_next" on-close-quiz="_close"></quiz-front-page>
-        <question-list quiz="{{quiz}}" on-end="_next" wide="[[wide]]" on-finish="_next" on-close-quiz="_close"></question-list>
-        <quiz-results-page quiz="{{quiz}}" wide="[[wide]]" on-close-quiz="_close"></quiz-results-page>
+        <quiz-front-page id="frontPage" quiz="{{quiz}}" wide="[[wide]]" on-quiz-start="_initialize" on-close-quiz-view="_close"></quiz-front-page>
+        <question-list quiz="{{quiz}}" wide="[[wide]]" on-quiz-terminated="_terminate" on-quiz-paused="_pause"></question-list>
+        <quiz-results-page quiz="{{quiz}}" wide="[[wide]]" on-close-quiz-view="_close"></quiz-results-page>
       </neon-animated-pages>
     </div>
   </template>
@@ -63,7 +63,7 @@
         selected: {
           type: Number,
           notify: true,
-          observer: 'selectedChanged'
+          observer: '_selectedChanged'
         },
 
         animationConfig: {
@@ -105,24 +105,44 @@
         }
       },
 
-      _close: function() {
+      _initialize: function() {
+        this.fire('iron-signal', {
+          name: 'initialized',
+          data: {
+            activity: this.quiz,
+            parent: this.quiz.parent
+          }
+        });
+        this._next();
+      },
+
+      _terminate: function() {
+        this.fire('iron-signal', {
+          name: 'terminated',
+          data: {
+            activity: this.quiz,
+            parent: this.quiz.parent
+          }
+        });
+        this._next();
+      },
+
+      _pause: function() {
         if (this.selected === 1) {
           this.$.quizPageSelector.selectedItem.pause();
-          console.log('Paused -> ' + this.quiz.activityId);
-          this.fire('pause', {
-            activityId: this.quiz.activityId
+          this.fire('iron-signal', {
+            name: 'paused',
+            data: {
+              activity: this.quiz,
+              parent: this.quiz.parent
+            }
           });
         }
-        if (this.selected === 2) {
-          this.$.quizPageSelector.selectedItem.pause();
-          console.log('Terminated -> ' + this.quiz.activityId);
-          this.fire('terminated', {
-            activityId: this.quiz.activityId
-          });
-        }
+        this._close();
+      },
 
+      _close: function() {
         if (this.$.quizPageSelector.selectedItem.exit()) {
-
           this.fire('close');
           var _this = this;
           setTimeout(function() {
@@ -147,7 +167,7 @@
         return classess + ' ' + newClass;
       },
 
-      selectedChanged: function() {
+      _selectedChanged: function() {
         this.inResultsView = (this.selected === 2);
       }
 

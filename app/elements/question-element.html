@@ -16,7 +16,7 @@
       <paper-card elevation="2" id="paperCardContainer" class$="[[_concatClass('layout vertical', quiz.theme)]]">
 
         <paper-toolbar class="card-toolbar">
-          <paper-icon-button on-tap="_close" icon="arrow-back"></paper-icon-button>
+          <paper-icon-button on-tap="_pause" icon="arrow-back"></paper-icon-button>
         </paper-toolbar>
 
         <div class="card-header layout vertical center-justified">
@@ -46,7 +46,7 @@
             <iron-icon icon="icons:chevron-right"></iron-icon>
           </paper-button>
 
-          <paper-button on-tap="_finish" hidden$="{{_isLast(index, quiz)}}">
+          <paper-button on-tap="_terminate" hidden$="{{_isLast(index, quiz)}}">
             Finish
           </paper-button>
         </div>
@@ -83,7 +83,7 @@
         wide: {
           type: Object,
           notify: true,
-          observer: 'wideChanged'
+          observer: '_wideChanged'
         },
 
         sharedElements: {
@@ -97,39 +97,73 @@
       },
 
       attached: function() {
-        this.wideChanged();
+        this._wideChanged();
       },
 
       initialize: function() {
-        console.log('Initialized -> ' + this.question.activityId);
-        this.fire('initialized', {
-          activityId: this.question.activityId
+        this.fire('iron-signal', {
+          name: 'initialized',
+          data: {
+            activity: this.question,
+            parent: this.quiz.activityId
+          }
         });
       },
 
       terminate: function() {
-        console.log('Terminated -> ' + this.question.activityId);
-        this.fire('terminated', {
-          activityId: this.question.activityId
+        this.fire('iron-signal', {
+          name: 'responded',
+          data: {
+            activity: this.question,
+            parent: this.quiz.activityId
+          }
+        });
+
+        this.fire('iron-signal', {
+          name: 'passed',
+          data: {
+            activity: this.question,
+            parent: this.quiz.activityId
+          }
+        });
+
+        this.fire('iron-signal', {
+          name: 'terminated',
+          data: {
+            activity: this.question,
+            parent: this.quiz.activityId
+          }
         });
       },
 
       pause: function() {
-        console.log('Paused -> ' + this.question.activityId);
-        this.fire('Paused', {
-          activityId: this.question.activityId
+        this.fire('iron-signal', {
+          name: 'paused',
+          data: {
+            activity: this.question,
+            parent: this.quiz.activityId
+          }
         });
       },
 
       resume: function() {
-        console.log('Resumed -> ' + this.question.activityId);
-        this.fire('Resumed', {
-          activityId: this.question.activityId
+        this.fire('iron-signal', {
+          name: 'resumed',
+          data: {
+            activity: this.question,
+            parent: this.quiz.activityId
+          }
         });
       },
 
-      _close: function() {
-        this.fire('close-quiz');
+      _pause: function() {
+        this.pause();
+        this.fire('quiz-paused');
+      },
+
+      _terminate: function() {
+        this.terminate();
+        this.fire('quiz-terminated');
       },
 
       _getCategoryIcon: function(name) {
@@ -152,10 +186,6 @@
         this.fire('prev');
       },
 
-      _finish: function() {
-        this.fire('quiz-finish');
-      },
-
       _isFirst: function(index, quiz) {
         return (index === 0) || (index === (quiz.questions.length - 1));
       },
@@ -168,7 +198,7 @@
         return !(index === (quiz.questions.length - 1));
       },
 
-      wideChanged: function() {
+      _wideChanged: function() {
         this.toggleClass('flex', this.wide, this.$.paperCardContainer);
       }
 

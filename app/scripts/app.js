@@ -47,10 +47,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     document.getElementById('mainContainer').scrollTop = 0;
   };
 
-  app.handleResponse = function(event) {
-    app.categories = event.detail.response;
-  };
-
   app.categorySelected = function(e) {
     app.section = 'category';
     app.category = e.detail;

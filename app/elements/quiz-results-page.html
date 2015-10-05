@@ -53,12 +53,12 @@
         quiz: {
           type: Object,
           notify: true,
-          observer: 'quizChanged'
+          observer: '_quizChanged'
         },
         wide: {
           type: Object,
           notify: true,
-          observer: 'wideChanged'
+          observer: '_wideChanged'
         },
 
         animationConfig: {
@@ -91,7 +91,7 @@
       },
 
       attached: function() {
-        this.wideChanged();
+        this._wideChanged();
       },
 
       exit: function() {
@@ -103,10 +103,10 @@
         return true;
       },
 
-      quizChanged: function() {
+      _quizChanged: function() {
         if (this.quiz) {
           this.style.visibility = 'visible';
-          this.wideChanged();
+          this._wideChanged();
         }
       },
 
@@ -119,10 +119,10 @@
       },
 
       _close: function() {
-        this.fire('close-quiz');
+        this.fire('close-quiz-view');
       },
 
-      wideChanged: function() {
+      _wideChanged: function() {
         this.toggleClass('flex', this.wide, this.$.paperCardContainer);
       }
 

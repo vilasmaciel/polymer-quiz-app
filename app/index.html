@@ -60,8 +60,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <span id="browser-sync-binding"></span>
   <template is="dom-bind" id="app">
 
-    <iron-ajax auto url="categories.json" params='{"sectionId":"GRADIANT_092015", "userId": "fvilas@gradiant.org"}' handle-as="json" on-response="handleResponse"></iron-ajax>
-    <iron-meta key="info" value="foo/bar"></iron-meta>
+    <data-provider categories="{{categories}}"></data-provider>
 
     <div class="content">
       <neon-animated-pages attr-for-selected="data-name" selected="{{section}}" class="fit">
@@ -72,21 +71,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </div>
 
     <!-- Uncomment next block to enable Service Worker support (1/2) -->
-    <!--
-    <paper-toast id="caching-complete"
-                 duration="6000"
-                 text="Caching complete! This app will work offline.">
+
+    <paper-toast id="caching-complete" duration="6000" text="Caching complete! This app will work offline.">
     </paper-toast>
 
-    <platinum-sw-register auto-register
-                          clients-claim
-                          skip-waiting
-                          on-service-worker-installed="displayInstalledToast">
-      <platinum-sw-cache default-cache-strategy="networkFirst"
-                         precache-file="precache.json">
+    <platinum-sw-register auto-register clients-claim skip-waiting on-service-worker-installed="displayInstalledToast">
+      <platinum-sw-cache default-cache-strategy="networkFirst" precache-file="precache.json">
       </platinum-sw-cache>
     </platinum-sw-register>
-    -->
+
 
   </template>
 

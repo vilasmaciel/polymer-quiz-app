@@ -44,7 +44,7 @@
         wide: {
           type: Object,
           notify: true,
-          observer: 'wideChanged'
+          observer: '_wideChanged'
         },
 
         animationConfig: {
@@ -67,7 +67,7 @@
         if (this.quiz) {
           this.style.visibility = 'visible';
           this.playAnimation('entry');
-          this.wideChanged();
+          this._wideChanged();
         }
       },
 
@@ -87,12 +87,7 @@
         this._setAnimationToQuestionList();
         var _this = this;
 
-        console.log('Initialized -> ' + this.quiz.activityId);
-        this.fire('initialized', {
-          activityId: this.quiz.activityId
-        });
-
-        this.fire('start');
+        this.fire('quiz-start');
         setTimeout(function() {
           _this.style.visibility = 'hidden';
         }, 100);
@@ -129,10 +124,10 @@
       },
 
       _close: function() {
-        this.fire('close-quiz');
+        this.fire('close-quiz-view');
       },
 
-      wideChanged: function() {
+      _wideChanged: function() {
         this.toggleClass('flex', this.wide, this.$.paperCardContainer);
       }
 
