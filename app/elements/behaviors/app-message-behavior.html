@@ -1,0 +1,40 @@
+<script>
+var QuizApp = QuizApp || {};
+
+QuizApp.AppMessageBehavior = {
+
+  properties: {
+    messageElement: {
+      type: Object
+    },
+  },
+
+  created: function() {
+    var _this = this;
+
+    document.addEventListener('app:alert', function(erro) {
+      _this.showMessage(erro);
+    });
+
+    document.addEventListener('app:message', function(erro) {
+      _this.showMessage(erro);
+    });
+  },
+
+  showMessage: function(data) {
+    if (this.messageElement) {
+
+      if (data.type === 'app:alert') {
+        this.messageElement.style.background = '#F44336';
+        this.messageElement.style.color = 'white';
+      }
+
+      this.messageElement.text = data.detail.message;
+      this.messageElement.show();
+    } else {
+      console.warn('No messageElement found');
+    }
+  }
+
+};
+</script>

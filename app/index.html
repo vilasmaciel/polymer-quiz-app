@@ -58,34 +58,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <body unresolved class="fullbleed layout vertical">
   <span id="browser-sync-binding"></span>
-  <template is="dom-bind" id="app">
-
-    <data-provider categories="{{categories}}"></data-provider>
-
-    <div class="content">
-      <neon-animated-pages attr-for-selected="data-name" selected="{{section}}" class="fit">
-        <category-list data-name="categories" items="[[categories]]" on-category-selected="categorySelected"></category-list>
-        <category-element data-name="category" category="[[getCategory(category)]]" on-close="showCategoryList" on-quiz-selected="_quizSelected"></category-element>
-        <quiz-element data-name="quiz" quiz="{{quiz}}" on-close="showCategoryElement"></quiz-element>
-      </neon-animated-pages>
-    </div>
-
-    <!-- Uncomment next block to enable Service Worker support (1/2) -->
-
-    <paper-toast id="caching-complete" duration="6000" text="Caching complete! This app will work offline.">
-    </paper-toast>
-
-    <platinum-sw-register auto-register clients-claim skip-waiting on-service-worker-installed="displayInstalledToast">
-      <platinum-sw-cache default-cache-strategy="networkFirst" precache-file="precache.json">
-      </platinum-sw-cache>
-    </platinum-sw-register>
-
-
-  </template>
-
-  <!-- build:js scripts/app.js -->
-  <script src="scripts/app.js"></script>
-  <!-- endbuild-->
+  <app-main></app-main>
 </body>
 
 </html>

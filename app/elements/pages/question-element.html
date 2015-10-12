@@ -13,7 +13,7 @@
     </style>
 
     <div class="layout  vertical fit center" style="overflow: auto">
-      <paper-card elevation="2" id="paperCardContainer" class$="[[_concatClass('layout vertical', quiz.theme)]]">
+      <paper-card elevation="2" id="paperCardContainer" class$="[[concatClass('layout vertical', quiz.theme)]]">
 
         <paper-toolbar class="card-toolbar">
           <paper-icon-button on-tap="_pause" icon="arrow-back"></paper-icon-button>
@@ -65,7 +65,8 @@
 
       behaviors: [
         Polymer.NeonSharedElementAnimatableBehavior,
-        Polymer.NeonAnimationRunnerBehavior
+        Polymer.NeonAnimationRunnerBehavior,
+        QuizApp.AppUtilsBehavior
       ],
 
       properties: {
@@ -164,14 +165,6 @@
       _terminate: function() {
         this.terminate();
         this.fire('quiz-terminated');
-      },
-
-      _getCategoryIcon: function(name) {
-        return 'category-icons:' + name;
-      },
-
-      _concatClass: function(classess, newClass) {
-        return classess + ' ' + newClass;
       },
 
       _isSingle: function(type) {

@@ -4,7 +4,7 @@
 
     <paper-scroll-header-panel id="scrollHeader" condenses keep-condensed-header mode="waterfall-tall" on-paper-header-transform="animateTitle">
 
-      <paper-toolbar id="mainToolbar" class$="{{_concatClass('tall', category.theme)}}">
+      <paper-toolbar id="mainToolbar" class$="{{concatClass('tall', category.theme)}}">
         <paper-icon-button on-tap="_close" icon="arrow-back"></paper-icon-button>
 
         <span class="flex"></span>
@@ -19,10 +19,10 @@
       <div class="layout horizontal wrap" id="container">
         <template is="dom-repeat" items="[[category.quizes]]">
 
-          <paper-card elevation="1" on-tap="_itemSelected" class$="{{_concatClass('tile flex layout vertical', item.theme)}}" id="[[item.activityId]]">
+          <paper-card elevation="1" on-tap="_itemSelected" class$="{{concatClass('tile flex layout vertical', item.theme)}}" id="[[item.activityId]]">
 
             <div class="icon layout horizontal center-justified  center flex">
-              <iron-icon icon="{{_getCategoryIcon(item.icon)}}"></iron-icon>
+              <iron-icon icon="{{getCategoryIcon(item.icon)}}"></iron-icon>
             </div>
 
             <div class="tile-footer layout horizontal center">
@@ -46,7 +46,8 @@
 
       behaviors: [
         Polymer.NeonSharedElementAnimatableBehavior,
-        Polymer.NeonAnimationRunnerBehavior
+        Polymer.NeonAnimationRunnerBehavior,
+        QuizApp.AppUtilsBehavior
       ],
 
       properties: {
@@ -71,22 +72,6 @@
         this._setAnimationFromCategoryList();
       },
 
-      animateTitle: function(e) {
-        var appName = this.querySelector('.app-name');
-        var middleContainer = this.querySelector('.middle-container');
-        var detail = e.detail;
-        var heightDiff = detail.height - detail.condensedHeight;
-        var yRatio = Math.min(1, detail.y / heightDiff);
-        var maxMiddleScale = 0.50; // appName max size when condensed. The smaller the number the smaller the condensed size.
-        var scaleMiddle = Math.max(maxMiddleScale, (heightDiff - detail.y) / (heightDiff / (1 - maxMiddleScale)) + maxMiddleScale);
-
-        // Move/translate middleContainer
-        Polymer.Base.transform('translate3d(0,' + yRatio * 100 + '%,0)', middleContainer);
-
-        // Scale middleContainer appName
-        Polymer.Base.transform('scale(' + scaleMiddle + ') translateZ(0)', appName);
-      },
-
       _itemsChanged: function() {
         this.$.scrollHeader.measureHeaderHeight();
       },
@@ -100,14 +85,6 @@
         this._setAnimationFromQuizItem(e.target);
         var quiz = e.model.__data__.item;
         this.fire('quiz-selected', quiz);
-      },
-
-      _getCategoryIcon: function(name) {
-        return 'category-icons:' + name;
-      },
-
-      _concatClass: function(classess, newClass) {
-        return classess + ' ' + newClass;
       },
 
       _setAnimationFromCategoryList: function() {

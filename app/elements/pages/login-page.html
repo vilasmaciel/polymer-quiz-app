@@ -1,0 +1,153 @@
+<dom-module id="login-page">
+  <template>
+    <style>
+    .background {
+      background: var(--paper-cyan-700);
+      opacity: .5
+    }
+
+    paper-card {
+      top: 100px;
+      width: 300px;
+    }
+
+    paper-card {
+      --paper-card-header-text: {
+        font-weight: 400;
+        color: var(--paper-grey-700);
+      };
+    }
+
+    paper-card .card-actions paper-button {
+      width: 100%;
+      margin-bottom: 5px;
+      margin-top: 5px;
+      color: white;
+    }
+
+    paper-card .card-actions paper-button.login {
+      background-color: var(--paper-green-700);
+    }
+
+    paper-card .card-actions paper-button.register {
+      background-color: var(--paper-deep-orange-700);
+    }
+
+    @media (max-width: 600px) {
+      paper-card {
+        top: 10px;
+        width: 90%;
+      }
+    }
+    </style>
+
+    <div class="background fit"></div>
+
+    <div class="layout flex horizontal center center-justified">
+      <paper-card id="loginPaperCard" elevation="1" heading="Quiz App Login">
+        <div class="card-content">
+          <paper-input id="email" label="Email" autoValidate value="{{email}}" type="email"></paper-input>
+          <paper-input id="password" value="{{password}}" type="password" label="Password"></paper-input>
+        </div>
+        <div class="card-actions">
+          <paper-button on-tap="login" class="login">Enter</paper-button>
+          <paper-button on-tap="register" class="register">Register</paper-button>
+        </div>
+      </paper-card>
+    </div>
+
+  </template>
+
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'login-page',
+
+      behaviors: [
+        Polymer.NeonSharedElementAnimatableBehavior,
+        Polymer.NeonAnimationRunnerBehavior
+      ],
+
+      properties: {
+        email: {
+          type: String,
+          notify: true,
+          observer: '_emailChanged',
+        },
+        password: {
+          type: String,
+          notify: true,
+          observer: '_passwordChanged',
+        },
+
+        animationConfig: {
+          type: Object,
+          value: function() {
+            return {
+              'entry': {
+                name: 'fade-in-animation',
+                node: this
+              },
+              'exit': {
+                name: 'fade-out-animation',
+                node: this
+              }
+            };
+          }
+        },
+      },
+
+      login: function() {
+        if (this._validateEmail() & this._validatePassword()) {
+          this.fire('login', {
+            email: this.email,
+            password: this.password
+          });
+        }
+      },
+
+      register: function() {
+        if (this._validateEmail() & this._validatePassword()) {
+          this.fire('register', {
+            email: this.email,
+            password: this.password
+          });
+        }
+      },
+
+      _validateEmail: function() {
+        var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+
+        if (!this.email || !re.test(this.email)) {
+          this.$.email.invalid = true;
+          return false;
+        }
+        return true;
+      },
+
+      _validatePassword: function() {
+        if (!this.password) {
+          this.$.password.invalid = true;
+          return false;
+        }
+        return true;
+      },
+
+      _emailChanged: function() {
+        if (this.email) {
+          this.$.email.invalid = false;
+        }
+      },
+
+      _passwordChanged: function() {
+        if (this.password) {
+          this.$.password.invalid = false;
+        }
+      }
+
+    });
+  })();
+  </script>
+</dom-module>

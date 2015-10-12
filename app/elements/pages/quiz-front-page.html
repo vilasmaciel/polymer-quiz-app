@@ -3,7 +3,7 @@
     <style is="custom-style" include="app-themes"></style>
 
     <div class="layout vertical fit center start">
-      <paper-card elevation="2" id="paperCardContainer" class$="[[_concatClass('layout vertical flex', quiz.theme)]]">
+      <paper-card elevation="2" id="paperCardContainer" class$="[[concatClass('layout vertical flex', quiz.theme)]]">
 
         <paper-toolbar class="card-toolbar">
           <paper-icon-button on-tap="_close" icon="arrow-back"></paper-icon-button>
@@ -11,13 +11,14 @@
 
         <div class="card-header layout vertical flex">
           <div class="layout vertical center center-justified flex">
-            <iron-icon icon="[[_getCategoryIcon(quiz.icon)]]"></iron-icon>
+            <iron-icon icon="[[getCategoryIcon(quiz.icon)]]"></iron-icon>
           </div>
           <div class="title end">{{quiz.name}}</div>
         </div>
 
         <div class="card-actions">
-          <paper-button on-tap="_start">Start</paper-button>
+          <paper-button on-tap="_start" hidden$="[[_isPaused()]]">Start</paper-button>
+          <paper-button on-tap="_resume" hidden$="[[!_isPaused()]]">Resume</paper-button>
         </div>
 
       </paper-card>
@@ -33,7 +34,8 @@
 
       behaviors: [
         Polymer.NeonSharedElementAnimatableBehavior,
-        Polymer.NeonAnimationRunnerBehavior
+        Polymer.NeonAnimationRunnerBehavior,
+        QuizApp.AppUtilsBehavior
       ],
 
       properties: {
@@ -45,6 +47,9 @@
           type: Object,
           notify: true,
           observer: '_wideChanged'
+        },
+        status: {
+          type: String
         },
 
         animationConfig: {
@@ -76,10 +81,12 @@
         if (this.quiz) {
           this.playAnimation('exit');
         }
+
         var _this = this;
         setTimeout(function() {
           _this.style.visibility = 'hidden';
         }, 100);
+
         return true;
       },
 
@@ -93,12 +100,14 @@
         }, 100);
       },
 
-      _getCategoryIcon: function(name) {
-        return 'category-icons:' + name;
-      },
+      _resume: function() {
+        this._setAnimationToQuestionList();
+        var _this = this;
 
-      _concatClass: function(classess, newClass) {
-        return classess + ' ' + newClass;
+        this.fire('quiz-resume');
+        setTimeout(function() {
+          _this.style.visibility = 'hidden';
+        }, 100);
       },
 
       _setAnimationToQuestionList: function() {
@@ -129,6 +138,10 @@
 
       _wideChanged: function() {
         this.toggleClass('flex', this.wide, this.$.paperCardContainer);
+      },
+
+      _isPaused: function() {
+        return this.status === 'paused';
       }
 
     });

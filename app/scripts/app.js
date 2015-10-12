@@ -24,60 +24,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   // Listen for template bound event to know when bindings
   // have resolved and content has been stamped to the page
-  app.addEventListener('dom-change', function() {
-    console.log('Our app is ready to rock!');
-    app.section = 'categories';
-  });
+  app.addEventListener('dom-change', function() {});
 
   // See https://github.com/Polymer/polymer/issues/1381
   window.addEventListener('WebComponentsReady', function() {
     // imports are loaded and elements have been registered
   });
-
-  // Close drawer after menu item is selected if drawerPanel is narrow
-  app.onDataRouteClick = function() {
-    var drawerPanel = document.querySelector('#paperDrawerPanel');
-    if (drawerPanel.narrow) {
-      drawerPanel.closeDrawer();
-    }
-  };
-
-  // Scroll page to top and expand header
-  app.scrollPageToTop = function() {
-    document.getElementById('mainContainer').scrollTop = 0;
-  };
-
-  app.categorySelected = function(e) {
-    app.section = 'category';
-    app.category = e.detail;
-    app.isCategoriesSelected = true;
-    app.title = this.getCategory(app.category).name;
-  };
-
-  app.getCategory = function(id) {
-    for (var i = 0; i < app.categories.length; i++) {
-      if (app.categories[i].activityId === id) {
-        return app.categories[i];
-      }
-    }
-  };
-
-  app.showCategoryList = function() {
-    app.section = 'categories';
-    app.category = undefined;
-  };
-
-  app.showCategoryElement = function() {
-    app.section = 'category';
-  };
-
-  app.showCategoryElement = function() {
-    app.section = 'category';
-  };
-
-  app._quizSelected = function(event) {
-    app.section = 'quiz';
-    app.quiz = event.detail;
-  };
 
 })(document);

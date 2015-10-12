@@ -1,18 +1,17 @@
-<dom-module id="data-provider">
+<dom-module id='data-provider'>
   <template>
 
-    <!-- <iron-ajax auto url="/categories.json" params='' handle-as="json" on-response="handleResponse"></iron-ajax> -->
+    <iron-ajax id='ajaxCategories' url='/categories.json' params='' handle-as='json' on-response='_categoriesResponse'></iron-ajax>
 
-    <firebase-collection location="https://polymer-quiz-app.firebaseio.com/categories" data="{{categories}}"></firebase-collection>
-    <firebase-collection location="https://polymer-quiz-app.firebaseio.com/users" query="username:vilasmaciel@gmail.com" data="{{user}}"></firebase-collection>
+    <iron-signals on-iron-signal-initialized='initialized'></iron-signals>
+    <iron-signals on-iron-signal-terminated='terminated'></iron-signals>
+    <iron-signals on-iron-signal-paused='paused'></iron-signals>
+    <iron-signals on-iron-signal-resumed='resumed'></iron-signals>
+    <iron-signals on-iron-signal-responded='responded'></iron-signals>
+    <iron-signals on-iron-signal-passed='passed'></iron-signals>
+    <iron-signals on-iron-signal-failed='failed'></iron-signals>
 
-    <iron-signals on-iron-signal-initialized="initialized"></iron-signals>
-    <iron-signals on-iron-signal-terminated="terminated"></iron-signals>
-    <iron-signals on-iron-signal-paused="paused"></iron-signals>
-    <iron-signals on-iron-signal-resumed="resumed"></iron-signals>
-    <iron-signals on-iron-signal-responded="responded"></iron-signals>
-    <iron-signals on-iron-signal-passed="passed"></iron-signals>
-    <iron-signals on-iron-signal-failed="failed"></iron-signals>
+    <iron-signals on-iron-signal-user-changed='userChanged'></iron-signals>
 
   </template>
   <script>
@@ -22,43 +21,104 @@
     Polymer({
       is: 'data-provider',
 
+      behaviors: [
+        QuizApp.xAPIManagerBehavior,
+        QuizApp.AppUtilsBehavior,
+        QuizApp.AppCookieBehavior
+      ],
+
       properties: {
+        firebase: {
+          type: Object
+        },
         categories: {
           notify: true
+        },
+        user: {
+          type: Object,
+          notify: true,
+          observer: '_userChanged'
         }
       },
 
-      handleResponse: function(event) {
+      created: function() {
+        this.firebase = new Firebase('https://polymer-quiz-app.firebaseio.com');
+      },
+
+      attached: function() {
+        if (this.userAuth) {
+          this.$.ajaxCategories.generateRequest();
+          this._retrieveUserProfile();
+          this.fire('login-success');
+        }
+      },
+
+      login: function(loginData) {
+        var _this = this;
+        this.firebase.authWithPassword(loginData, function(err, data) {
+          _this._loginSucess(err, data);
+        });
+      },
+
+      logout: function() {
+        this.userAuth = null;
+        this.user = null;
+        this.firebase.unauth();
+        this.removeCookie();
+      },
+
+      register: function(loginData) {
+        var _this = this;
+        this.firebase.createUser(loginData, function(err, data) {
+          _this._loginSucess(err, data);
+        });
+      },
+
+      _loginSucess: function(error, user) {
+        if (error) {
+          this.fire('app:alert', error);
+        } else {
+          this.userAuth = user;
+          this.saveCookie();
+          this._retrieveUserProfile();
+          this.$.ajaxCategories.generateRequest();
+
+          this.fire('login-success');
+        }
+      },
+
+      _retrieveUserProfile: function() {
+        var _this = this;
+        var emailKey = this.removeDots(_this.userAuth.password.email);
+
+        this.firebase.child('users/' + emailKey).once('value', function(snapshot) {
+          if (!snapshot.val()) {
+            _this.firebase.child('users/' + emailKey).set({
+              email: _this.userAuth.password.email,
+              activities: []
+            })
+          } else {
+            _this.user = snapshot.val();
+          }
+        });
+      },
+
+      _categoriesResponse: function(event) {
         this.categories = event.detail.response;
       },
 
-      initialized: function(data) {
-        console.log('initialized');
+      _updateUser: function(user) {
+        var emailKey = this.removeDots(user.email);
+        this.firebase.child('users/' + emailKey).update(user);
       },
 
-      terminated: function(data) {
-        console.log('terminated');
+      userChanged: function(data) {
+        this._updateUser(data.detail);
       },
 
-      paused: function(data) {
-        console.log('paused');
-      },
-
-      resumed: function(data) {
-        console.log('resumed');
-      },
-
-      responded: function(data) {
-        console.log('responded');
-      },
-
-      passed: function(data) {
-        console.log('passed');
-      },
-
-      failed: function(data) {
-        console.log('failed');
-      },
+      _userChanged: function(data) {
+        console.log('_userChanged');
+      }
 
     });
   })();

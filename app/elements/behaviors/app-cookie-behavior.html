@@ -1,0 +1,42 @@
+<script>
+var QuizApp = QuizApp || {};
+
+QuizApp.AppCookieBehavior = {
+
+  properties: {
+    userAuth: {
+      type: Object
+    }
+  },
+
+  created: function() {
+    this.loadCookie();
+  },
+
+  loadCookie: function() {
+    if (document.cookie === '' || document.cookie === 'QuizApp=') {
+      return null;
+    } else {
+      this.userAuth = this._recover_cookie(document.cookie);
+      return this.userAuth;
+    }
+  },
+
+  saveCookie: function() {
+    document.cookie = this._bake_cookie(this.userAuth);
+  },
+
+  removeCookie: function() {
+    document.cookie = 'QuizApp=';
+  },
+
+  _bake_cookie: function(data) {
+    return 'QuizApp=' + JSON.stringify(data);
+  },
+
+  _recover_cookie: function(data) {
+    return JSON.parse(data.split('QuizApp=')[1]);
+  }
+
+};
+</script>

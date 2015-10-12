@@ -1,0 +1,79 @@
+<script>
+var QuizApp = QuizApp || {};
+
+QuizApp.AppUserUtilsBehavior = {
+
+  properties: {
+    user: {
+      type: Object,
+      notify: true
+    }
+  },
+
+  _initializeProperties: function() {
+    if (!this.user) {
+      return console.error('No user found');
+    }
+
+    this.user.activities = this.user.activities || {};
+    this.user.activities[this._getQuizId()] = this.user.activities[this._getQuizId()] || {};
+    this.user.activities[this._getQuizId()].attempts = this.user.activities[this._getQuizId()].attempts || [];
+  },
+
+  userInitializeQuiz: function() {
+    this._initializeProperties();
+
+    this.user.activities[this._getQuizId()].attempts.unshift({
+      attemptId: this._generateUUID(),
+      status: 'initialized'
+    });
+
+    this.fire('iron-signal', {
+      name: 'user-changed',
+      data: this.user
+    });
+  },
+
+  userPauseQuiz: function() {
+    this._initializeProperties();
+
+    if (this.user.activities[this._getQuizId()].attempts[0]) {
+      this.user.activities[this._getQuizId()].attempts[0].status = 'paused';
+      this.fire('iron-signal', {
+        name: 'user-changed',
+        data: this.user
+      });
+    } else {
+      console.error('Error on paused quiz. No previous data found');
+    }
+
+  },
+
+  getAttemptId: function(quizId) {
+
+  },
+
+  getQuizStatus: function() {
+    console.log(this);
+    if (this.user && this.user.activities && this.user.activities[this._getQuizId()]) {
+      return this.user.activities[this._getQuizId()].attempts[0].status;
+    }
+  },
+
+  _getQuizId: function() {
+    var id = this.quiz.activityId.split('.').join('__');
+    return id.split('/').join('__');
+  },
+
+  _generateUUID: function() {
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = (d + Math.random() * 16) % 16 | 0;
+      d = Math.floor(d / 16);
+      return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+    return uuid;
+  }
+
+};
+</script>

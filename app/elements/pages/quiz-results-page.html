@@ -17,11 +17,11 @@
     </style>
 
     <div class="layout vertical fit center start">
-      <paper-card elevation="2" id="paperCardContainer" class$="[[_concatClass('layout vertical flex', quiz.theme)]]">
+      <paper-card elevation="2" id="paperCardContainer" class$="[[concatClass('layout vertical flex', quiz.theme)]]">
 
         <div class="card-header layout vertical flex">
           <div class="layout vertical center center-justified flex">
-            <iron-icon icon="[[_getCategoryIcon(quiz.icon)]]"></iron-icon>
+            <iron-icon icon="[[getCategoryIcon(quiz.icon)]]"></iron-icon>
           </div>
           <div class="title">{{quiz.name}}</div>
         </div>
@@ -46,7 +46,8 @@
 
       behaviors: [
         Polymer.NeonSharedElementAnimatableBehavior,
-        Polymer.NeonAnimationRunnerBehavior
+        Polymer.NeonAnimationRunnerBehavior,
+        QuizApp.AppUtilsBehavior
       ],
 
       properties: {
@@ -108,14 +109,6 @@
           this.style.visibility = 'visible';
           this._wideChanged();
         }
-      },
-
-      _getCategoryIcon: function(name) {
-        return 'category-icons:' + name;
-      },
-
-      _concatClass: function(classess, newClass) {
-        return classess + ' ' + newClass;
       },
 
       _close: function() {

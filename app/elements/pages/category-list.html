@@ -2,11 +2,22 @@
   <template>
     <style is="custom-style" include="app-themes"></style>
 
-    <paper-scroll-header-panel condenses keep-condensed-header mode="waterfall-tall" on-paper-header-transform="animateTitle">
+    <paper-scroll-header-panel id="scrollHeader" condenses keep-condensed-header mode="waterfall-tall" on-paper-header-transform="animateTitle">
 
       <!-- Main Toolbar -->
       <paper-toolbar id="mainToolbar" class="tall">
-        <span class="flex"></span>
+
+        <div class="layout horizontal flex">
+          <div class="flex"></div>
+          <paper-menu-button id="mainMenu" horizontal-align="right" vertical-align="top">
+            <paper-icon-button icon="menu" class="dropdown-trigger"></paper-icon-button>
+            <paper-menu class="dropdown-content" style="width:150px">
+              <paper-item>Profile</paper-item>
+              <paper-item on-tap="_logout">Logout</paper-item>
+            </paper-menu>
+          </paper-menu-button>
+        </div>
+
 
         <!-- Application name -->
         <div class="middle middle-container center horizontal layout">
@@ -24,10 +35,10 @@
 
         <template id="content" is="dom-repeat" items="[[items]]">
 
-          <paper-card elevation="1" on-tap="_onTap" class$="{{_concatClass('tile flex layout vertical', item.theme)}}" activityId$="[[item.activityId]]">
+          <paper-card elevation="1" on-tap="_categorySelected" class$="{{concatClass('tile flex layout vertical', item.theme)}}" activityId$="[[item.activityId]]">
             <div class="tileContainer layout fit" id="[[item.activityId]]" style="z-index: 1"> </div>
             <div class="icon layout horizontal center-justified  center flex">
-              <iron-icon icon="{{_getCategoryIcon(item.icon)}}"></iron-icon>
+              <iron-icon icon="{{getCategoryIcon(item.icon)}}"></iron-icon>
             </div>
             <div class="tile-footer layout horizontal center">
               <div class="paper-font-body1 layout flex center center-justified">{{item.name}}</div>
@@ -49,7 +60,8 @@
 
       behaviors: [
         Polymer.NeonSharedElementAnimatableBehavior,
-        Polymer.NeonAnimationRunnerBehavior
+        Polymer.NeonAnimationRunnerBehavior,
+        QuizApp.AppUtilsBehavior
       ],
 
       properties: {
@@ -71,19 +83,16 @@
                 name: 'cascaded-animation',
                 animation: 'transform-animation',
                 transformFrom: 'translateY(150%)',
-                transformTo: 'none'
+                transformTo: 'none',
+                nodes: []
               }, {
                 name: 'slide-down-animation',
                 node: this.$.mainToolbar,
               }],
-              'exit': [{
-                name: 'cascaded-animation',
-                animation: 'scale-down-animation'
-              }, {
-                name: 'hero-animation',
-                id: 'hero',
-                fromPage: this
-              }]
+              'exit': {
+                name: 'fade-out-animation',
+                node: this
+              }
             };
           }
         },
@@ -93,35 +102,9 @@
         }
       },
 
-      animateTitle: function(e) {
-        var appName = this.querySelector('.app-name');
-        var middleContainer = this.querySelector('.middle-container');
-        var bottomContainer = this.querySelector('.bottom-container');
-        var detail = e.detail;
-        var heightDiff = detail.height - detail.condensedHeight;
-        var yRatio = Math.min(1, detail.y / heightDiff);
-        var maxMiddleScale = 0.50; // appName max size when condensed. The smaller the number the smaller the condensed size.
-        var scaleMiddle = Math.max(maxMiddleScale, (heightDiff - detail.y) / (heightDiff / (1 - maxMiddleScale)) + maxMiddleScale);
-        var scaleBottom = 1 - yRatio;
-
-        // Move/translate middleContainer
-        Polymer.Base.transform('translate3d(0,' + yRatio * 100 + '%,0)', middleContainer);
-
-        // Scale bottomContainer and bottom sub title to nothing and back
-        if (scaleBottom < 0.5) {
-          scaleBottom = 0;
-        }
-        Polymer.Base.transform('scale(' + scaleBottom + ') translateZ(0)', bottomContainer);
-
-        // Scale middleContainer appName
-        Polymer.Base.transform('scale(' + scaleMiddle + ') translateZ(0)', appName);
-      },
-
       show: function() {
         this.style.opacity = 1;
-        if (this.animationConfig.entry[0].nodes) {
-          this.playAnimation('entry');
-        }
+        this.playAnimation('entry');
       },
 
       _itemsChanged: function() {
@@ -131,21 +114,30 @@
             this.animationConfig.entry[0].nodes = Array.prototype.slice.call(nodeList);
           }
         });
+        this.$.scrollHeader.measureHeaderHeight();
 
         var _this = this;
 
         setTimeout(function() {
           _this.show();
-
         }, 100);
       },
 
-      _onTap: function(event) {
+      _categorySelected: function(event) {
         var target = event.target;
 
         this.sharedElements = {
           'hero': target.parentElement
         };
+
+        this.animationConfig.exit = [{
+          name: 'cascaded-animation',
+          animation: 'scale-down-animation'
+        }, {
+          name: 'hero-animation',
+          id: 'hero',
+          fromPage: this
+        }];
 
         var nodesToScale = [];
         var tiles = Polymer.dom(this.root).querySelectorAll('.tile');
@@ -159,15 +151,14 @@
 
         this.animationConfig.exit[0].nodes = nodesToScale;
         this.fire('category-selected', target.id);
-
       },
 
-      _getCategoryIcon: function(name) {
-        return 'category-icons:' + name;
-      },
-
-      _concatClass: function(classess, newClass) {
-        return classess + ' ' + newClass;
+      _logout: function() {
+        this.animationConfig.exit = {
+          name: 'fade-out-animation',
+          node: this
+        };
+        this.fire('logout');
       }
 
     });

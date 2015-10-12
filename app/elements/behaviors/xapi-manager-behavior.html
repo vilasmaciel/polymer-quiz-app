@@ -1,0 +1,35 @@
+<script>
+var QuizApp = QuizApp || {};
+
+QuizApp.xAPIManagerBehavior = {
+
+  initialized: function(data) {
+    console.log('initialized');
+  },
+
+  terminated: function(data) {
+    console.log('terminated');
+  },
+
+  paused: function(data) {
+    console.log('paused');
+  },
+
+  resumed: function(data) {
+    console.log('resumed');
+  },
+
+  responded: function(data) {
+    console.log('responded');
+  },
+
+  passed: function(data) {
+    console.log('passed');
+  },
+
+  failed: function(data) {
+    console.log('failed');
+  }
+
+};
+</script>

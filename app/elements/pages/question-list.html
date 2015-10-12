@@ -52,7 +52,8 @@
 
       behaviors: [
         Polymer.NeonSharedElementAnimatableBehavior,
-        Polymer.NeonAnimationRunnerBehavior
+        Polymer.NeonAnimationRunnerBehavior,
+        QuizApp.AppUtilsBehavior
       ],
 
       properties: {
@@ -162,14 +163,6 @@
           id: 'hero',
           fromPage: this
         });
-      },
-
-      _getCategoryIcon: function(name) {
-        return 'category-icons:' + name;
-      },
-
-      _concatClass: function(classess, newClass) {
-        return classess + ' ' + newClass;
       }
 
     });

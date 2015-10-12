@@ -1,0 +1,107 @@
+<dom-module id="app-main">
+  <template>
+
+    <data-provider id="dataProvider" categories="{{categories}}" user="{{user}}" on-login-success="_loginSuccess"></data-provider>
+
+    <div class="content fit">
+      <neon-animated-pages attr-for-selected="data-name" selected="{{section}}" class="fit">
+        <login-page data-name="login" on-login="_login" on-register="_register"></login-page>
+        <category-list data-name="categories" items="[[categories]]" on-category-selected="categorySelected" on-logout="_logout"></category-list>
+        <category-element data-name="category" category="[[_getCategory(category)]]" on-close="_showCategoryList" on-quiz-selected="_quizSelected"></category-element>
+        <quiz-element data-name="quiz" quiz="[[quiz]]" user="{{user}}" on-close="_showCategoryElement"></quiz-element>
+      </neon-animated-pages>
+    </div>
+
+    <paper-toast id="caching-complete" duration="6000" text="Caching complete! This app will work offline."> </paper-toast>
+    <paper-toast id="message" duration="4000"> </paper-toast>
+
+    <platinum-sw-register auto-register clients-claim skip-waiting on-service-worker-installed="_displayInstalledToast">
+      <platinum-sw-cache default-cache-strategy="networkFirst" precache-file="precache.json">
+      </platinum-sw-cache>
+    </platinum-sw-register>
+
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'app-main',
+
+      behaviors: [QuizApp.AppMessageBehavior],
+
+      properties: {
+        categories: {
+          notify: true
+        },
+        section: {
+          type: String,
+          notify: true
+        },
+        user: {
+          type: Object,
+          notify: true
+        }
+      },
+
+      ready: function() {
+        this.section = 'login';
+        this.messageElement = this.$.message;
+      },
+
+      categorySelected: function(e) {
+        this.section = 'category';
+        this.category = e.detail;
+      },
+
+      _displayInstalledToast: function() {
+        // Check to make sure caching is actually enabled—it won't be in the dev environment.
+        if (!Polymer.dom(this.root).querySelector('platinum-sw-cache').disabled) {
+          Polymer.dom(this.root).querySelector('#caching-complete').show();
+        }
+      },
+
+      _getCategory: function(id) {
+        for (var i = 0; i < this.categories.length; i++) {
+          if (this.categories[i].activityId === id) {
+            return this.categories[i];
+          }
+        }
+      },
+
+      _showCategoryList: function() {
+        this.section = 'categories';
+        this.category = undefined;
+      },
+
+      _showCategoryElement: function() {
+        this.section = 'category';
+      },
+
+      _quizSelected: function(event) {
+        this.section = 'quiz';
+        this.quiz = null;
+        this.quiz = event.detail;
+      },
+
+      _login: function(loginData) {
+        this.$.dataProvider.login(loginData.detail);
+      },
+
+      _logout: function() {
+        this.section = 'login';
+        this.$.dataProvider.logout();
+      },
+
+      _register: function(loginData) {
+        this.$.dataProvider.register(loginData.detail);
+      },
+
+      _loginSuccess: function() {
+        this._showCategoryList();
+      }
+
+    });
+  })();
+  </script>
+</dom-module>
