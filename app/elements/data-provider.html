@@ -69,8 +69,12 @@
 
       register: function(loginData) {
         var _this = this;
-        this.firebase.createUser(loginData, function(err, data) {
-          _this.login(loginData);
+        this.firebase.createUser(loginData, function(err) {
+          if (err) {
+            this.fire('app:alert', err);
+          } else {
+            _this.login(loginData);
+          }
         });
       },
 
