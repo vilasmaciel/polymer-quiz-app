@@ -91,16 +91,18 @@
         var _this = this;
         var emailKey = this.removeDots(_this.userAuth.password.email);
 
-        this.firebase.child('users/' + emailKey).once('value', function(snapshot) {
-          if (!snapshot.val()) {
-            _this.firebase.child('users/' + emailKey).set({
-              email: _this.userAuth.password.email,
-              activities: []
-            })
-          } else {
-            _this.user = snapshot.val();
-          }
-        });
+        this.firebase.child('users/' + emailKey).once('value',
+          function(snapshot) {
+            if (!snapshot.val()) {
+              _this.firebase.child('users/' + emailKey).set({
+                email: _this.userAuth.password.email,
+                activities: []
+              });
+
+            } else {
+              _this.user = snapshot.val();
+            }
+          });
       },
 
       _categoriesResponse: function(event) {
@@ -116,7 +118,7 @@
         this._updateUser(data.detail);
       },
 
-      _userChanged: function(data) {
+      _userChanged: function() {
         console.log('_userChanged');
       }
 

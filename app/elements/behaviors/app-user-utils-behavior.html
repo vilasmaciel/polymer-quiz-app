@@ -49,13 +49,14 @@ QuizApp.AppUserUtilsBehavior = {
 
   },
 
-  getAttemptId: function(quizId) {
+  // getAttemptId: function() {
 
-  },
+  // },
 
   getQuizStatus: function() {
-    console.log(this);
-    if (this.user && this.user.activities && this.user.activities[this._getQuizId()]) {
+    if (this.user &&
+      this.user.activities &&
+      this.user.activities[this._getQuizId()]) {
       return this.user.activities[this._getQuizId()].attempts[0].status;
     }
   },
@@ -66,6 +67,7 @@ QuizApp.AppUserUtilsBehavior = {
   },
 
   _generateUUID: function() {
+    /* jshint ignore:start */
     var d = new Date().getTime();
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = (d + Math.random() * 16) % 16 | 0;
@@ -73,6 +75,7 @@ QuizApp.AppUserUtilsBehavior = {
       return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
     return uuid;
+    /* jshint ignore:end */
   }
 
 };

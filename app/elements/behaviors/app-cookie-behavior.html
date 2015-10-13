@@ -17,24 +17,24 @@ QuizApp.AppCookieBehavior = {
     if (document.cookie === '' || document.cookie === 'QuizApp=') {
       return null;
     } else {
-      this.userAuth = this._recover_cookie(document.cookie);
+      this.userAuth = this._recoverCookie(document.cookie);
       return this.userAuth;
     }
   },
 
   saveCookie: function() {
-    document.cookie = this._bake_cookie(this.userAuth);
+    document.cookie = this._bakeCookie(this.userAuth);
   },
 
   removeCookie: function() {
     document.cookie = 'QuizApp=';
   },
 
-  _bake_cookie: function(data) {
+  _bakeCookie: function(data) {
     return 'QuizApp=' + JSON.stringify(data);
   },
 
-  _recover_cookie: function(data) {
+  _recoverCookie: function(data) {
     return JSON.parse(data.split('QuizApp=')[1]);
   }
 

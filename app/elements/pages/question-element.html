@@ -183,6 +183,7 @@
         return (index === 0) || (index === (quiz.questions.length - 1));
       },
 
+      /* jshint ignore:start */
       _notLast: function(index, quiz) {
         return !(index !== (quiz.questions.length - 1));
       },
@@ -190,6 +191,7 @@
       _isLast: function(index, quiz) {
         return !(index === (quiz.questions.length - 1));
       },
+      /* jshint ignore:end */
 
       _wideChanged: function() {
         this.toggleClass('flex', this.wide, this.$.paperCardContainer);

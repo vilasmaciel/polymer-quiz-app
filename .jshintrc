@@ -17,6 +17,8 @@
     "wrap": true,
     "unwrap": true,
     "Polymer": true,
+    "QuizApp": true,
+    "Firebase": true,
     "Platform": true,
     "page": true,
     "app": true

@@ -15,7 +15,8 @@
       --paper-card-header-text: {
         font-weight: 400;
         color: var(--paper-grey-700);
-      };
+      }
+      ;
     }
 
     paper-card .card-actions paper-button {
@@ -100,21 +101,25 @@
       },
 
       login: function() {
+        /* jshint ignore:start */
         if (this._validateEmail() & this._validatePassword()) {
           this.fire('login', {
             email: this.email,
             password: this.password
           });
         }
+        /* jshint ignore:end */
       },
 
       register: function() {
+        /* jshint ignore:start */
         if (this._validateEmail() & this._validatePassword()) {
           this.fire('register', {
             email: this.email,
             password: this.password
           });
         }
+        /* jshint ignore:end */
       },
 
       _validateEmail: function() {
