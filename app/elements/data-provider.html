@@ -1,7 +1,7 @@
 <dom-module id='data-provider'>
   <template>
 
-    <iron-ajax id='ajaxCategories' url='/categories.json' params='' handle-as='json' on-response='_categoriesResponse'></iron-ajax>
+    <iron-ajax id='ajaxCategories' url='../categories.json' params='' handle-as='json' on-response='_categoriesResponse'></iron-ajax>
 
     <iron-signals on-iron-signal-initialized='initialized'></iron-signals>
     <iron-signals on-iron-signal-terminated='terminated'></iron-signals>
@@ -70,7 +70,7 @@
       register: function(loginData) {
         var _this = this;
         this.firebase.createUser(loginData, function(err, data) {
-          _this._loginSucess(err, data);
+          _this.login(loginData);
         });
       },
 
