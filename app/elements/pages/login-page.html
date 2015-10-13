@@ -57,6 +57,9 @@
       </paper-card>
     </div>
 
+    <iron-a11y-keys keys="enter" target="[[form]]" on-keys-pressed="login">
+    </iron-a11y-keys>
+
   </template>
 
   <script>
@@ -81,6 +84,12 @@
           type: String,
           notify: true,
           observer: '_passwordChanged',
+        },
+        form: {
+          type: Object,
+          value: function() {
+            return this.$.loginPaperCard;
+          }
         },
 
         animationConfig: {

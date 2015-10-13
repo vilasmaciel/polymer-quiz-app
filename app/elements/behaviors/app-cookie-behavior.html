@@ -35,7 +35,12 @@ QuizApp.AppCookieBehavior = {
   },
 
   _recoverCookie: function(data) {
-    return JSON.parse(data.split('QuizApp=')[1]);
+    var cookie = data.split('QuizApp=')[1];
+    if (cookie) {
+      return JSON.parse(cookie);
+    } else {
+      return null;
+    }
   }
 
 };
