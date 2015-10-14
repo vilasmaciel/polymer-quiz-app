@@ -31,7 +31,7 @@ QuizApp.AppUserUtilsBehavior = {
       attemptId: this._generateUUID()
     });
 
-    this.user.activities[this._getQuizId()].status = 'initialized';
+    this.user.activities[this._getQuizId()].attempts[0].status = 'initialized';
 
     this.fire('iron-signal', {
       name: 'user-changed',
@@ -44,7 +44,7 @@ QuizApp.AppUserUtilsBehavior = {
 
     if (this.user.activities[this._getQuizId()]) {
 
-      this.user.activities[this._getQuizId()].status = 'paused';
+      this.user.activities[this._getQuizId()].attempts[0].status = 'paused';
 
       this.fire('iron-signal', {
         name: 'user-changed',
@@ -60,7 +60,7 @@ QuizApp.AppUserUtilsBehavior = {
 
     if (this.user.activities[this._getQuizId()]) {
 
-      this.user.activities[this._getQuizId()].status = 'resumed';
+      this.user.activities[this._getQuizId()].attempts[0].status = 'resumed';
 
       this.fire('iron-signal', {
         name: 'user-changed',
@@ -71,6 +71,20 @@ QuizApp.AppUserUtilsBehavior = {
     }
   },
 
+  userInteractQuestion: function(value, index) {
+    this._initializeProperties();
+
+    this.user.activities[this._getQuizId()].attempts[0][this._getQuestionId()] = this.user.activities[this._getQuizId()][this._getQuestionId()] || {};
+
+    this.user.activities[this._getQuizId()].attempts[0][this._getQuestionId()].selectedValue = value;
+    this.user.activities[this._getQuizId()].attempts[0][this._getQuestionId()].selectedIndex = index;
+
+    this.fire('iron-signal', {
+      name: 'user-changed',
+      data: this.user
+    });
+  },
+
   // getAttemptId: function() {
 
   // },
@@ -78,13 +92,37 @@ QuizApp.AppUserUtilsBehavior = {
   getQuizStatus: function() {
     if (this.user &&
       this.user.activities &&
+      this.user.activities[this._getQuizId()] &&
+      this.user.activities[this._getQuizId()].attempts.length) {
+      return this.user.activities[this._getQuizId()].attempts[0].status;
+    }
+  },
+
+  getSelectedOption: function() {
+    if (this.user &&
+      this.user.activities &&
       this.user.activities[this._getQuizId()]) {
-      return this.user.activities[this._getQuizId()].status;
+
+      if (this.user.activities[this._getQuizId()].attempts[0][this._getQuestionId()]) {
+        return this.user.activities[this._getQuizId()].attempts[0][this._getQuestionId()].selectedValue;
+      } else {
+        return null;
+      }
     }
   },
 
   _getQuizId: function() {
-    var id = this.quiz.activityId.split('.').join('__');
+    if (!this.quiz) {
+      console.error('quiz not found');
+      return null;
+    } else {
+      var id = this.quiz.activityId.split('.').join('__');
+      return id.split('/').join('__');
+    }
+  },
+
+  _getQuestionId: function() {
+    var id = this.question.activityId.split('.').join('__');
     return id.split('/').join('__');
   },
 

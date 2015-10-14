@@ -32,7 +32,7 @@
 
       <neon-animated-pages id="quizPageSelector" selected="{{selected}}" class="flex">
         <quiz-front-page id="frontPage" quiz="[[quiz]]" wide="[[wide]]" status="[[quizStatus]]" on-quiz-start="_initialize" on-quiz-resume="_resumed" on-close-quiz-view="_close"></quiz-front-page>
-        <question-list quiz="{{quiz}}" wide="[[wide]]" on-quiz-terminated="_terminate" on-quiz-paused="_pause"></question-list>
+        <question-list quiz="{{quiz}}" wide="[[wide]]" on-quiz-terminated="_terminate" user="{{user}}" on-quiz-paused="_pause"></question-list>
         <quiz-results-page quiz="{{quiz}}" wide="[[wide]]" on-close-quiz-view="_close"></quiz-results-page>
       </neon-animated-pages>
     </div>
@@ -105,7 +105,6 @@
           this.selected = 0;
           this.$.frontPage.show();
           this.quizStatus = this.getQuizStatus();
-          console.log(this.quizStatus);
         }
       },
 

@@ -18,7 +18,7 @@
 
         <div class="card-actions">
           <paper-button on-tap="_start" hidden$="[[paused]]">Start</paper-button>
-          <paper-button on-tap="_resume" hidden$="[[!paused]]">Resume</paper-button>
+          <paper-button on-tap="_resume" hidden$="[[initialized]]">Resume</paper-button>
         </div>
 
       </paper-card>
@@ -51,9 +51,14 @@
         status: {
           type: String,
           notify: true,
+          value: null,
           observer: '_statusChanged'
         },
         paused: {
+          type: Boolean,
+          notify: true
+        },
+        initialized: {
           type: Boolean,
           notify: true
         },
@@ -148,6 +153,7 @@
 
       _statusChanged: function() {
         this.paused = (this.status === 'paused');
+        this.initialized = (this.status !== 'paused');
       }
 
     });

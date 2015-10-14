@@ -26,7 +26,7 @@
 
       <neon-animated-pages id="questionSelector" class="flex" selected="{{questionIndex}}" entry-animation="[[customEntryAnimation]]" exit-animation="[[customExitAnimation]]">
         <template is="dom-repeat" items="[[quiz.questions]]">
-          <question-element question="[[item]]" quiz="[[quiz]]" index="[[index]]" wide="[[wide]]" on-next="_next" on-prev="_prev" on-quiz-terminated="_changeExitAnimation"></question-element>
+          <question-element question="[[item]]" quiz="[[quiz]]" index="[[index]]" wide="[[wide]]" user="{{user}}" on-next="_next" on-prev="_prev" on-quiz-terminated="_changeExitAnimation"></question-element>
         </template>
       </neon-animated-pages>
 
@@ -53,6 +53,7 @@
       behaviors: [
         Polymer.NeonSharedElementAnimatableBehavior,
         Polymer.NeonAnimationRunnerBehavior,
+        QuizApp.AppUserUtilsBehavior,
         QuizApp.AppUtilsBehavior
       ],
 
