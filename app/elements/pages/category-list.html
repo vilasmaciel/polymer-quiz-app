@@ -35,10 +35,10 @@
 
         <template id="content" is="dom-repeat" items="[[items]]">
 
-          <paper-card elevation="1" on-tap="_categorySelected" class$="{{concatClass('tile flex layout vertical', item.theme)}}" activityId$="[[item.activityId]]">
+          <paper-card elevation="1" on-tap="_categorySelected" class$="[[concatClass('tile flex layout vertical', item.theme)]]" activityId$="[[item.activityId]]">
             <div class="tileContainer layout fit" id="[[item.activityId]]" style="z-index: 1"> </div>
             <div class="icon layout horizontal center-justified  center flex">
-              <iron-icon icon="{{getCategoryIcon(item.icon)}}"></iron-icon>
+              <iron-icon icon="[[getCategoryIcon(item.icon)]]"></iron-icon>
             </div>
             <div class="tile-footer layout horizontal center">
               <div class="paper-font-body1 layout flex center center-justified">{{item.name}}</div>

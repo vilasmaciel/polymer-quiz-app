@@ -7,6 +7,10 @@ QuizApp.AppUserUtilsBehavior = {
     user: {
       type: Object,
       notify: true
+    },
+    quizStatus: {
+      type: String,
+      notify: true
     }
   },
 
@@ -24,9 +28,10 @@ QuizApp.AppUserUtilsBehavior = {
     this._initializeProperties();
 
     this.user.activities[this._getQuizId()].attempts.unshift({
-      attemptId: this._generateUUID(),
-      status: 'initialized'
+      attemptId: this._generateUUID()
     });
+
+    this.user.activities[this._getQuizId()].status = 'initialized';
 
     this.fire('iron-signal', {
       name: 'user-changed',
@@ -37,8 +42,10 @@ QuizApp.AppUserUtilsBehavior = {
   userPauseQuiz: function() {
     this._initializeProperties();
 
-    if (this.user.activities[this._getQuizId()].attempts[0]) {
-      this.user.activities[this._getQuizId()].attempts[0].status = 'paused';
+    if (this.user.activities[this._getQuizId()]) {
+
+      this.user.activities[this._getQuizId()].status = 'paused';
+
       this.fire('iron-signal', {
         name: 'user-changed',
         data: this.user
@@ -46,7 +53,22 @@ QuizApp.AppUserUtilsBehavior = {
     } else {
       console.error('Error on paused quiz. No previous data found');
     }
+  },
 
+  userResumeQuiz: function() {
+    this._initializeProperties();
+
+    if (this.user.activities[this._getQuizId()]) {
+
+      this.user.activities[this._getQuizId()].status = 'resumed';
+
+      this.fire('iron-signal', {
+        name: 'user-changed',
+        data: this.user
+      });
+    } else {
+      console.error('Error on paused quiz. No previous data found');
+    }
   },
 
   // getAttemptId: function() {
@@ -57,7 +79,7 @@ QuizApp.AppUserUtilsBehavior = {
     if (this.user &&
       this.user.activities &&
       this.user.activities[this._getQuizId()]) {
-      return this.user.activities[this._getQuizId()].attempts[0].status;
+      return this.user.activities[this._getQuizId()].status;
     }
   },
 

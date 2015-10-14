@@ -17,8 +17,8 @@
         </div>
 
         <div class="card-actions">
-          <paper-button on-tap="_start" hidden$="[[_isPaused()]]">Start</paper-button>
-          <paper-button on-tap="_resume" hidden$="[[!_isPaused()]]">Resume</paper-button>
+          <paper-button on-tap="_start" hidden$="[[paused]]">Start</paper-button>
+          <paper-button on-tap="_resume" hidden$="[[!paused]]">Resume</paper-button>
         </div>
 
       </paper-card>
@@ -49,7 +49,13 @@
           observer: '_wideChanged'
         },
         status: {
-          type: String
+          type: String,
+          notify: true,
+          observer: '_statusChanged'
+        },
+        paused: {
+          type: Boolean,
+          notify: true
         },
 
         animationConfig: {
@@ -140,8 +146,8 @@
         this.toggleClass('flex', this.wide, this.$.paperCardContainer);
       },
 
-      _isPaused: function() {
-        return this.status === 'paused';
+      _statusChanged: function() {
+        this.paused = (this.status === 'paused');
       }
 
     });

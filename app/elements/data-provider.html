@@ -38,11 +38,16 @@
           type: Object,
           notify: true,
           observer: '_userChanged'
+        },
+        quizStatus: {
+          type: String,
+          notify: true
         }
       },
 
       created: function() {
-        this.firebase = new Firebase('https://polymer-quiz-app.firebaseio.com');
+        // this.firebase = new Firebase('https://polymer-quiz-app.firebaseio.com');
+        this.firebase = new Firebase('https://quiz-app-dev.firebaseio.com');
       },
 
       attached: function() {

@@ -4,7 +4,7 @@
 
     <paper-scroll-header-panel id="scrollHeader" condenses keep-condensed-header mode="waterfall-tall" on-paper-header-transform="animateTitle">
 
-      <paper-toolbar id="mainToolbar" class$="{{concatClass('tall', category.theme)}}">
+      <paper-toolbar id="mainToolbar" class$="[[concatClass('tall', category.theme)]]">
         <paper-icon-button on-tap="_close" icon="arrow-back"></paper-icon-button>
 
         <span class="flex"></span>
@@ -19,10 +19,10 @@
       <div class="layout horizontal wrap" id="container">
         <template is="dom-repeat" items="[[category.quizes]]">
 
-          <paper-card elevation="1" on-tap="_itemSelected" class$="{{concatClass('tile flex layout vertical', item.theme)}}" id="[[item.activityId]]">
+          <paper-card elevation="1" on-tap="_itemSelected" class$="[[concatClass('tile flex layout vertical', item.theme)]]" id="[[item.activityId]]">
 
             <div class="icon layout horizontal center-justified  center flex">
-              <iron-icon icon="{{getCategoryIcon(item.icon)}}"></iron-icon>
+              <iron-icon icon="[[getCategoryIcon(item.icon)]]"></iron-icon>
             </div>
 
             <div class="tile-footer layout horizontal center">
@@ -112,12 +112,14 @@
           node: this.$.container
         }];
 
+        var nodeList = Polymer.dom(this.root).querySelectorAll('.tile');
+
         this.animationConfig.exit = [{
           name: 'fade-out-animation',
           node: this.$.mainToolbar,
         }, {
           name: 'fade-out-animation',
-          node: this.$.container
+          nodes: Array.prototype.slice.call(nodeList)
         }];
 
         this.sharedElements = {
