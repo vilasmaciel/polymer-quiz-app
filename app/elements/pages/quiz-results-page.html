@@ -3,12 +3,40 @@
     <style is="custom-style" include="app-themes"></style>
     <style>
     .card-header iron-icon {
-      height: 95px;
-      width: 95px;
+      height: 165px!important;
+      width: 165px!important;
     }
 
     .title {
       font-size: 20px;
+    }
+
+    .entry {
+      padding: 16px;
+      border-top: 1px solid var(--paper-grey-200);
+    }
+
+    .entry .icon {
+      min-width: 60px;
+      width: 60px;
+      color: var(--paper-green-500);
+    }
+
+    .success {
+      font-size: 50px;
+      font-weight: 300;
+    }
+
+    .total {
+      font-size: 50px;
+      font-weight: 300;
+
+    }
+
+    .backslash {
+      font-size: 60px;
+      font-weight: 300;
+
     }
 
     h2 {
@@ -27,8 +55,24 @@
         </div>
 
         <div class="card-content">
-          <h2>Results</h2>
+          <div class="layout horizontal center">
+            <h2 class="flex">Results</h2>
+            <div>
+              <span class="success">[[getSuccess(quiz, user)]]</span>
+              <span class="backslash">/</span>
+              <span class="total">[[getTotal(quiz)]]</span></div>
+          </div>
         </div>
+
+        <template is="dom-repeat" items="[[quiz.questions]]">
+          <div class="layout horizontal entry">
+            <div class="icon layout horizontal center center-justified">
+              <iron-icon icon="[[getResultIcon(item, user)]]"></iron-icon>
+            </div>
+            <div>[[item.question]]</div>
+          </div>
+        </template>
+
         <div class="card-actions">
           <paper-button on-tap="_close">Close</paper-button>
         </div>
@@ -47,15 +91,11 @@
       behaviors: [
         Polymer.NeonSharedElementAnimatableBehavior,
         Polymer.NeonAnimationRunnerBehavior,
+        QuizApp.AppUserUtilsBehavior,
         QuizApp.AppUtilsBehavior
       ],
 
       properties: {
-        quiz: {
-          type: Object,
-          notify: true,
-          observer: '_quizChanged'
-        },
         wide: {
           type: Object,
           notify: true,

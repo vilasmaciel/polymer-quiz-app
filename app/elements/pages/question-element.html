@@ -27,7 +27,7 @@
 
           <!-- <template is="dom-if" if="{{_isSingle(question.type)}}"> -->
 
-          <paper-radio-group selected="{{selected}}" id="radioGroup" class="layout vertical flex">
+          <paper-radio-group selected="{{getSelectedOptionName(user, quiz, question)}}" id="radioGroup" class="layout vertical flex">
             <template is="dom-repeat" items="{{question.options}}">
               <paper-radio-button on-tap="_interacted" name="{{item}}">{{item}}</paper-radio-button>
             </template>
@@ -77,11 +77,6 @@
           type: Object,
           notify: true
         },
-        quiz: {
-          type: Object,
-          notify: true,
-          observer: '_quizChanged'
-        },
         index: {
           type: Number
         },
@@ -89,10 +84,6 @@
           type: Object,
           notify: true,
           observer: '_wideChanged'
-        },
-        selected: {
-          type: String,
-          notify: true
         },
 
         sharedElements: {
@@ -186,15 +177,6 @@
       _terminate: function() {
         this.terminate();
         this.fire('quiz-terminated');
-      },
-
-      _quizChanged: function() {
-        if (this.quiz) {
-          this.selected = this.getSelectedOption();
-          console.log('Selected: ' + this.selected);
-        } else {
-          this.selected = null;
-        }
       },
 
       _isSingle: function(type) {

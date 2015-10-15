@@ -1,0 +1,115 @@
+<script>
+var QuizApp = QuizApp || {};
+
+QuizApp.AppQuizUtilsBehavior = {
+
+  properties: {
+    quiz: {
+      type: Object,
+      notify: true,
+      observer: '_quizChanged'
+    }
+  },
+
+  _quizChanged: function() {
+    if (this.quizChanged) {
+      this.quizChanged();
+    }
+  },
+
+  getQuizStatus: function(userData, quiz) {
+    if (userData &&
+      userData.activities &&
+      userData.activities[this.getQuizId()] &&
+      userData.activities[this.getQuizId()].attempts.length) {
+      return this.user.activities[this.getQuizId()].attempts[0].status;
+    }
+  },
+
+  isPaused: function(userData, quiz) {
+    var status = this.getQuizStatus(userData);
+    return (status === 'paused' || status === 'resumed' || status === 'initialized');
+  },
+
+  getQuizId: function(quiz) {
+    if (quiz) {
+      var id = quiz.activityId.split('.').join('__');
+      return id.split('/').join('__');
+    } else if (this.quiz) {
+      var id = this.quiz.activityId.split('.').join('__');
+      return id.split('/').join('__');
+    }
+  },
+
+  getQuestionId: function() {
+    return this.getQuizId(this.question);
+  },
+
+  getSelectedOption: function(userData, quiz, question) {
+    if (this.user &&
+      this.user.activities &&
+      this.user.activities[this.getQuizId()]) {
+
+      if (this.user.activities[this.getQuizId()].attempts[0][this.getQuestionId()]) {
+        return this.user.activities[this.getQuizId()].attempts[0][this.getQuestionId()].selectedValue;
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  },
+  getSelectedOptionName: function(userData, quiz, question) {
+    var selected = this.getSelectedOption(userData, quiz, question);
+    if (selected) {
+      return selected.selectedValue;
+    }
+    return selected;
+  },
+
+  getResult: function(item, user) {
+    if (user &&
+      user.activities &&
+      user.activities[this.getQuizId()] &&
+      user.activities[this.getQuizId()].attempts.length &&
+      user.activities[this.getQuizId()].attempts[0][this.getQuizId(item)]) {
+
+      var option = this.user.activities[this.getQuizId()].attempts[0][this.getQuizId(item)];
+      console.log(item.answer[0] + ' ' + option.selectedIndex);
+      if (item.answer[0] === option.selectedIndex) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+  },
+
+  getResultIcon: function(item, user) {
+    if (this.getResult(item, user)) {
+      return 'icons:done';
+    } else {
+      return 'icons:close';
+    }
+  },
+
+  getSuccess: function(quiz, user) {
+    var success = 0;
+    if (quiz) {
+      for (var i = 0; i < quiz.questions.length; i++) {
+        if (this.getResult(quiz.questions[i], user)) {
+          success++;
+        }
+      }
+    }
+    return success;
+  },
+
+  getTotal: function(quiz) {
+    if (this.quiz) {
+      return quiz.questions.length;
+    }
+  }
+
+};
+</script>
