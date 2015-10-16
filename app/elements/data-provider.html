@@ -100,12 +100,11 @@
         var _this = this;
         var emailKey = this.removeDots(_this.userAuth.password.email);
 
-        this.firebase.child('users/' + emailKey).once('value',
+        this.firebase.child('users/' + emailKey).on('value',
           function(snapshot) {
             if (!snapshot.val()) {
               _this.firebase.child('users/' + emailKey).set({
-                email: _this.userAuth.password.email,
-                activities: []
+                email: _this.userAuth.password.email
               });
 
             } else {
@@ -120,6 +119,7 @@
 
       _updateUser: function(user) {
         var emailKey = this.removeDots(user.email);
+        // this.user = JSON.parse(JSON.stringify(this.user));
         this.firebase.child('users/' + emailKey).update(user);
       },
 

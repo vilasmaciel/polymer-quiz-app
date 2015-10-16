@@ -26,20 +26,22 @@ var AppUserUtilsBehaviorImpl = {
     if (!this.user) {
       return console.error('No user found');
     }
+    var quizId = this.getQuizId(this.quiz);
 
     this.user.activities = this.user.activities || {};
-    this.user.activities[this.getQuizId()] = this.user.activities[this.getQuizId()] || {};
-    this.user.activities[this.getQuizId()].attempts = this.user.activities[this.getQuizId()].attempts || [];
+    this.user.activities[quizId] = this.user.activities[quizId] || {};
+    this.user.activities[quizId].attempts = this.user.activities[quizId].attempts || [];
   },
 
   userInitializeQuiz: function() {
     this._initializeProperties();
+    var quizId = this.getQuizId(this.quiz);
 
-    this.user.activities[this.getQuizId()].attempts.unshift({
+    this.user.activities[quizId].attempts.unshift({
       attemptId: this._generateUUID()
     });
 
-    this.user.activities[this.getQuizId()].attempts[0].status = 'initialized';
+    this.user.activities[quizId].attempts[0].status = 'initialized';
 
     this.fire('iron-signal', {
       name: 'user-changed',
@@ -49,10 +51,11 @@ var AppUserUtilsBehaviorImpl = {
 
   userPauseQuiz: function() {
     this._initializeProperties();
+    var quizId = this.getQuizId(this.quiz);
 
-    if (this.user.activities[this.getQuizId()]) {
+    if (this.user.activities[quizId]) {
 
-      this.user.activities[this.getQuizId()].attempts[0].status = 'paused';
+      this.user.activities[quizId].attempts[0].status = 'paused';
 
       this.fire('iron-signal', {
         name: 'user-changed',
@@ -65,10 +68,11 @@ var AppUserUtilsBehaviorImpl = {
 
   userResumeQuiz: function() {
     this._initializeProperties();
+    var quizId = this.getQuizId(this.quiz);
 
-    if (this.user.activities[this.getQuizId()]) {
+    if (this.user.activities[quizId]) {
 
-      this.user.activities[this.getQuizId()].attempts[0].status = 'resumed';
+      this.user.activities[quizId].attempts[0].status = 'resumed';
 
       this.fire('iron-signal', {
         name: 'user-changed',
@@ -81,10 +85,11 @@ var AppUserUtilsBehaviorImpl = {
 
   userTerminateQuiz: function() {
     this._initializeProperties();
+    var quizId = this.getQuizId(this.quiz);
 
-    if (this.user.activities[this.getQuizId()]) {
+    if (this.user.activities[quizId]) {
 
-      this.user.activities[this.getQuizId()].attempts[0].status = 'terminated';
+      this.user.activities[quizId].attempts[0].status = 'terminated';
 
       this.fire('iron-signal', {
         name: 'user-changed',
@@ -97,11 +102,13 @@ var AppUserUtilsBehaviorImpl = {
 
   userInteractQuestion: function(value, index) {
     this._initializeProperties();
+    var quizId = this.getQuizId(this.quiz);
+    var questionId = this.getQuestionId(this.question);
 
-    this.user.activities[this.getQuizId()].attempts[0][this.getQuestionId()] = this.user.activities[this.getQuizId()][this.getQuestionId()] || {};
+    this.user.activities[quizId].attempts[0][questionId] = this.user.activities[quizId].attempts[0][questionId] || {};
 
-    this.user.activities[this.getQuizId()].attempts[0][this.getQuestionId()].selectedValue = value;
-    this.user.activities[this.getQuizId()].attempts[0][this.getQuestionId()].selectedIndex = index;
+    this.user.activities[quizId].attempts[0][questionId].selectedValue = value;
+    this.user.activities[quizId].attempts[0][questionId].selectedIndex = index;
 
     this.fire('iron-signal', {
       name: 'user-changed',

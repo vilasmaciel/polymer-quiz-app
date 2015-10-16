@@ -22,6 +22,10 @@
       color: var(--paper-green-500);
     }
 
+    .entry .icon[result="fail"] {
+      color: var(--paper-red-500);
+    }
+
     .success {
       font-size: 50px;
       font-weight: 300;
@@ -51,7 +55,7 @@
           <div class="layout vertical center center-justified flex">
             <iron-icon icon="[[getCategoryIcon(quiz.icon)]]"></iron-icon>
           </div>
-          <div class="title">{{quiz.name}}</div>
+          <div class="title">[[quiz.name]]</div>
         </div>
 
         <div class="card-content">
@@ -66,7 +70,7 @@
 
         <template is="dom-repeat" items="[[quiz.questions]]">
           <div class="layout horizontal entry">
-            <div class="icon layout horizontal center center-justified">
+            <div class="icon layout horizontal center center-justified" result$="[[getResultTextForQuestion(user, quiz, item)]]">
               <iron-icon icon="[[getResultIcon(user, quiz, item)]]"></iron-icon>
             </div>
             <div>[[item.question]]</div>
