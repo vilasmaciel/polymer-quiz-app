@@ -58,7 +58,7 @@
           <div class="layout horizontal center">
             <h2 class="flex">Results</h2>
             <div>
-              <span class="success">[[getSuccess(quiz, user)]]</span>
+              <span class="success">[[getSuccessQuestions(user, quiz)]]</span>
               <span class="backslash">/</span>
               <span class="total">[[getTotal(quiz)]]</span></div>
           </div>
@@ -67,7 +67,7 @@
         <template is="dom-repeat" items="[[quiz.questions]]">
           <div class="layout horizontal entry">
             <div class="icon layout horizontal center center-justified">
-              <iron-icon icon="[[getResultIcon(item, user)]]"></iron-icon>
+              <iron-icon icon="[[getResultIcon(user, quiz, item)]]"></iron-icon>
             </div>
             <div>[[item.question]]</div>
           </div>

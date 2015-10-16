@@ -39,16 +39,16 @@
 
         <div class="card-actions">
 
-          <paper-button on-tap="_prev" hidden$="[[_isFirst(index, quiz)]]">
+          <paper-button on-tap="_prev" hidden="[[_isFirst(index, quiz)]]">
             <iron-icon icon="icons:chevron-left"></iron-icon> Prev
           </paper-button>
 
-          <paper-button on-tap="_next" hidden$="[[_notLast(index, quiz)]]">
+          <paper-button on-tap="_next" hidden="[[!_isLast(index, quiz)]]">
             Next
             <iron-icon icon="icons:chevron-right"></iron-icon>
           </paper-button>
 
-          <paper-button on-tap="_terminate" hidden$="{{_isLast(index, quiz)}}">
+          <paper-button on-tap="_terminate" hidden="[[_isLast(index, quiz)]]">
             Finish
           </paper-button>
         </div>
@@ -192,12 +192,7 @@
       },
 
       _isFirst: function(index, quiz) {
-        return (index === 0) || (index === (quiz.questions.length - 1));
-      },
-
-      /* jshint ignore:start */
-      _notLast: function(index, quiz) {
-        return !(index !== (quiz.questions.length - 1));
+        return (index === 0);
       },
 
       _isLast: function(index, quiz) {
