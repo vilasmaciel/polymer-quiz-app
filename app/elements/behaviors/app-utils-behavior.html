@@ -13,13 +13,13 @@ QuizApp.AppUtilsBehavior = {
 
   animateTitle: function(e) {
     var appName = this.querySelector('.app-name');
+    var userAvatar = this.querySelector('user-avatar');
     var middleContainer = this.querySelector('.middle-container');
     var bottomContainer = this.querySelector('.bottom-container');
     var detail = e.detail;
     var heightDiff = detail.height - detail.condensedHeight;
     var yRatio = Math.min(1, detail.y / heightDiff);
-    var maxMiddleScale = 0.50; // appName max size when condensed. The smaller the number the smaller the condensed size.
-    var scaleMiddle = Math.max(maxMiddleScale, (heightDiff - detail.y) / (heightDiff / (1 - maxMiddleScale)) + maxMiddleScale);
+    var maxMiddleScale = 0.60; // appName max size when condensed. The smaller the number the smaller the condensed size.
     var scaleBottom = 1 - yRatio;
 
     // Move/translate middleContainer
@@ -34,8 +34,17 @@ QuizApp.AppUtilsBehavior = {
       Polymer.Base.transform('scale(' + scaleBottom + ') translateZ(0)', bottomContainer);
     }
 
-    // Scale middleContainer appName
-    Polymer.Base.transform('scale(' + scaleMiddle + ') translateZ(0)', appName);
+    var moveX = yRatio * (-50);
+    var scaleMiddle;
+    if (userAvatar) {
+      scaleMiddle = Math.max(maxMiddleScale, (heightDiff - detail.y) / (heightDiff / (1 - maxMiddleScale)) + maxMiddleScale);
+      Polymer.Base.transform('scale(' + scaleMiddle + ') translateZ(0) translateX( ' + moveX + '%)', appName);
+      Polymer.Base.transform('scale(' + scaleMiddle + ') translateZ(0) translateX( ' + moveX + '%)', userAvatar);
+    } else {
+      scaleMiddle = Math.max(maxMiddleScale, (heightDiff - detail.y) / (heightDiff / (1 - maxMiddleScale)) + maxMiddleScale);
+      Polymer.Base.transform('scale(' + scaleMiddle + ') translateZ(0)', appName);
+
+    }
   },
 
   removeDots: function(string) {

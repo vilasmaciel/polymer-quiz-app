@@ -1,0 +1,80 @@
+<dom-module id="user-avatar">
+  <style>
+  :host {
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid white;
+    --user-avatar-margin: 16px;
+    margin: var(--user-avatar-margin);
+  }
+
+  iron-icon {
+    border-radius: 50%;
+    overflow: hidden;
+    --iron-icon-height: 60px;
+    --iron-icon-width: 60px;
+  }
+  </style>
+  <template>
+    <iron-icon id="icon" icon="[[icon]]" src="[[src]]"></iron-icon>
+  </template>
+
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'user-avatar',
+
+      properties: {
+        user: {
+          type: Object,
+          notify: true,
+          observer: '_userChanged'
+        },
+        src: {
+          type: String,
+          notify: true
+        },
+        icon: {
+          type: String,
+          notify: true
+        },
+        size: {
+          type: Number,
+          notify: true
+        },
+        margin: {
+          type: Number,
+          notify: true
+        }
+      },
+
+      ready: function() {
+        if (this.size !== undefined) {
+          this.$.icon.customStyle['--iron-icon-height'] = this.size + 'px';
+          this.$.icon.customStyle['--iron-icon-width'] = this.size + 'px';
+          Polymer.updateStyles();
+        }
+        if (this.margin !== undefined) {
+          this.customStyle['--user-avatar-margin'] = this.margin + 'px';
+        }
+        Polymer.updateStyles();
+      },
+
+      _userChanged: function() {
+        if (this.user) {
+          if (this.user.img) {
+            this.icon = null;
+            this.src = this.user.img;
+          } else {
+            this.icon = 'avatar-icons:default';
+            this.src = null;
+          }
+        }
+      }
+
+    });
+  })();
+  </script>
+</dom-module>

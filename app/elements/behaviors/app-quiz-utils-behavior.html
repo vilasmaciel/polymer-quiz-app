@@ -98,9 +98,9 @@ QuizApp.AppQuizUtilsBehavior = {
     var index = this.getSelectedOptionIndex(userData, quiz, question);
 
     if (question.answer[0] === index) {
-      return "success";
+      return 'success';
     } else {
-      return "fail";
+      return 'fail';
     }
 
   },
@@ -135,23 +135,23 @@ QuizApp.AppQuizUtilsBehavior = {
     var quizId = this.getQuizId(quiz);
     if (!userData) {
       throw new Error('No user');
-      return false;
+      // return false;
     }
 
     if (!userData.activities) {
       // throw new Error('User don\'t have activities property');
-      console.warn('User don\'t have activities property');
+      // console.warn('User don\'t have activities property');
       return false;
     }
     if (!userData.activities[quizId]) {
       // throw new Error('User don\'t have activity entry value');
-      console.warn('User don\'t have activity entry value');
+      // console.warn('User don\'t have activity entry value');
       return false;
     }
 
     if (!userData.activities[quizId].attempts.length) {
       // throw new Error('User don\'t have activity attempt');
-      console.warn('User don\'t have activity attempt');
+      // console.warn('User don\'t have activity attempt');
       return false;
     }
 

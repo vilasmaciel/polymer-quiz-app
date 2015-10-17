@@ -108,6 +108,7 @@
             parent: this.quiz.activityId
           }
         });
+        this.userStoreIndex(this.index);
       },
 
       terminate: function() {
@@ -191,6 +192,7 @@
         this.fire('prev');
       },
 
+      /* jshint ignore:start */
       _isFirst: function(index, quiz) {
         return (index === 0);
       },

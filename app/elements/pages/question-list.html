@@ -1,5 +1,6 @@
 <dom-module id="question-list">
   <template>
+    <style is="custom-style" include="app-themes"></style>
     <style>
     :host {
       height: 100%;
@@ -9,22 +10,37 @@
       max-width: 500px;
       width: 100%;
       background-color: white;
+      font-weight: 500;
     }
 
     #bottomBar .content {
-      padding: 16px;
+      padding: 12px 16px;
+      font-size: 18px;
+    }
+
+    #bottomBar .name {
+      margin-left: 16px;
+      margin-right: 16px;
+      font-size: 16px;
     }
 
     @media (max-width: 600px) {
       #bottomBar {
+        font-size: 14px;
         max-width: 100%;
       }
+      #bottomBar .name {
+        font-size: 14px;
+      }
+    }
+    paper-progress{
+       --paper-progress-transition-duration: 0.4s;
     }
     </style>
 
     <div class="layout vertical fit" style="overflow: hidden">
 
-      <neon-animated-pages id="questionSelector" class="flex" selected="{{questionIndex}}" entry-animation="[[customEntryAnimation]]" exit-animation="[[customExitAnimation]]">
+      <neon-animated-pages id="questionSelector" class="flex" selected="[[getUserQuestionIndex(user, quiz)]]" entry-animation="[[customEntryAnimation]]" exit-animation="[[customExitAnimation]]">
         <template is="dom-repeat" items="[[quiz.questions]]">
           <question-element question="[[item]]" quiz="[[quiz]]" index="[[index]]" wide="[[wide]]" user="{{user}}" on-next="_next" on-prev="_prev" on-quiz-terminated="_changeExitAnimation"></question-element>
         </template>
@@ -33,10 +49,15 @@
       <div class="layout vertical end-justified center">
 
         <paper-material id="bottomBar" class="fixed" elevation="2">
+
+          <paper-progress value="[[getUserProgress(user, quiz)]]" class$="[[concatClass('transiting', quiz.theme)]]" style="width: 100%"></paper-progress>
+
           <div class="content layout horizontal center">
-            <div class="flex">{{quiz.name}}</div>
-            <span>{{questionIndex}}</span> / <span>{{length}}</span>
+            <user-avatar size="36" margin="0" user="[[user]]"></user-avatar>
+            <div class="flex name">{{quiz.name}}</div>
+            <span>[[getUserQuestionIndex(user, quiz)]]</span> / <span>{{length}}</span>
           </div>
+
         </paper-material>
 
       </div>
@@ -58,11 +79,6 @@
       ],
 
       properties: {
-        questionIndex: {
-          type: Number,
-          default: 0,
-          notify: true
-        },
         length: {
           type: Number
         },
@@ -134,6 +150,7 @@
           this.length = this.quiz.questions.length - 1;
           this.$.questionSelector.selected = 0;
           this.style.visibility = 'visible';
+          Polymer.updateStyles();
         }
       },
 

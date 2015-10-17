@@ -49,6 +49,34 @@ var AppUserUtilsBehaviorImpl = {
     });
   },
 
+  userStoreIndex: function(index) {
+    var quizId = this.getQuizId(this.quiz);
+    this.user.activities[quizId].attempts[0].index = index;
+    this.fire('iron-signal', {
+      name: 'user-changed',
+      data: this.user
+    });
+  },
+
+  userStoreFinalResult: function() {
+    var quizId = this.getQuizId(this.quiz);
+    this.user.activities[quizId].attempts[0].success = this.getSuccessQuestions(this.user, this.quiz);
+    this.user.activities[quizId].attempts[0].total = this.getTotal(this.quiz);
+  },
+
+  getUserQuestionIndex: function(userData, quiz) {
+    var quizId = this.getQuizId(quiz);
+    if (userData.activities[quizId] && userData.activities[quizId].attempts[0]) {
+      return userData.activities[quizId].attempts[0].index;
+    } else {
+      return 0;
+    }
+  },
+
+  getUserProgress: function(userData, quiz) {
+    return (this.getUserQuestionIndex(userData, quiz) / this.getTotal(quiz)) * 100;
+  },
+
   userPauseQuiz: function() {
     this._initializeProperties();
     var quizId = this.getQuizId(this.quiz);
@@ -90,6 +118,7 @@ var AppUserUtilsBehaviorImpl = {
     if (this.user.activities[quizId]) {
 
       this.user.activities[quizId].attempts[0].status = 'terminated';
+      this.userStoreFinalResult();
 
       this.fire('iron-signal', {
         name: 'user-changed',
