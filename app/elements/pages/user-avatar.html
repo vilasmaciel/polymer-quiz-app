@@ -64,9 +64,10 @@
 
       _userChanged: function() {
         if (this.user) {
-          if (this.user.img) {
+            console.log(this.user.avatar);
+          if (this.user.avatar) {
             this.icon = null;
-            this.src = this.user.img;
+            this.src = this.user.avatar;
           } else {
             this.icon = 'avatar-icons:default';
             this.src = null;

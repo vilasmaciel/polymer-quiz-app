@@ -34,6 +34,11 @@
       background-color: var(--paper-deep-orange-700);
     }
 
+    paper-card .card-actions paper-button.googleplus {
+      background-color: #da4336;
+      /*background-color: var(--paper-deep-orange-700);*/
+    }
+
     @media (max-width: 600px) {
       paper-card {
         top: 10px;
@@ -53,6 +58,12 @@
         <div class="card-actions">
           <paper-button on-tap="login" class="login">Enter</paper-button>
           <paper-button on-tap="register" class="register">Register</paper-button>
+        </div>
+        <div class="card-actions">
+          <paper-button on-tap="loginGoogle" class="googleplus">
+            <iron-icon icon="brand-icons:googleplus"></iron-icon>
+            Sign in
+          </paper-button>
         </div>
       </paper-card>
     </div>
@@ -120,6 +131,10 @@
           });
         }
         /* jshint ignore:end */
+      },
+
+      loginGoogle: function() {
+        this.fire('login-google');
       },
 
       register: function() {

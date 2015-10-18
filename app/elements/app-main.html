@@ -5,7 +5,7 @@
 
     <div class="content fit">
       <neon-animated-pages attr-for-selected="data-name" selected="{{section}}" class="fit">
-        <login-page data-name="login" on-login="_login" on-register="_register"></login-page>
+        <login-page data-name="login" on-login="_login" on-login-google="_loginGoogle" on-register="_register"></login-page>
         <category-list data-name="categories" items="[[categories]]" user="{{user}}" on-category-selected="categorySelected" on-logout="_logout"></category-list>
         <category-element data-name="category" category="[[_getCategory(category)]]" on-close="_showCategoryList" on-quiz-selected="_quizSelected"></category-element>
         <quiz-element data-name="quiz" quiz="[[quiz]]" user="{{user}}" on-close="_showCategoryElement"></quiz-element>
@@ -86,6 +86,10 @@
 
       _login: function(loginData) {
         this.$.dataProvider.login(loginData.detail);
+      },
+
+      _loginGoogle: function() {
+        this.$.dataProvider.loginGoogle();
       },
 
       _logout: function() {

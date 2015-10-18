@@ -60,8 +60,35 @@
 
       login: function(loginData) {
         var _this = this;
-        this.firebase.authWithPassword(loginData, function(err, data) {
-          _this._loginSucess(err, data);
+        this.firebase.authWithPassword(loginData, function(err, authData) {
+          if (err) {
+            _this.fire('app:alert', err);
+          } else {
+            var data = {
+              email: authData.password.email,
+              avatar: authData.password.profileImageURL,
+            };
+            _this._loginSucess(data);
+          }
+        });
+      },
+
+      loginGoogle: function() {
+        var _this = this;
+        this.firebase.authWithOAuthPopup('google', function(err, authData) {
+          if (err) {
+            _this.fire('app:alert', err);
+          } else {
+            var data = {
+              email: authData.google.email,
+              avatar: authData.google.profileImageURL,
+              name: authData.google.displayName
+            };
+            _this._loginSucess(data);
+          }
+        }, {
+          remember: 'sessionOnly',
+          scope: 'email'
         });
       },
 
@@ -83,32 +110,33 @@
         });
       },
 
-      _loginSucess: function(error, user) {
-        if (error) {
-          this.fire('app:alert', error);
-        } else {
-          this.userAuth = user;
-          this.saveCookie();
-          this._retrieveUserProfile();
-          this.$.ajaxCategories.generateRequest();
+      _loginSucess: function(user) {
 
-          this.fire('login-success');
-        }
+        this.userAuth = user;
+        this.saveCookie();
+        this._retrieveUserProfile();
+        this.$.ajaxCategories.generateRequest();
+
+        this.fire('login-success');
       },
 
       _retrieveUserProfile: function() {
         var _this = this;
-        var emailKey = this.removeDots(_this.userAuth.password.email);
+        var emailKey = this.removeDots(_this.userAuth.email);
 
         this.firebase.child('users/' + emailKey).on('value',
           function(snapshot) {
             if (!snapshot.val()) {
               _this.firebase.child('users/' + emailKey).set({
-                email: _this.userAuth.password.email
+                email: _this.userAuth.email
               });
 
             } else {
               _this.user = snapshot.val();
+              if (_this.userAuth.avatar) {
+                _this.user.avatar = _this.userAuth.avatar;
+                _this._updateUser( _this.user);
+              }
             }
           });
       },
