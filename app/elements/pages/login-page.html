@@ -2,7 +2,7 @@
   <template>
     <style>
     .background {
-      background: var(--paper-cyan-700);
+      background: var(--paper-cyan-100);
       opacity: .5
     }
 
@@ -20,23 +20,29 @@
     }
 
     paper-card .card-actions paper-button {
-      width: 100%;
       margin-bottom: 5px;
       margin-top: 5px;
-      color: white;
     }
 
     paper-card .card-actions paper-button.login {
-      background-color: var(--paper-green-700);
+      color: var(--paper-blue-700);
     }
 
     paper-card .card-actions paper-button.register {
-      background-color: var(--paper-deep-orange-700);
+      color: var(--paper-grey-800);
     }
 
     paper-card .card-actions paper-button.googleplus {
       background-color: #da4336;
-      /*background-color: var(--paper-deep-orange-700);*/
+      font-size: 14px;
+      width: 100%;
+      color: white;
+    }
+
+    paper-card .card-actions paper-button.googleplus iron-icon {
+      margin-right: 5px;
+      --iron-icon-height: 20px;
+      --iron-icon-width: 20px;
     }
 
     @media (max-width: 600px) {

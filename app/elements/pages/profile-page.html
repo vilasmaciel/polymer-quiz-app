@@ -1,0 +1,283 @@
+<dom-module id="profile-page">
+  <template>
+    <style>
+    .background {
+      background: var(--paper-cyan-700);
+    }
+
+    paper-toolbar {
+      background-color: transparent;
+    }
+
+    paper-card {
+      width: 500px;
+    }
+
+    user-avatar {
+      margin-right: 16px;
+    }
+
+    .name {
+      font-size: 24px;
+    }
+
+    .email {
+      margin-top: 5px;
+      font-size: 14px;
+      color: var(--paper-grey-700);
+    }
+
+    .results {
+      margin-top: 16px;
+    }
+
+    .value {
+      font-weight: 300;
+      font-size: 40px;
+    }
+
+    .value span {
+      font-size: 26px;
+    }
+
+    .legend {
+      font-size: 14px;
+      color: var(--paper-grey-700);
+    }
+
+    h2,
+    .category,
+    .quiz {
+      font-weight: 300;
+    }
+
+    .categoryContainer {
+      margin-bottom: 16px;
+    }
+
+    .category {
+      font-size: 20px;
+      margin-bottom: 7px;
+    }
+
+    .quiz {
+      font-size: 18px;
+      margin-left: 16px;
+      margin-bottom: 7px;
+    }
+
+    .attempt {
+      margin-left: 32px;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    @media (max-width: 600px) {
+      paper-card {
+        top: 10px;
+        width: 90%;
+      }
+    }
+    </style>
+
+    <div class="background fit"></div>
+
+    <div class="">
+
+      <paper-toolbar id="mainToolbar">
+        <paper-icon-button on-tap="_close" icon="arrow-back"></paper-icon-button>
+      </paper-toolbar>
+
+      <div class="layout flex horizontal center center-justified">
+        <paper-card id="loginPaperCard" elevation="1">
+          <div class="card-content">
+
+            <div class="layout horizontal center">
+              <user-avatar user="[[user]]" margin="0"></user-avatar>
+              <div class="layout vertical">
+                <div class="name">[[user.name]]</div>
+                <div class="email">[[user.email]]</div>
+              </div>
+            </div>
+
+            <div class="layout horizontal results">
+              <div class="layout vertical center">
+                <div class="value">[[progress]]<span>%</span></div>
+                <div class="legend">progress</div>
+              </div>
+              <div class="flex"></div>
+              <div class="layout vertical center">
+                <div class="value">[[success]]<span>%</span></div>
+                <div class="legend">success</div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="card-actions">
+            <h2>Results</h2>
+
+            <template is="dom-repeat" items="[[results]]">
+              <div class="categoryContainer">
+                <div class="category">[[item.name]]</div>
+
+                <template is="dom-repeat" items="[[item.quizes]]">
+                  <div class="quiz">[[item.name]]</div>
+
+                  <template is="dom-repeat" items="[[item.attempts]]">
+                    <div class="layout horizontal attempt">
+                      <div class="flex">[[item.name]]</div>
+                      <div>[[item.value]]</div>
+                    </div>
+                  </template>
+
+                </template>
+
+              </div>
+            </template>
+
+          </div>
+        </paper-card>
+      </div>
+
+    </div>
+
+  </template>
+
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'profile-page',
+
+      behaviors: [
+        Polymer.NeonSharedElementAnimatableBehavior,
+        Polymer.NeonAnimationRunnerBehavior,
+        QuizApp.AppQuizUtilsBehavior
+      ],
+
+      properties: {
+        user: {
+          type: Object,
+          notify: true,
+          observer: 'calculateResults'
+        },
+        categories: {
+          type: Array,
+          notify: true
+        },
+        results: {
+          type: Array,
+          notify: true,
+          default: []
+        },
+        progress: {
+          type: Number,
+          default: 0,
+          notify: true
+        },
+        success: {
+          type: Number,
+          default: 0,
+          notify: true
+        }
+      },
+
+      animationConfig: {
+        type: Object,
+        value: function() {
+          return {
+            'entry': {
+              name: 'fade-in-animation',
+              node: this
+            },
+            'exit': {
+              name: 'fade-out-animation',
+              node: this
+            }
+          };
+        }
+      },
+
+      ready: function() {
+        this.calculateResults();
+      },
+
+      calculateResults: function() {
+
+        this._calculateProgress();
+        var results = new Array();
+        var _this = this;
+        if (this.user && _this.user.activities && this.categories) {
+
+          for (var i = 0; i < this.categories.length; i++) {
+            var category = {
+              name: this.categories[i].name,
+              quizes: []
+            }
+
+            for (var j = 0; j < this.categories[i].quizes.length; j++) {
+              var quizId = this.getQuizId(this.categories[i].quizes[j]);
+
+              var attempts = null;
+              if (_this.user.activities[quizId]) {
+                attempts = _this.user.activities[quizId].attempts;
+              }
+
+              var quiz = {
+                name: this.categories[i].quizes[j].name,
+                attempts: []
+              }
+
+              quiz.attempts = this._getAttemptsResults(attempts);
+
+              if (quiz.attempts && quiz.attempts.length) {
+                category.quizes.push(quiz);
+              }
+            }
+
+            results.push(category);
+          }
+
+          this.results = results;
+        }
+      },
+
+      _close: function() {
+        this.fire('close');
+      },
+
+      _getAttemptsResults: function(attempts) {
+        var result = [];
+        if (attempts) {
+
+          for (var k = 0; k < attempts.length; k++) {
+            if (attempts[k].status === 'terminated') {
+
+              result.unshift({
+                name: (k + 1) + 'º Attempt',
+                value: attempts[k].result + '%'
+              });
+            }
+          }
+          return result;
+        }
+      },
+
+      _calculateProgress: function() {
+        var nq = 0;
+        if (this.user && this.user.activities && this.categories) {
+          console.log(this.categories);
+          for (var i = 0; i < this.categories.length; i++) {
+            nq = nq + this.categories[i].quizes.length;
+          }
+        }
+        this.progress = nq;
+        this.success = nq;
+      }
+    });
+  })();
+  </script>
+</dom-module>

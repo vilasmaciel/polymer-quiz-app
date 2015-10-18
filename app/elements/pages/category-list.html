@@ -1,7 +1,18 @@
 <dom-module id="category-list">
   <template>
     <style is="custom-style" include="app-themes"></style>
-
+    <style>
+    #mainMenu paper-menu {
+      --paper-menu-focused-item: {
+        font-weight: 400;
+      }
+      ;
+      --paper-menu-selected-item: {
+        font-weight: 400;
+      }
+      ;
+    }
+    </style>
     <paper-scroll-header-panel id="scrollHeader" condenses keep-condensed-header mode="waterfall-tall" on-paper-header-transform="animateTitle">
 
       <!-- Main Toolbar -->
@@ -9,13 +20,17 @@
 
         <div class="layout horizontal flex">
           <div class="flex"></div>
+
           <paper-menu-button id="mainMenu" horizontal-align="right" vertical-align="top">
+
             <paper-icon-button icon="menu" class="dropdown-trigger"></paper-icon-button>
             <paper-menu class="dropdown-content" style="width:150px">
-              <paper-item>Profile</paper-item>
+              <paper-item on-tap="_profile">Profile</paper-item>
               <paper-item on-tap="_logout">Logout</paper-item>
             </paper-menu>
+
           </paper-menu-button>
+
         </div>
 
 
@@ -161,6 +176,14 @@
           node: this
         };
         this.fire('logout');
+      },
+
+      _profile: function() {
+        this.animationConfig.exit = {
+          name: 'fade-out-animation',
+          node: this
+        };
+        this.fire('profile');
       }
 
     });

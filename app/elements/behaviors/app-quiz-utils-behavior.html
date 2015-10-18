@@ -85,7 +85,6 @@ QuizApp.AppQuizUtilsBehavior = {
   getResultForQuestion: function(userData, quiz, question) {
     var index = this.getSelectedOptionIndex(userData, quiz, question);
 
-    // console.log(question.answer[0] + ' ' + index);
     if (question.answer[0] === index) {
       return true;
     } else {

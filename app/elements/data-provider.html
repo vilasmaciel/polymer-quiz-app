@@ -103,7 +103,7 @@
         var _this = this;
         this.firebase.createUser(loginData, function(err) {
           if (err) {
-            this.fire('app:alert', err);
+            _this.fire('app:alert', err);
           } else {
             _this.login(loginData);
           }
@@ -135,6 +135,10 @@
               _this.user = snapshot.val();
               if (_this.userAuth.avatar) {
                 _this.user.avatar = _this.userAuth.avatar;
+                _this._updateUser( _this.user);
+              }
+              if (_this.userAuth.avatar) {
+                _this.user.name = _this.userAuth.name;
                 _this._updateUser( _this.user);
               }
             }
