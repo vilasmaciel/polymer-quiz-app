@@ -135,11 +135,11 @@
               _this.user = snapshot.val();
               if (_this.userAuth.avatar) {
                 _this.user.avatar = _this.userAuth.avatar;
-                _this._updateUser( _this.user);
+                _this._updateUser(_this.user);
               }
-              if (_this.userAuth.avatar) {
+              if (_this.userAuth.name) {
                 _this.user.name = _this.userAuth.name;
-                _this._updateUser( _this.user);
+                _this._updateUser(_this.user);
               }
             }
           });

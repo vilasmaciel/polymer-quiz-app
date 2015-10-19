@@ -2,13 +2,18 @@
   <template>
     <style>
     .background {
-      background: var(--paper-cyan-100);
-      opacity: .5
+      background: var(--paper-cyan-700);
+      overflow: hidden;
+    }
+
+    .container {
+      overflow: auto;
     }
 
     paper-card {
       top: 100px;
       width: 300px;
+      height: 340px;
     }
 
     paper-card {
@@ -55,7 +60,7 @@
 
     <div class="background fit"></div>
 
-    <div class="layout flex horizontal center center-justified">
+    <div class="layout fit horizontal center-justified container">
       <paper-card id="loginPaperCard" elevation="1" heading="Quiz App Login">
         <div class="card-content">
           <paper-input id="email" label="Email" autoValidate value="{{email}}" type="email"></paper-input>

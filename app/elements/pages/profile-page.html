@@ -216,7 +216,7 @@
             var category = {
               name: this.categories[i].name,
               quizes: []
-            }
+            };
 
             for (var j = 0; j < this.categories[i].quizes.length; j++) {
               var quizId = this.getQuizId(this.categories[i].quizes[j]);
@@ -229,7 +229,7 @@
               var quiz = {
                 name: this.categories[i].quizes[j].name,
                 attempts: []
-              }
+              };
 
               quiz.attempts = this._getAttemptsResults(attempts);
 
