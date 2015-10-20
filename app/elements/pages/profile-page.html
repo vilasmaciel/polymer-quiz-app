@@ -3,6 +3,11 @@
     <style>
     .background {
       background: var(--paper-cyan-700);
+      overflow: hidden;
+    }
+
+    .container {
+      overflow: auto;
     }
 
     paper-toolbar {
@@ -25,6 +30,10 @@
       margin-top: 5px;
       font-size: 14px;
       color: var(--paper-grey-700);
+    }
+
+    .aggregated {
+      margin: 0px 16px;
     }
 
     .results {
@@ -57,6 +66,7 @@
 
     .category {
       font-size: 20px;
+      margin-top: 7px;
       margin-bottom: 7px;
     }
 
@@ -76,14 +86,20 @@
     @media (max-width: 600px) {
       paper-card {
         top: 10px;
-        width: 90%;
+        width: 100%;
+      }
+      .background {
+        background: white!important;
+      }
+      paper-toolbar paper-icon-button {
+        color: black;
       }
     }
     </style>
 
-    <div class="background fit"></div>
+    <div id="background" class="background fit"></div>
 
-    <div class="">
+    <div class="container fit">
 
       <paper-toolbar id="mainToolbar">
         <paper-icon-button on-tap="_close" icon="arrow-back"></paper-icon-button>
@@ -102,12 +118,12 @@
             </div>
 
             <div class="layout horizontal results">
-              <div class="layout vertical center">
+              <div class="layout vertical center aggregated">
                 <div class="value">[[progress]]<span>%</span></div>
                 <div class="legend">progress</div>
               </div>
               <div class="flex"></div>
-              <div class="layout vertical center">
+              <div class="layout vertical center aggregated">
                 <div class="value">[[success]]<span>%</span></div>
                 <div class="legend">success</div>
               </div>
@@ -182,22 +198,26 @@
           type: Number,
           default: 0,
           notify: true
-        }
-      },
+        },
 
-      animationConfig: {
-        type: Object,
-        value: function() {
-          return {
-            'entry': {
-              name: 'fade-in-animation',
-              node: this
-            },
-            'exit': {
-              name: 'fade-out-animation',
-              node: this
-            }
-          };
+        animationConfig: {
+          type: Object,
+          value: function() {
+            return {
+              'entry': {
+                name: 'fade-in-animation',
+                node: this
+              },
+              'exit': [{
+                name: 'fade-out-animation',
+                node: this
+              }, {
+                name: 'transform-animation',
+                transformTo: 'translateY(150%)',
+                node: this.$.loginPaperCard
+              }]
+            };
+          }
         }
       },
 
@@ -208,7 +228,7 @@
       calculateResults: function() {
 
         this._calculateProgress();
-        var results = new Array();
+        var results = [];
         var _this = this;
         if (this.user && _this.user.activities && this.categories) {
 
@@ -246,20 +266,21 @@
       },
 
       _close: function() {
-        this.fire('close');
+        this.fire('close-profile');
       },
 
       _getAttemptsResults: function(attempts) {
         var result = [];
         if (attempts) {
-
-          for (var k = 0; k < attempts.length; k++) {
+          var i = 1;
+          for (var k = attempts.length - 1; k >= 0; k--) {
             if (attempts[k].status === 'terminated') {
 
-              result.unshift({
-                name: (k + 1) + 'º Attempt',
+              result.push({
+                name: i + 'º Attempt',
                 value: attempts[k].result + '%'
               });
+              i++;
             }
           }
           return result;
@@ -267,15 +288,56 @@
       },
 
       _calculateProgress: function() {
-        var nq = 0;
+        var nQuestions = this._getNumberOfActivities(this.categories);
+        var done = 0;
+        var grade = 0;
+
         if (this.user && this.user.activities && this.categories) {
-          console.log(this.categories);
-          for (var i = 0; i < this.categories.length; i++) {
-            nq = nq + this.categories[i].quizes.length;
+
+          for (var activityId in this.user.activities) {
+            var attempt = this._getLastFinishedAttempt(this.user.activities[activityId]);
+            if (attempt) {
+              done++;
+              grade += attempt.result;
+            }
           }
         }
-        this.progress = nq;
-        this.success = nq;
+        if (!done) {
+          this.progress = 0;
+        } else {
+          this.progress = Math.round(parseFloat(done / nQuestions).toFixed(2) * 100);
+        }
+
+        if (!done) {
+          this.success = 0;
+        } else {
+          this.success = Math.round(parseFloat(grade / done).toFixed(2));
+        }
+
+      },
+
+      _getLastFinishedAttempt: function(activity) {
+        if (activity.attempts) {
+          for (var i = 0; i < activity.attempts.length; i++) {
+            if (activity.attempts[i].status === 'terminated') {
+              return activity.attempts[i];
+            }
+          }
+        }
+
+        return;
+      },
+
+      _getNumberOfActivities: function(categories) {
+        var nq = 0;
+
+        if (categories) {
+          for (var i = 0; i < categories.length; i++) {
+            nq = nq + categories[i].quizes.length;
+          }
+        }
+
+        return nq;
       }
     });
   })();
