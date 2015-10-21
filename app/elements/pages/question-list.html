@@ -33,8 +33,9 @@
         font-size: 14px;
       }
     }
-    paper-progress{
-       --paper-progress-transition-duration: 0.4s;
+
+    paper-progress {
+      --paper-progress-transition-duration: 0.4s;
     }
     </style>
 
@@ -97,6 +98,12 @@
                 transformTo: 'none',
                 node: this.$.questionSelector,
               }, {
+                name: 'fade-in-animation',
+                node: this.$.questionSelector,
+                timing: {
+                  delay: 200
+                }
+              }, {
                 name: 'hero-animation',
                 id: 'hero',
                 toPage: this
@@ -104,13 +111,27 @@
                 name: 'fade-in-animation',
                 node: this.$$('#bottomBar .content'),
                 timing: {
-                  delay: 200
+                  delay: 400
+                }
+              }, {
+                name: 'fade-in-animation',
+                node: this.$$('#bottomBar paper-progress'),
+                timing: {
+                  delay: 400
                 }
               }],
               'exit': [{
                 name: 'transform-animation',
                 transformFrom: 'none',
                 transformTo: 'translate(0px, -200vh) scale(0.9, 1)',
+                node: this.$.questionSelector
+              }, {
+                name: 'transform-animation',
+                transformFrom: 'none',
+                transformTo: 'translateY(150%)',
+                node: this.$.bottomBar
+              }, {
+                name: 'fade-out-animation',
                 node: this.$.questionSelector
               }]
             };

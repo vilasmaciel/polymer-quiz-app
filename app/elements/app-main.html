@@ -1,7 +1,7 @@
 <dom-module id="app-main">
   <template>
 
-    <data-provider id="dataProvider" categories="{{categories}}" user="{{user}}" on-login-success="_loginSuccess"></data-provider>
+    <data-provider id="dataProvider" categories="{{categories}}" user="{{user}}" on-login-success="_loginSuccess" on-no-login="_logout"></data-provider>
 
     <div class="content fit">
       <neon-animated-pages attr-for-selected="data-name" selected="{{section}}" class="fit">
@@ -46,7 +46,6 @@
       },
 
       ready: function() {
-        this.section = 'login';
         this.messageElement = this.$.message;
       },
 
@@ -71,7 +70,6 @@
       },
 
       _showCategoryList: function() {
-        // this.section = 'profile';
         this.section = 'categories';
         this.category = undefined;
       },

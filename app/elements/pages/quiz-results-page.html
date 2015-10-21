@@ -2,6 +2,16 @@
   <template>
     <style is="custom-style" include="app-themes"></style>
     <style>
+    .container {
+      overflow: auto;
+    }
+
+    @media (min-width: 600px) {
+      #paperCardContainer {
+        top: 64px;
+      }
+    }
+
     .card-header iron-icon {
       height: 165px!important;
       width: 165px!important;
@@ -46,7 +56,7 @@
     }
     </style>
 
-    <div class="layout vertical fit center start">
+    <div class="layout vertical fit center start container">
       <paper-card elevation="2" id="paperCardContainer" class$="[[concatClass('layout vertical flex', quiz.theme)]]">
 
         <div class="card-header layout vertical flex">

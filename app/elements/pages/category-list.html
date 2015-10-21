@@ -12,6 +12,10 @@
       }
       ;
     }
+
+    .hidden {
+      opacity: 0
+    }
     </style>
     <paper-scroll-header-panel id="scrollHeader" condenses keep-condensed-header mode="waterfall-tall" on-paper-header-transform="animateTitle">
 
@@ -106,6 +110,9 @@
               }, {
                 name: 'slide-down-animation',
                 node: this.$.mainToolbar,
+              }, {
+                name: 'fade-in-animation',
+                node: this
               }],
               'exit': {
                 name: 'fade-out-animation',
@@ -121,24 +128,26 @@
       },
 
       show: function() {
-        this.style.opacity = 1;
+        this.$.scrollHeader.measureHeaderHeight();
         this.playAnimation('entry');
+        this.toggleClass('hidden', false, this.$.scrollHeader);
       },
 
       _itemsChanged: function() {
-        this.async(function() {
-          var nodeList = Polymer.dom(this.root).querySelectorAll('.tile');
-          if (nodeList) {
-            this.animationConfig.entry[0].nodes = Array.prototype.slice.call(nodeList);
-          }
-        });
-        this.$.scrollHeader.measureHeaderHeight();
+        if (this.items && this.items.length) {
+          this.async(function() {
+            var nodeList = Polymer.dom(this.root).querySelectorAll('.tile');
+            if (nodeList) {
+              this.animationConfig.entry[0].nodes = Array.prototype.slice.call(nodeList);
+            }
+          });
 
-        var _this = this;
-
-        setTimeout(function() {
-          _this.show();
-        }, 100);
+          this.toggleClass('hidden', true, this.$.scrollHeader);
+          var _this = this;
+          setTimeout(function() {
+            _this.show();
+          }, 200);
+        }
       },
 
       _categorySelected: function(event) {

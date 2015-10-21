@@ -26,8 +26,8 @@
 
     <div id="placeholder" class$="[[concatClass('layout horizontal fit', quiz.theme)]]"></div>
     <div class="layout vertical fit">
-      <paper-toolbar>
-        <paper-icon-button on-tap="_pause" icon="arrow-back" hidden$="[[_inResultsView(selected)]]"></paper-icon-button>
+      <paper-toolbar hidden$="[[_inResultsView(selected)]]">
+        <paper-icon-button on-tap="_pause" icon="arrow-back"></paper-icon-button>
       </paper-toolbar>
 
       <neon-animated-pages id="quizPageSelector" selected="{{selected}}" class="flex">

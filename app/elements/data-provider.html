@@ -46,15 +46,15 @@
       },
 
       created: function() {
-        // this.firebase = new Firebase('https://polymer-quiz-app.firebaseio.com');
-        this.firebase = new Firebase('https://quiz-app-dev.firebaseio.com');
+        this.firebase = new Firebase('https://polymer-quiz-app.firebaseio.com');
+        // this.firebase = new Firebase('https://quiz-app-dev.firebaseio.com');
       },
 
       attached: function() {
         if (this.userAuth) {
-          this.$.ajaxCategories.generateRequest();
-          this._retrieveUserProfile();
-          this.fire('login-success');
+          this._loginSucess();
+        } else {
+          this.fire('no-login');
         }
       },
 
@@ -93,10 +93,14 @@
       },
 
       logout: function() {
-        this.userAuth = null;
-        this.user = null;
-        this.firebase.unauth();
-        this.removeCookie();
+        var _this = this;
+        setTimeout(function() {
+          _this.userAuth = null;
+          _this.user = null;
+          _this.categories = null;
+          _this.firebase.unauth();
+          _this.removeCookie();
+        }, 200);
       },
 
       register: function(loginData) {
@@ -111,13 +115,12 @@
       },
 
       _loginSucess: function(user) {
-
-        this.userAuth = user;
-        this.saveCookie();
+        if (user) {
+          this.userAuth = user;
+          this.saveCookie();
+        }
         this._retrieveUserProfile();
         this.$.ajaxCategories.generateRequest();
-
-        this.fire('login-success');
       },
 
       _retrieveUserProfile: function() {
@@ -147,6 +150,7 @@
 
       _categoriesResponse: function(event) {
         this.categories = event.detail.response;
+        this.fire('login-success');
       },
 
       _updateUser: function(user) {
