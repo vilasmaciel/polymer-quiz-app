@@ -17,22 +17,24 @@
 
 
       <div class="layout horizontal wrap" id="container">
-        <template is="dom-repeat" items="[[category.quizes]]">
+        <ul class="tile-list flex">
+          <template is="dom-repeat" items="[[category.quizes]]">
+            <li class="tile-li flex">
+              <paper-card elevation="1" on-tap="_itemSelected" class$="[[concatClass('tile flex layout vertical', item.theme)]]" id="[[item.activityId]]">
 
-          <paper-card elevation="1" on-tap="_itemSelected" class$="[[concatClass('tile flex layout vertical', item.theme)]]" id="[[item.activityId]]">
+                <div class="icon layout horizontal center-justified  center flex">
+                  <iron-icon icon="[[getCategoryIcon(item.icon)]]"></iron-icon>
+                </div>
 
-            <div class="icon layout horizontal center-justified  center flex">
-              <iron-icon icon="[[getCategoryIcon(item.icon)]]"></iron-icon>
-            </div>
+                <div class="tile-footer layout horizontal center">
+                  <div class="paper-font-body1 layout flex center center-justified">{{item.name}}</div>
+                  <iron-icon icon="category-icons:play-arrow"></iron-icon>
+                </div>
 
-            <div class="tile-footer layout horizontal center">
-              <div class="paper-font-body1 layout flex center center-justified">{{item.name}}</div>
-              <iron-icon icon="category-icons:play-arrow"></iron-icon>
-            </div>
-
-          </paper-card>
-
-        </template>
+              </paper-card>
+            </li>
+          </template>
+        </ul>
       </div>
 
     </paper-scroll-header-panel>
@@ -89,21 +91,11 @@
 
       _setAnimationFromCategoryList: function() {
         this.animationConfig.entry = [{
-          name: 'hero-animation',
-          id: 'hero',
-          toPage: this
-        }, {
           name: 'fade-in-animation',
           timing: {
             delay: 300
           },
-          node: this.$$('.app-name')
-        }, {
-          name: 'fade-in-animation',
-          timing: {
-            delay: 300
-          },
-          node: this.$$('#mainToolbar paper-icon-button')
+          node: this.$.mainToolbar
         }, {
           name: 'fade-in-animation',
           timing: {

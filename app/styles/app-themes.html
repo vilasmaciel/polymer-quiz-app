@@ -47,11 +47,44 @@
       ;
     }
 
+    .tile-list {
+      margin: auto;
+      padding: 0px;
+    }
+
+    .tile-li {
+      display: inline-block;
+      margin: 3px 3px 0px 3px;
+      padding: 0px;
+      width: 32.7%;
+    }
+
+    @media (max-width: 1380px) {
+      .tile-li {
+        width: 32.5%;
+      }
+    }
+
+    @media (max-width: 1050px) {
+      .tile-li {
+        width: 32.2%;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .tile-li {
+        width: 48%;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .tile-li {
+        width: 99%;
+      }
+    }
+
     .tile {
-      min-width: 380px;
-      max-width: 50%;
       height: 300px;
-      margin: 3px;
       cursor: pointer;
     }
 
@@ -84,13 +117,6 @@
     #paperCardContainer .card-header iron-icon {
       height: 256px;
       width: 256px;
-    }
-
-    @media (max-width: 860px) {
-      .tile {
-        min-width: 250px;
-        max-width: 100%;
-      }
     }
 
     @media (max-width: 600px) {

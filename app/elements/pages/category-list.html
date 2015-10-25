@@ -51,22 +51,24 @@
 
       </paper-toolbar>
 
-      <div class="layout horizontal wrap">
+      <div class="layout horizontal">
+        <ul id="tileList" class="tile-list flex">
+          <template id="content" is="dom-repeat" items="[[items]]">
+            <li class="tile-li flex">
+              <paper-card elevation="1" on-tap="_categorySelected" class$="[[concatClass('tile flex layout vertical', item.theme)]]" activityId$="[[item.activityId]]">
+                <div class="icon layout horizontal center-justified  center flex">
+                  <iron-icon icon="[[getCategoryIcon(item.icon)]]"></iron-icon>
+                </div>
+                <div class="tile-footer layout horizontal center">
+                  <div class="paper-font-body1 layout flex center center-justified">{{item.name}}</div>
+                  <iron-icon icon="av:play-arrow"></iron-icon>
+                </div>
+                <div class="tileContainer layout fit" id="[[item.activityId]]" </div>
+              </paper-card>
+            </li>
+          </template>
 
-        <template id="content" is="dom-repeat" items="[[items]]">
-
-          <paper-card elevation="1" on-tap="_categorySelected" class$="[[concatClass('tile flex layout vertical', item.theme)]]" activityId$="[[item.activityId]]">
-            <div class="icon layout horizontal center-justified  center flex">
-              <iron-icon icon="[[getCategoryIcon(item.icon)]]"></iron-icon>
-            </div>
-            <div class="tile-footer layout horizontal center">
-              <div class="paper-font-body1 layout flex center center-justified">{{item.name}}</div>
-              <iron-icon icon="av:play-arrow"></iron-icon>
-            </div>
-            <div class="tileContainer layout fit" id="[[item.activityId]]" </div>
-          </paper-card>
-        </template>
-
+        </ul>
         </div>
 
     </paper-scroll-header-panel>
@@ -114,17 +116,24 @@
                 name: 'fade-in-animation',
                 node: this
               }],
-              'exit': {
+              'exit': [{
+                name: 'cascaded-animation',
+                animation: 'transform-animation',
+                transformFrom: 'none',
+                transformTo: 'translateY(150%)',
+                nodes: []
+              }, {
                 name: 'fade-out-animation',
-                node: this
-              }
+                node: this.$.tileList
+              }, {
+                name: 'transform-animation',
+                transformTo: 'translateY(-100%)',
+                node: this.$.mainToolbar,
+              }]
             };
           }
         },
 
-        sharedElements: {
-          value: function() {}
-        }
       },
 
       show: function() {
@@ -134,16 +143,17 @@
       },
 
       _itemsChanged: function() {
+        var _this = this;
         if (this.items && this.items.length) {
           this.async(function() {
             var nodeList = Polymer.dom(this.root).querySelectorAll('.tile');
             if (nodeList) {
-              this.animationConfig.entry[0].nodes = Array.prototype.slice.call(nodeList);
+              _this.animationConfig.entry[0].nodes = Array.prototype.slice.call(nodeList);
+              _this.animationConfig.exit[0].nodes = Array.prototype.slice.call(nodeList);
             }
           });
 
           this.toggleClass('hidden', true, this.$.scrollHeader);
-          var _this = this;
           setTimeout(function() {
             _this.show();
           }, 200);
@@ -152,48 +162,14 @@
 
       _categorySelected: function(event) {
         var target = event.target;
-        this.sharedElements = {
-          'hero': target.parentElement
-        };
-
-        this.animationConfig.exit = [{
-          name: 'cascaded-animation',
-          animation: 'scale-down-animation'
-        }, {
-          name: 'hero-animation',
-          id: 'hero',
-          fromPage: this
-        }];
-
-        var nodesToScale = [];
-        var tiles = Polymer.dom(this.root).querySelectorAll('.tile');
-
-        for (var i = 0; i < tiles.length; i++) {
-          var node = tiles[i];
-          if (node.getAttribute('activityId') !== target.getAttribute('activityId')) {
-            nodesToScale.push(node);
-          }
-        }
-
-        this.animationConfig.exit[0].nodes = nodesToScale;
         this.fire('category-selected', target.id);
       },
 
       _logout: function() {
-        this.animationConfig.exit = {
-          name: 'fade-out-animation',
-          node: this
-        };
-
         this.fire('logout');
       },
 
       _profile: function() {
-        this.animationConfig.exit = {
-          name: 'fade-out-animation',
-          node: this
-        };
-
         this.fire('profile');
       }
 

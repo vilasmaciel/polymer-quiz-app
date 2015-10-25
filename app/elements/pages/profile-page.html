@@ -176,9 +176,7 @@
 
       properties: {
         user: {
-          type: Object,
-          notify: true,
-          observer: 'calculateResults'
+          type: Object
         },
         categories: {
           type: Array,
@@ -204,16 +202,20 @@
           type: Object,
           value: function() {
             return {
-              'entry': {
+              'entry': [{
                 name: 'fade-in-animation',
                 node: this
-              },
+              }, {
+                name: 'transform-animation',
+                transformFrom: 'translateY(100%)',
+                node: this.$.loginPaperCard
+              }],
               'exit': [{
                 name: 'fade-out-animation',
                 node: this
               }, {
                 name: 'transform-animation',
-                transformTo: 'translateY(150%)',
+                transformTo: 'translateY(100%)',
                 node: this.$.loginPaperCard
               }]
             };
@@ -221,16 +223,12 @@
         }
       },
 
-      ready: function() {
-        this.calculateResults();
-      },
-
       calculateResults: function() {
 
         this._calculateProgress();
         var results = [];
         var _this = this;
-        if (this.user && _this.user.activities && this.categories) {
+        if (this.categories) {
 
           for (var i = 0; i < this.categories.length; i++) {
             var category = {
@@ -242,19 +240,22 @@
               var quizId = this.getQuizId(this.categories[i].quizes[j]);
 
               var attempts = null;
-              if (_this.user.activities[quizId]) {
-                attempts = _this.user.activities[quizId].attempts;
-              }
+              if (this.user && _this.user.activities) {
 
-              var quiz = {
-                name: this.categories[i].quizes[j].name,
-                attempts: []
-              };
+                if (_this.user.activities[quizId]) {
+                  attempts = _this.user.activities[quizId].attempts;
+                }
 
-              quiz.attempts = this._getAttemptsResults(attempts);
+                var quiz = {
+                  name: this.categories[i].quizes[j].name,
+                  attempts: []
+                };
 
-              if (quiz.attempts && quiz.attempts.length) {
-                category.quizes.push(quiz);
+                quiz.attempts = this._getAttemptsResults(attempts);
+
+                if (quiz.attempts && quiz.attempts.length) {
+                  category.quizes.push(quiz);
+                }
               }
             }
 

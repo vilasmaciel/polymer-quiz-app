@@ -12,6 +12,10 @@
       }
     }
 
+    #paperCardContainer .card-header {
+      min-height: 221px;
+    }
+
     .card-header iron-icon {
       height: 165px!important;
       width: 165px!important;
@@ -19,6 +23,10 @@
 
     .title {
       font-size: 20px;
+    }
+
+    .card-content {
+      min-height: 103px;
     }
 
     .entry {
@@ -57,7 +65,7 @@
     </style>
 
     <div class="layout vertical fit center start container">
-      <paper-card elevation="2" id="paperCardContainer" class$="[[concatClass('layout vertical flex', quiz.theme)]]">
+      <paper-card elevation="2" id="paperCardContainer" class$="[[concatClass('layout vertical', quiz.theme)]]">
 
         <div class="card-header layout vertical flex">
           <div class="layout vertical center center-justified flex">
@@ -168,7 +176,7 @@
       },
 
       _wideChanged: function() {
-        this.toggleClass('flex', this.wide, this.$.paperCardContainer);
+        // this.toggleClass('flex', this.wide, this.$.paperCardContainer);
       }
 
     });

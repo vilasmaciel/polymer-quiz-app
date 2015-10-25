@@ -46,8 +46,8 @@
       },
 
       created: function() {
-        this.firebase = new Firebase('https://polymer-quiz-app.firebaseio.com');
-        // this.firebase = new Firebase('https://quiz-app-dev.firebaseio.com');
+        // this.firebase = new Firebase('https://polymer-quiz-app.firebaseio.com');
+        this.firebase = new Firebase('https://quiz-app-dev.firebaseio.com');
       },
 
       attached: function() {
@@ -105,6 +105,7 @@
 
       register: function(loginData) {
         var _this = this;
+        loginData.name = 'No Name';
         this.firebase.createUser(loginData, function(err) {
           if (err) {
             _this.fire('app:alert', err);
@@ -119,8 +120,13 @@
           this.userAuth = user;
           this.saveCookie();
         }
-        this._retrieveUserProfile();
-        this.$.ajaxCategories.generateRequest();
+
+        if (this.userAuth) {
+          this._retrieveUserProfile();
+          this.$.ajaxCategories.generateRequest();
+        } else {
+          console.error('No userAuth');
+        }
       },
 
       _retrieveUserProfile: function() {
@@ -131,19 +137,13 @@
           function(snapshot) {
             if (!snapshot.val()) {
               _this.firebase.child('users/' + emailKey).set({
-                email: _this.userAuth.email
+                email: _this.userAuth.email,
+                avatar: _this.userAuth.avatar,
+                name: _this.userAuth.name || 'No Name'
               });
 
             } else {
               _this.user = snapshot.val();
-              if (_this.userAuth.avatar) {
-                _this.user.avatar = _this.userAuth.avatar;
-                _this._updateUser(_this.user);
-              }
-              if (_this.userAuth.name) {
-                _this.user.name = _this.userAuth.name;
-                _this._updateUser(_this.user);
-              }
             }
           });
       },
@@ -154,9 +154,15 @@
       },
 
       _updateUser: function(user) {
+        var _this = this;
         var emailKey = this.removeDots(user.email);
         // this.user = JSON.parse(JSON.stringify(this.user));
-        this.firebase.child('users/' + emailKey).update(user);
+        this.firebase.child('users/' + emailKey).update(user, function(err) {
+          if (err) {
+            console.error(err);
+            _this.fire('app:alert', err);
+          }
+        });
       },
 
       userChanged: function(data) {
