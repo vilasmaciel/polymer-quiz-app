@@ -34,6 +34,14 @@ QuizApp.AppQuizUtilsBehavior = {
       status === 'initialized');
   },
 
+  getStatusIcon: function(userData, quiz) {
+    if (this.isPaused(userData, quiz)) {
+      return 'av:pause';
+    } else {
+      return 'av:play-arrow';
+    }
+  },
+
   getQuizId: function(quiz) {
     if (quiz) {
       var id = quiz.activityId.split('.').join('__');

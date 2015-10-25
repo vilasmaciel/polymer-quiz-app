@@ -28,7 +28,7 @@
 
                 <div class="tile-footer layout horizontal center">
                   <div class="paper-font-body1 layout flex center center-justified">{{item.name}}</div>
-                  <iron-icon icon="category-icons:play-arrow"></iron-icon>
+                  <iron-icon icon="[[getStatusIcon(user, item)]]"></iron-icon>
                 </div>
 
               </paper-card>
@@ -49,6 +49,7 @@
       behaviors: [
         Polymer.NeonSharedElementAnimatableBehavior,
         Polymer.NeonAnimationRunnerBehavior,
+        QuizApp.AppQuizUtilsBehavior,
         QuizApp.AppUtilsBehavior
       ],
 
@@ -57,6 +58,9 @@
           type: Object,
           notify: true,
           observer: '_itemsChanged'
+        },
+        user: {
+          type: Object
         },
 
         animationConfig: {
