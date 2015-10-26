@@ -1,5 +1,6 @@
 <dom-module id="profile-page">
   <template>
+    <style is="custom-style" include="results"></style>
     <style>
     .background {
       background: var(--paper-cyan-700);
@@ -28,28 +29,6 @@
 
     .email {
       margin-top: 5px;
-      font-size: 14px;
-      color: var(--paper-grey-700);
-    }
-
-    .aggregated {
-      margin: 0px 16px;
-    }
-
-    .results {
-      margin-top: 16px;
-    }
-
-    .value {
-      font-weight: 300;
-      font-size: 40px;
-    }
-
-    .value span {
-      font-size: 26px;
-    }
-
-    .legend {
       font-size: 14px;
       color: var(--paper-grey-700);
     }
@@ -119,12 +98,12 @@
 
             <div class="layout horizontal results">
               <div class="layout vertical center aggregated">
-                <div class="value">[[progress]]<span>%</span></div>
+                <div class="value">[[progress]]<small>%</small></div>
                 <div class="legend">progress</div>
               </div>
               <div class="flex"></div>
               <div class="layout vertical center aggregated">
-                <div class="value">[[success]]<span>%</span></div>
+                <div class="value">[[success]]<small>%</small></div>
                 <div class="legend">success</div>
               </div>
             </div>
@@ -204,7 +183,10 @@
             return {
               'entry': [{
                 name: 'fade-in-animation',
-                node: this
+                node: this,
+                timing: {
+                  delay: 100
+                }
               }, {
                 name: 'transform-animation',
                 transformFrom: 'translateY(100%)',
@@ -212,7 +194,10 @@
               }],
               'exit': [{
                 name: 'fade-out-animation',
-                node: this
+                node: this,
+                timing: {
+                  duration: 200
+                }
               }, {
                 name: 'transform-animation',
                 transformTo: 'translateY(100%)',

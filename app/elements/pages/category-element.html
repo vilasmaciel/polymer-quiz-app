@@ -1,6 +1,9 @@
 <dom-module id="category-element">
   <template>
     <style is="custom-style" include="app-themes"></style>
+    <style is="custom-style" include="results"></style>
+    <style>
+    </style>
 
     <paper-scroll-header-panel id="scrollHeader" condenses keep-condensed-header mode="waterfall-tall" on-paper-header-transform="animateTitle">
 
@@ -22,12 +25,31 @@
             <li class="tile-li flex">
               <paper-card elevation="1" on-tap="_itemSelected" class$="[[concatClass('tile flex layout vertical', item.theme)]]" id="[[item.activityId]]">
 
-                <div class="icon layout horizontal center-justified  center flex">
-                  <iron-icon icon="[[getCategoryIcon(item.icon)]]"></iron-icon>
+                <div class="icon layout horizontal">
+
+                  <div class="results layout vertical around-justified">
+
+                    <div class="attempts layout vertical center">
+                      <div class="value">
+                        <span>[[getAttempts(user, item)]]</span>/<small>[[item.maxAttempts]]</small>
+                      </div>
+                      <div class="legend">attempts</div>
+                    </div>
+
+                    <div class="result layout vertical center">
+                      <div class="value">
+                        <span>[[getLastResultValue(user, item)]]</span><small>%</small>
+                      </div>
+                      <div class="legend">last result</div>
+                    </div>
+
+                  </div>
+
+                  <iron-icon class="flex" icon="[[getCategoryIcon(item.icon)]]"></iron-icon>
                 </div>
 
                 <div class="tile-footer layout horizontal center">
-                  <div class="paper-font-body1 layout flex center center-justified">{{item.name}}</div>
+                  <div class="paper-font-body1 layout flex center center-justified">[[item.name]]</div>
                   <iron-icon icon="[[getStatusIcon(user, item)]]"></iron-icon>
                 </div>
 
@@ -49,7 +71,7 @@
       behaviors: [
         Polymer.NeonSharedElementAnimatableBehavior,
         Polymer.NeonAnimationRunnerBehavior,
-        QuizApp.AppQuizUtilsBehavior,
+        QuizApp.AppUserUtilsBehavior,
         QuizApp.AppUtilsBehavior
       ],
 
